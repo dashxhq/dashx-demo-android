@@ -50,34 +50,55 @@ class LoginFragment : Fragment() {
         }
 
         binding.loginButton.setOnClickListener {
-            if(validateFields()){
+            if (validateFields()) {
                 loginUser()
             }
         }
 
-        binding.editTextEmail.addTextChangedListener {
+        binding.emailEditText.addTextChangedListener {
             binding.emailField.isErrorEnabled = false
         }
     }
 
     private fun loginUser() {
-        ApiClient.getInstance(requireContext()).login(LoginRequest(binding.editTextEmail.text.toString(),binding.editTextPassword.text.toString()),object :Callback<LoginResponse>{
-            override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
-                AppPref(requireContext()).setUserData(UserData(binding.editTextEmail.text.toString(),response.body()?.token))
-                val intent = Intent(requireContext(), HomeActivity::class.java)
-                startActivity(intent)
-                requireActivity().finish()
-            }
+        ApiClient.getInstance(requireContext()).login(
+            LoginRequest(
+                binding.emailEditText.text.toString(),
+                binding.passwordEditText.text.toString()
+            ), object : Callback<LoginResponse> {
+                override fun onResponse(
+                    call: Call<LoginResponse>,
+                    response: Response<LoginResponse>
+                ) {
+                    if (response.code() < 300) {
+                        AppPref(requireContext()).setUserData(
+                            UserData(
+                                binding.emailEditText.text.toString(),
+                                response.body()?.token
+                            )
+                        )
+                        val intent = Intent(requireContext(), HomeActivity::class.java)
+                        startActivity(intent)
+                        requireActivity().finish()
+                    } else {
+                        Toast.makeText(
+                            requireContext(),
+                            Utils.getErrorMessageFromJson(response.errorBody()?.string()),
+                            Toast.LENGTH_LONG
+                        )
+                            .show()
+                    }
+                }
 
-            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                Toast.makeText(requireContext(),"login error",Toast.LENGTH_LONG).show()
-            }
+                override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                    Toast.makeText(requireContext(), "login error", Toast.LENGTH_LONG).show()
+                }
 
-        })
+            })
     }
 
-    private fun validateFields(): Boolean{
-        return validateEmail(binding.editTextEmail.text.toString())
+    private fun validateFields(): Boolean {
+        return validateEmail(binding.emailEditText.text.toString())
     }
 
     private fun validateEmail(emailId: String): Boolean {
