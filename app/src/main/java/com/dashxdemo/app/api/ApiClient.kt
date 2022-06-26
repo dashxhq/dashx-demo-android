@@ -1,8 +1,10 @@
 package com.dashxdemo.app.api
 
 import android.content.Context
+import com.dashxdemo.app.api.requests.ForgotPasswordRequest
 import com.dashxdemo.app.api.requests.LoginRequest
 import com.dashxdemo.app.api.requests.RegisterRequest
+import com.dashxdemo.app.api.responses.ForgotPasswordResponse
 import com.dashxdemo.app.api.responses.LoginResponse
 import com.dashxdemo.app.api.responses.RegisterResponse
 import retrofit2.Callback
@@ -44,8 +46,13 @@ class ApiClient private constructor(private val applicationContext: Context) {
         call.enqueue(callback)
     }
 
-    fun register(registerRequest: RegisterRequest, callback: Callback<RegisterResponse>){
+    fun register(registerRequest: RegisterRequest, callback: Callback<RegisterResponse>) {
         val call = service.register(registerRequest)
+        call.enqueue(callback)
+    }
+
+    fun forgotPassword(forgotPasswordRequest: ForgotPasswordRequest, callback: Callback<ForgotPasswordResponse>) {
+        val call = service.forgotPassword(forgotPasswordRequest)
         call.enqueue(callback)
     }
 
