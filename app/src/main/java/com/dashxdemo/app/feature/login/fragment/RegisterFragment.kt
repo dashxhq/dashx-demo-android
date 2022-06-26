@@ -1,12 +1,12 @@
 package com.dashxdemo.app.feature.login.fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.dashxdemo.app.R
 import com.dashxdemo.app.api.ApiClient
@@ -82,18 +82,29 @@ class RegisterFragment : Fragment() {
                     response: Response<RegisterResponse>
                 ) {
                     if (response.code() < 300) {
-                        Toast.makeText(requireContext(), response.body()?.message, Toast.LENGTH_LONG)
+                        Toast.makeText(
+                            requireContext(),
+                            response.body()?.message,
+                            Toast.LENGTH_LONG
+                        )
                             .show()
                         findNavController().navigateUp()
-                    }
-                    else{
-                        Toast.makeText(requireContext(), getErrorMessageFromJson(response.errorBody()?.string()), Toast.LENGTH_LONG)
+                    } else {
+                        Toast.makeText(
+                            requireContext(),
+                            getErrorMessageFromJson(response.errorBody()?.string()),
+                            Toast.LENGTH_LONG
+                        )
                             .show()
                     }
                 }
 
                 override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
-                    Toast.makeText(requireContext(), getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.something_went_wrong),
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
 
             })
@@ -104,9 +115,9 @@ class RegisterFragment : Fragment() {
     }
 
     private fun validatePassword(): Boolean {
-        if(binding.passwordEditText.text.isNullOrEmpty()) {
+        if (binding.passwordEditText.text.isNullOrEmpty()) {
             binding.passwordTextInput.isErrorEnabled = true
-            binding.passwordTextInput.error = "Password is required"
+            binding.passwordTextInput.error = getString(R.string.password_required_text)
         }
         return !binding.passwordEditText.text.isNullOrEmpty()
     }
@@ -114,13 +125,13 @@ class RegisterFragment : Fragment() {
     private fun validateNameFields(): Boolean {
         if (binding.firstNameEditText.text.isNullOrEmpty()) {
             binding.firstNameTextInput.isErrorEnabled = true
-            binding.firstNameTextInput.error = "First name is required"
+            binding.firstNameTextInput.error = getString(R.string.first_name_required_text)
             return false
         }
 
         if (binding.lastNameEditText.text.isNullOrEmpty()) {
             binding.lastNameTextInput.isErrorEnabled = true
-            binding.lastNameTextInput.error = "Last name is required"
+            binding.lastNameTextInput.error = getString(R.string.last_name_required_text)
             return false
         }
         return true
@@ -129,10 +140,10 @@ class RegisterFragment : Fragment() {
     private fun validateEmail(emailId: String): Boolean {
         if (emailId.isEmpty()) {
             binding.emailTextInput.isErrorEnabled = true
-            binding.emailTextInput.error = "Email is required"
+            binding.emailTextInput.error = getString(R.string.email_required_text)
         } else if (!isValidEmail(emailId)) {
             binding.emailTextInput.isErrorEnabled = true
-            binding.emailTextInput.error = "Please enter valid Email Id."
+            binding.emailTextInput.error = getString(R.string.valid_email_text)
         } else {
             binding.emailTextInput.isErrorEnabled = false
             binding.emailTextInput.error = null

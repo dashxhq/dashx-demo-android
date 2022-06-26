@@ -83,10 +83,10 @@ class ForgotPasswordFragment : Fragment() {
 
         if (emailId.isEmpty()) {
             binding.emailTextInput.isErrorEnabled = true
-            binding.emailTextInput.error = "Email is required"
+            binding.emailTextInput.error = getString(R.string.email_required_text)
         } else if (!isValidEmail(emailId)) {
             binding.emailTextInput.isErrorEnabled = true
-            binding.emailTextInput.error = "Please enter valid Email Id."
+            binding.emailTextInput.error = getString(R.string.valid_email_text)
         } else {
             binding.emailTextInput.isErrorEnabled = false
             binding.emailTextInput.error = null

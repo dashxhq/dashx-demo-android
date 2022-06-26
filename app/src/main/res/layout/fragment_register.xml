@@ -10,7 +10,7 @@
         android:id="@+id/headerLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="60dp"
         android:orientation="horizontal"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -18,8 +18,8 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/logo"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_gravity="center"
             android:layout_marginEnd="20dp"
             android:src="@drawable/logo" />
@@ -29,7 +29,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/app_name"
+            android:text="@string/demo_app"
+            android:textColor="@android:color/black"
             android:textSize="25sp"
             android:textStyle="bold" />
 
@@ -41,6 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
         android:text="@string/register"
+        android:textColor="@android:color/black"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -52,9 +54,7 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
         android:layout_marginTop="50dp"
-        android:layout_marginEnd="20dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/registerTitle">
 
@@ -63,7 +63,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/first_name"
-            android:inputType="textEmailAddress"
+            android:inputType="textCapWords"
             android:textColor="@color/black"
             android:textStyle="normal" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -73,9 +73,7 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/firstNameTextInput">
 
@@ -84,7 +82,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/last_name"
-            android:inputType="textEmailAddress"
+            android:inputType="textCapWords"
             android:textColor="@color/black"
             android:textStyle="normal" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -94,9 +92,7 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/lastNameTextInput">
 
@@ -115,9 +111,8 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
+        app:endIconMode="password_toggle"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/emailTextInput">
 
@@ -131,13 +126,11 @@
             android:textStyle="normal" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textview.MaterialTextView
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/registerButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
         android:background="@drawable/background_button_filled"
         android:clickable="true"
         android:focusable="true"
@@ -145,17 +138,16 @@
         android:padding="10dp"
         android:text="@string/register"
         android:textAlignment="center"
+        android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="18sp"
         app:layout_constraintTop_toBottomOf="@id/passwordTextInput" />
 
-    <com.google.android.material.textview.MaterialTextView
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/loginButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
         android:background="@drawable/background_button_outlined"
         android:clickable="true"
         android:focusable="true"
@@ -163,6 +155,7 @@
         android:padding="10dp"
         android:text="@string/login"
         android:textAlignment="center"
+        android:textAllCaps="false"
         android:textColor="#6658f5"
         android:textSize="18sp"
         app:layout_constraintTop_toBottomOf="@id/registerButton" />

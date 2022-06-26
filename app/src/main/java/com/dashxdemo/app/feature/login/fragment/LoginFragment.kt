@@ -2,12 +2,12 @@ package com.dashxdemo.app.feature.login.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.dashxdemo.app.R
 import com.dashxdemo.app.api.ApiClient
@@ -56,7 +56,7 @@ class LoginFragment : Fragment() {
         }
 
         binding.emailEditText.addTextChangedListener {
-            binding.emailField.isErrorEnabled = false
+            binding.emailTextInput.isErrorEnabled = false
         }
     }
 
@@ -98,20 +98,28 @@ class LoginFragment : Fragment() {
     }
 
     private fun validateFields(): Boolean {
-        return validateEmail(binding.emailEditText.text.toString())
+        return validateEmail(binding.emailEditText.text.toString()) && validatePassword()
+    }
+
+    private fun validatePassword(): Boolean {
+        if(binding.passwordEditText.text.isNullOrEmpty()) {
+            binding.passwordTextInput.isErrorEnabled = true
+            binding.passwordTextInput.error = getString(R.string.password_required_text)
+        }
+        return !binding.passwordEditText.text.isNullOrEmpty()
     }
 
     private fun validateEmail(emailId: String): Boolean {
         if (emailId.isEmpty()) {
-            binding.emailField.isErrorEnabled = true
-            binding.emailField.error = "Email is required"
+            binding.emailTextInput.isErrorEnabled = true
+            binding.emailTextInput.error = getString(R.string.email_required_text)
 
         } else if (!Utils.isValidEmail(emailId)) {
-            binding.emailField.isErrorEnabled = true
-            binding.emailField.error = "Please enter valid email id"
+            binding.emailTextInput.isErrorEnabled = true
+            binding.emailTextInput.error = getString(R.string.valid_email_text)
         } else {
-            binding.emailField.isErrorEnabled = false
-            binding.emailField.error = null
+            binding.emailTextInput.isErrorEnabled = false
+            binding.emailTextInput.error = null
             return true
         }
         return false
