@@ -1,15 +1,23 @@
 package com.dashxdemo.app.feature.login
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.dashxdemo.app.R
-import com.dashxdemo.app.binding.viewBinding
+import com.dashxdemo.app.feature.home.HomeActivity
 import com.dashxdemo.app.databinding.ActivityLoginBinding
+import com.dashxdemo.app.pref.AppPref
 
 class LoginActivity : AppCompatActivity() {
-    private val binding: ActivityLoginBinding by viewBinding()
+    private lateinit var binding: ActivityLoginBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        if(AppPref(this).getUserData() != null){
+            val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
     }
 }
