@@ -1,63 +1,50 @@
 package com.dashxdemo.app.api
 
-import android.util.Log
-import com.dashxdemo.app.BuildConfig
-import com.dashxdemo.app.api.utils.Outcome
-import io.ktor.client.*
-import io.ktor.client.engine.okhttp.*
-import io.ktor.client.features.*
-import io.ktor.client.features.auth.*
-import io.ktor.client.features.auth.providers.*
-import io.ktor.client.features.json.*
-import io.ktor.client.features.json.serializer.*
-import io.ktor.client.features.logging.*
-import io.ktor.http.*
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.coroutineScope
+import android.content.Context
+import okhttp3.Interceptor
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
-val httpClient = HttpClient(OkHttp) {
 
-    expectSuccess = false // to avoid exception on non 200 responses
+class ApiClient private constructor(private val applicationContext: Context) {
+    private val service: ApiService
 
-    install(JsonFeature) {
-        serializer = KotlinxSerializer(kotlinx.serialization.json.Json {
-            prettyPrint = true
-            isLenient = true
-            ignoreUnknownKeys = true
-        })
-    }
+    companion object {
+        const val BASE_URL = "https://api.github.com/"
 
-    install(Auth) {
-        bearer {
-            //TODO: Add tokens here
-        }
-    }
+        private var INSTANCE: ApiClient? = null
 
-    if (BuildConfig.DEBUG) {
-        install(Logging) {
-            logger = object : Logger {
-                override fun log(message: String) {
-                    Log.d("Message",message)
-                }
+        fun getInstance(applicationContext: Context): ApiClient {
+            var tempInstance = INSTANCE
+            if (tempInstance == null) {
+                tempInstance = ApiClient(applicationContext)
+                INSTANCE = tempInstance
             }
-            level = LogLevel.BODY
+            return tempInstance
         }
     }
 
-    defaultRequest {
-        contentType(ContentType.Application.Json)
+    init {
+
+        val httpClient = OkHttpClient()
+        httpClient.networkInterceptors().add(Interceptor { chain ->
+            val requestBuilder: Request.Builder = chain.request().newBuilder()
+            requestBuilder.header("Content-Type", "application/json")
+            //TODO: Add token to header
+            chain.proceed(requestBuilder.build())
+        })
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(httpClient)
+            .build()
+
+        service = retrofit.create(ApiService::class.java)
+
     }
+
 }
 
-suspend fun runInParallel(vararg blocks: suspend () -> Outcome<*>): Outcome<Unit> {
-    return coroutineScope {
-        val outcomes = blocks.map {
-            async { it.invoke() }
-        }.awaitAll()
-
-        outcomes.firstOrNull { it is Outcome.Error }?.let {
-            it as Outcome.Error
-        } ?: Outcome.Success
-    }
-}
