@@ -64,6 +64,7 @@ dependencies {
     api(Dependencies.ktorSerialization)
     api(Dependencies.ktorLogging)
     api(Dependencies.ktorAuth)
+    implementation 'androidx.navigation:navigation-fragment:2.4.2'
 
     testImplementation(Dependencies.junit)
     androidTestImplementation(Dependencies.androidXJunit)
