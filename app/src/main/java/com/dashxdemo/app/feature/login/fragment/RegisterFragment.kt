@@ -14,7 +14,8 @@ import com.dashxdemo.app.api.requests.RegisterRequest
 import com.dashxdemo.app.api.responses.RegisterResponse
 import com.dashxdemo.app.databinding.FragmentRegisterBinding
 import com.dashxdemo.app.utils.Utils.Companion.getErrorMessageFromJson
-import com.dashxdemo.app.utils.Utils.Companion.isValidEmail
+import com.dashxdemo.app.utils.Utils.Companion.validateEmail
+import com.dashxdemo.app.utils.Utils.Companion.validatePassword
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -111,15 +112,15 @@ class RegisterFragment : Fragment() {
     }
 
     private fun validateFields(): Boolean {
-        return validateEmail(binding.emailEditText.text.toString()) && validatePassword() && validateNameFields()
-    }
-
-    private fun validatePassword(): Boolean {
-        if (binding.passwordEditText.text.isNullOrEmpty()) {
-            binding.passwordTextInput.isErrorEnabled = true
-            binding.passwordTextInput.error = getString(R.string.password_required_text)
-        }
-        return !binding.passwordEditText.text.isNullOrEmpty()
+        return validateNameFields() && validateEmail(
+            binding.emailEditText.text.toString(),
+            binding.emailTextInput,
+            requireContext()
+        ) && validatePassword(
+            binding.passwordEditText.text.toString(),
+            binding.passwordTextInput,
+            requireContext()
+        )
     }
 
     private fun validateNameFields(): Boolean {
@@ -135,20 +136,5 @@ class RegisterFragment : Fragment() {
             return false
         }
         return true
-    }
-
-    private fun validateEmail(emailId: String): Boolean {
-        if (emailId.isEmpty()) {
-            binding.emailTextInput.isErrorEnabled = true
-            binding.emailTextInput.error = getString(R.string.email_required_text)
-        } else if (!isValidEmail(emailId)) {
-            binding.emailTextInput.isErrorEnabled = true
-            binding.emailTextInput.error = getString(R.string.valid_email_text)
-        } else {
-            binding.emailTextInput.isErrorEnabled = false
-            binding.emailTextInput.error = null
-            return true
-        }
-        return false
     }
 }

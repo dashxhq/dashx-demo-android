@@ -18,6 +18,8 @@ import com.dashxdemo.app.databinding.FragmentLoginBinding
 import com.dashxdemo.app.feature.home.HomeActivity
 import com.dashxdemo.app.pref.AppPref
 import com.dashxdemo.app.utils.Utils
+import com.dashxdemo.app.utils.Utils.Companion.validateEmail
+import com.dashxdemo.app.utils.Utils.Companion.validatePassword
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -91,37 +93,25 @@ class LoginFragment : Fragment() {
                 }
 
                 override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                    Toast.makeText(requireContext(), getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.something_went_wrong),
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
 
             })
     }
 
     private fun validateFields(): Boolean {
-        return validateEmail(binding.emailEditText.text.toString()) && validatePassword()
-    }
-
-    private fun validatePassword(): Boolean {
-        if(binding.passwordEditText.text.isNullOrEmpty()) {
-            binding.passwordTextInput.isErrorEnabled = true
-            binding.passwordTextInput.error = getString(R.string.password_required_text)
-        }
-        return !binding.passwordEditText.text.isNullOrEmpty()
-    }
-
-    private fun validateEmail(emailId: String): Boolean {
-        if (emailId.isEmpty()) {
-            binding.emailTextInput.isErrorEnabled = true
-            binding.emailTextInput.error = getString(R.string.email_required_text)
-
-        } else if (!Utils.isValidEmail(emailId)) {
-            binding.emailTextInput.isErrorEnabled = true
-            binding.emailTextInput.error = getString(R.string.valid_email_text)
-        } else {
-            binding.emailTextInput.isErrorEnabled = false
-            binding.emailTextInput.error = null
-            return true
-        }
-        return false
+        return validateEmail(
+            binding.emailEditText.text.toString(),
+            binding.emailTextInput,
+            requireContext()
+        ) && validatePassword(
+            binding.passwordEditText.text.toString(),
+            binding.passwordTextInput,
+            requireContext()
+        )
     }
 }

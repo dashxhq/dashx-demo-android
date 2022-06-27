@@ -14,7 +14,7 @@ import com.dashxdemo.app.api.requests.ForgotPasswordRequest
 import com.dashxdemo.app.api.responses.ForgotPasswordResponse
 import com.dashxdemo.app.databinding.FragmentForgotPasswordBinding
 import com.dashxdemo.app.utils.Utils
-import com.dashxdemo.app.utils.Utils.Companion.isValidEmail
+import com.dashxdemo.app.utils.Utils.Companion.validateEmail
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -42,7 +42,12 @@ class ForgotPasswordFragment : Fragment() {
         }
 
         binding.forgotPasswordButton.setOnClickListener {
-            if (validateEmail()) {
+            if (validateEmail(
+                    binding.emailEditText.text.toString(),
+                    binding.emailTextInput,
+                    requireContext()
+                )
+            ) {
                 forgotPassword()
             }
         }
@@ -59,10 +64,18 @@ class ForgotPasswordFragment : Fragment() {
                     response: Response<ForgotPasswordResponse>
                 ) {
                     if (response.code() < 300) {
-                        Toast.makeText(requireContext(), response.body()?.message, Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            requireContext(),
+                            response.body()?.message,
+                            Toast.LENGTH_LONG
+                        ).show()
                         findNavController().navigateUp()
                     } else {
-                        Toast.makeText(requireContext(), Utils.getErrorMessageFromJson(response.errorBody()?.string()), Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            requireContext(),
+                            Utils.getErrorMessageFromJson(response.errorBody()?.string()),
+                            Toast.LENGTH_LONG
+                        ).show()
                     }
                 }
 
@@ -75,23 +88,5 @@ class ForgotPasswordFragment : Fragment() {
                 }
 
             })
-    }
-
-    private fun validateEmail(): Boolean {
-
-        val emailId = binding.emailEditText.text.toString().trim()
-
-        if (emailId.isEmpty()) {
-            binding.emailTextInput.isErrorEnabled = true
-            binding.emailTextInput.error = getString(R.string.email_required_text)
-        } else if (!isValidEmail(emailId)) {
-            binding.emailTextInput.isErrorEnabled = true
-            binding.emailTextInput.error = getString(R.string.valid_email_text)
-        } else {
-            binding.emailTextInput.isErrorEnabled = false
-            binding.emailTextInput.error = null
-            return true
-        }
-        return false
     }
 }
