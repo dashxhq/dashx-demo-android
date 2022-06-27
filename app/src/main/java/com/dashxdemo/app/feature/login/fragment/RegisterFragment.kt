@@ -1,5 +1,6 @@
 package com.dashxdemo.app.feature.login.fragment
 
+import android.app.ProgressDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ import com.dashxdemo.app.api.requests.RegisterRequest
 import com.dashxdemo.app.api.responses.RegisterResponse
 import com.dashxdemo.app.databinding.FragmentRegisterBinding
 import com.dashxdemo.app.utils.Utils.Companion.getErrorMessageFromJson
+import com.dashxdemo.app.utils.Utils.Companion.initProgressDialog
 import com.dashxdemo.app.utils.Utils.Companion.validateEmail
 import com.dashxdemo.app.utils.Utils.Companion.validatePassword
 import retrofit2.Call
@@ -24,6 +26,7 @@ import retrofit2.Response
 class RegisterFragment : Fragment() {
 
     private lateinit var binding: FragmentRegisterBinding
+    private lateinit var progressDialog: ProgressDialog
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -35,7 +38,8 @@ class RegisterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        progressDialog = ProgressDialog(requireContext())
+        initProgressDialog(progressDialog, requireContext())
         setUpUi()
     }
 
@@ -63,6 +67,7 @@ class RegisterFragment : Fragment() {
 
         binding.registerButton.setOnClickListener {
             if (validateFields()) {
+                showDialog()
                 registerUser()
             }
         }
@@ -82,6 +87,7 @@ class RegisterFragment : Fragment() {
                     call: Call<RegisterResponse>,
                     response: Response<RegisterResponse>
                 ) {
+                    hideDialog()
                     if (response.isSuccessful) {
                         Toast.makeText(
                             requireContext(),
@@ -101,6 +107,7 @@ class RegisterFragment : Fragment() {
                 }
 
                 override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
+                    hideDialog()
                     Toast.makeText(
                         requireContext(),
                         getString(R.string.something_went_wrong),
@@ -136,5 +143,14 @@ class RegisterFragment : Fragment() {
             return false
         }
         return true
+    }
+
+    private fun showDialog() {
+        initProgressDialog(progressDialog, requireContext())
+        progressDialog.show()
+    }
+
+    private fun hideDialog() {
+        progressDialog.dismiss()
     }
 }

@@ -19,4 +19,6 @@
     <string name="valid_email_text">Please enter valid Email.</string>
 
     <string name="something_went_wrong">Something went wrong</string>
+
+    <string name="loading">Loading…</string>
 </resources>

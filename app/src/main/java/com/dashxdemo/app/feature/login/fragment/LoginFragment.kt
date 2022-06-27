@@ -1,5 +1,6 @@
 package com.dashxdemo.app.feature.login.fragment
 
+import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,6 +19,7 @@ import com.dashxdemo.app.databinding.FragmentLoginBinding
 import com.dashxdemo.app.feature.home.HomeActivity
 import com.dashxdemo.app.pref.AppPref
 import com.dashxdemo.app.utils.Utils
+import com.dashxdemo.app.utils.Utils.Companion.initProgressDialog
 import com.dashxdemo.app.utils.Utils.Companion.validateEmail
 import com.dashxdemo.app.utils.Utils.Companion.validatePassword
 import retrofit2.Call
@@ -25,7 +27,10 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class LoginFragment : Fragment() {
+
     private lateinit var binding: FragmentLoginBinding
+    private lateinit var progressDialog: ProgressDialog
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -37,7 +42,8 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        progressDialog = ProgressDialog(requireContext())
+        initProgressDialog(progressDialog, requireContext())
         setupUi()
     }
 
@@ -53,6 +59,7 @@ class LoginFragment : Fragment() {
 
         binding.loginButton.setOnClickListener {
             if (validateFields()) {
+                showDialog()
                 loginUser()
             }
         }
@@ -72,6 +79,7 @@ class LoginFragment : Fragment() {
                     call: Call<LoginResponse>,
                     response: Response<LoginResponse>
                 ) {
+                    hideDialog()
                     if (response.isSuccessful) {
                         AppPref(requireContext()).setUserData(
                             UserData(
@@ -93,6 +101,7 @@ class LoginFragment : Fragment() {
                 }
 
                 override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                    hideDialog()
                     Toast.makeText(
                         requireContext(),
                         getString(R.string.something_went_wrong),
@@ -113,5 +122,13 @@ class LoginFragment : Fragment() {
             binding.passwordTextInput,
             requireContext()
         )
+    }
+
+    private fun showDialog() {
+        progressDialog.show()
+    }
+
+    private fun hideDialog() {
+        progressDialog.dismiss()
     }
 }

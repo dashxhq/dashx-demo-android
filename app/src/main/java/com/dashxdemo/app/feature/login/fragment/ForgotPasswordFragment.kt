@@ -1,5 +1,6 @@
 package com.dashxdemo.app.feature.login.fragment
 
+import android.app.ProgressDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ import com.dashxdemo.app.api.requests.ForgotPasswordRequest
 import com.dashxdemo.app.api.responses.ForgotPasswordResponse
 import com.dashxdemo.app.databinding.FragmentForgotPasswordBinding
 import com.dashxdemo.app.utils.Utils
+import com.dashxdemo.app.utils.Utils.Companion.initProgressDialog
 import com.dashxdemo.app.utils.Utils.Companion.validateEmail
 import retrofit2.Call
 import retrofit2.Callback
@@ -21,7 +23,7 @@ import retrofit2.Response
 
 class ForgotPasswordFragment : Fragment() {
     private lateinit var binding: FragmentForgotPasswordBinding
-
+    private lateinit var progressDialog: ProgressDialog
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -33,6 +35,8 @@ class ForgotPasswordFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        progressDialog = ProgressDialog(requireContext())
+        initProgressDialog(progressDialog, requireContext())
         setUpUi()
     }
 
@@ -48,6 +52,7 @@ class ForgotPasswordFragment : Fragment() {
                     requireContext()
                 )
             ) {
+                showDialog()
                 forgotPassword()
             }
         }
@@ -63,6 +68,7 @@ class ForgotPasswordFragment : Fragment() {
                     call: Call<ForgotPasswordResponse>,
                     response: Response<ForgotPasswordResponse>
                 ) {
+                    hideDialog()
                     if (response.isSuccessful) {
                         Toast.makeText(
                             requireContext(),
@@ -80,6 +86,7 @@ class ForgotPasswordFragment : Fragment() {
                 }
 
                 override fun onFailure(call: Call<ForgotPasswordResponse>, t: Throwable) {
+                    hideDialog()
                     Toast.makeText(
                         requireContext(),
                         getString(R.string.something_went_wrong),
@@ -88,5 +95,13 @@ class ForgotPasswordFragment : Fragment() {
                 }
 
             })
+    }
+
+    private fun showDialog() {
+        progressDialog.show()
+    }
+
+    private fun hideDialog() {
+        progressDialog.dismiss()
     }
 }

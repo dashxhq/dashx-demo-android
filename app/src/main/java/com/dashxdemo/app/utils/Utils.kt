@@ -1,5 +1,6 @@
 package com.dashxdemo.app.utils
 
+import android.app.ProgressDialog
 import android.content.Context
 import com.dashxdemo.app.R
 import com.dashxdemo.app.api.responses.ErrorResponse
@@ -42,7 +43,14 @@ class Utils {
                 textInput.isErrorEnabled = true
                 textInput.error = context.getString(R.string.password_required_text)
             }
-            return !password.isEmpty()
+            return password.isNotEmpty()
+        }
+
+        fun initProgressDialog(progressDialog: ProgressDialog, context: Context): ProgressDialog {
+            progressDialog.setMessage(context.getString(R.string.loading))
+            progressDialog.setCanceledOnTouchOutside(false)
+            progressDialog.setCancelable(false)
+            return progressDialog
         }
     }
 }
