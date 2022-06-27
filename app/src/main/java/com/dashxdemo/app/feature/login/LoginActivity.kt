@@ -14,7 +14,7 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        if(AppPref(this).getUserData() != null){
+        if(!AppPref(this).getUserToken().isNullOrEmpty()){
             val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
             finish()

@@ -8,9 +8,3 @@ data class LoginResponse(
     @SerializedName("token")
     val token: String
 )
-
-
-data class UserData(
-    val email: String,
-    val token: String?
-)
