@@ -21,12 +21,10 @@ class ApiClient private constructor(private val applicationContext: Context) {
         private var INSTANCE: ApiClient? = null
 
         fun getInstance(applicationContext: Context): ApiClient {
-            var tempInstance = INSTANCE
-            if (tempInstance == null) {
-                tempInstance = ApiClient(applicationContext)
-                INSTANCE = tempInstance
+            if (INSTANCE == null) {
+                INSTANCE = ApiClient(applicationContext)
             }
-            return tempInstance
+            return INSTANCE!!
         }
     }
 
