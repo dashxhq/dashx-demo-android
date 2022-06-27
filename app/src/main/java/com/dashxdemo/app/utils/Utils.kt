@@ -8,7 +8,7 @@ import com.google.gson.Gson
 
 class Utils {
     companion object {
-        fun isValidEmail(emailString: String): Boolean {
+        private fun isValidEmail(emailString: String): Boolean {
             return android.util.Patterns.EMAIL_ADDRESS.matcher(emailString).matches()
         }
 

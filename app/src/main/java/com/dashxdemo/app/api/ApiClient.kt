@@ -57,4 +57,3 @@ class ApiClient private constructor(private val applicationContext: Context) {
     }
 
 }
-
