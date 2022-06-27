@@ -72,7 +72,7 @@ class LoginFragment : Fragment() {
                     call: Call<LoginResponse>,
                     response: Response<LoginResponse>
                 ) {
-                    if (response.code() < 300) {
+                    if (response.isSuccessful) {
                         AppPref(requireContext()).setUserData(
                             UserData(
                                 binding.emailEditText.text.toString(),

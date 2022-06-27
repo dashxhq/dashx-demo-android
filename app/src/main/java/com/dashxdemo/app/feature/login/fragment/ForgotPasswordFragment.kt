@@ -63,7 +63,7 @@ class ForgotPasswordFragment : Fragment() {
                     call: Call<ForgotPasswordResponse>,
                     response: Response<ForgotPasswordResponse>
                 ) {
-                    if (response.code() < 300) {
+                    if (response.isSuccessful) {
                         Toast.makeText(
                             requireContext(),
                             response.body()?.message,

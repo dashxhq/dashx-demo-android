@@ -82,7 +82,7 @@ class RegisterFragment : Fragment() {
                     call: Call<RegisterResponse>,
                     response: Response<RegisterResponse>
                 ) {
-                    if (response.code() < 300) {
+                    if (response.isSuccessful) {
                         Toast.makeText(
                             requireContext(),
                             response.body()?.message,
