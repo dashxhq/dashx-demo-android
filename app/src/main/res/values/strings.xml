@@ -1,3 +1,24 @@
 <resources>
     <string name="app_name">DashX Demo</string>
+    <string name="demo_app">Demo App</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="forgot_password">Forgot Password</string>
+    <string name="forgot_password_text">Forgot Password?</string>
+    <string name="signInTitle">Sign in to your Account</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="logout">Log out</string>
+
+    <string name="email_required_text">Email is required</string>
+    <string name="password_required_text">Password is required</string>
+    <string name="first_name_required_text">First Name is required</string>
+    <string name="last_name_required_text">Last Name is required</string>
+    <string name="valid_email_text">Please enter valid Email.</string>
+
+    <string name="something_went_wrong">Something went wrong</string>
+
+    <string name="loading">Loading…</string>
 </resources>
