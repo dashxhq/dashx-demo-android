@@ -49,7 +49,10 @@ class ApiClient private constructor(private val applicationContext: Context) {
         call.enqueue(callback)
     }
 
-    fun forgotPassword(forgotPasswordRequest: ForgotPasswordRequest, callback: Callback<ForgotPasswordResponse>) {
+    fun forgotPassword(
+        forgotPasswordRequest: ForgotPasswordRequest,
+        callback: Callback<ForgotPasswordResponse>
+    ) {
         val call = service.forgotPassword(forgotPasswordRequest)
         call.enqueue(callback)
     }

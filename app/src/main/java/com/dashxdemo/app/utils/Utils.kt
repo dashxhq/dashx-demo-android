@@ -66,7 +66,10 @@ class Utils {
             return try {
                 val charset = charset("UTF-8")
                 val payload =
-                    String(Base64.getUrlDecoder().decode(parts?.get(1)?.toByteArray(charset)), charset)
+                    String(
+                        Base64.getUrlDecoder().decode(parts?.get(1)?.toByteArray(charset)),
+                        charset
+                    )
                 payload
             } catch (e: Exception) {
                 "Error parsing JWT: $e"

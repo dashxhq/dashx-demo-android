@@ -1,7 +1,7 @@
 package com.dashxdemo.app.feature.home
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.dashxdemo.app.databinding.ActivityHomeBinding
 
 class HomeActivity : AppCompatActivity() {
