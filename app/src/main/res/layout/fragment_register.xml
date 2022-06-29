@@ -128,36 +128,22 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/registerButton"
+        style="@style/FilledButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:background="@drawable/background_button_filled"
-        android:clickable="true"
-        android:focusable="true"
-        android:foreground="?attr/selectableItemBackgroundBorderless"
         android:padding="10dp"
         android:text="@string/register"
-        android:textAlignment="center"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:textSize="18sp"
         app:layout_constraintTop_toBottomOf="@id/passwordTextInput" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/loginButton"
+        style="@style/OutlinedButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:background="@drawable/background_button_outlined"
-        android:clickable="true"
-        android:focusable="true"
-        android:foreground="?attr/selectableItemBackgroundBorderless"
         android:padding="10dp"
         android:text="@string/login"
-        android:textAlignment="center"
-        android:textAllCaps="false"
-        android:textColor="#6658f5"
-        android:textSize="18sp"
         app:layout_constraintTop_toBottomOf="@id/registerButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
