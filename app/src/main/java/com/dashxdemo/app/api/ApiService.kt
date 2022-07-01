@@ -3,11 +3,14 @@ package com.dashxdemo.app.api
 import com.dashxdemo.app.api.requests.ForgotPasswordRequest
 import com.dashxdemo.app.api.requests.LoginRequest
 import com.dashxdemo.app.api.requests.RegisterRequest
+import com.dashxdemo.app.api.requests.UpdateProfileRequest
 import com.dashxdemo.app.api.responses.ForgotPasswordResponse
 import com.dashxdemo.app.api.responses.LoginResponse
 import com.dashxdemo.app.api.responses.RegisterResponse
+import com.dashxdemo.app.api.responses.UpdateProfileResponse
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 
 interface ApiService {
@@ -19,4 +22,8 @@ interface ApiService {
 
     @POST("forgot-password")
     fun forgotPassword(@Body forgotPasswordRequest: ForgotPasswordRequest): Call<ForgotPasswordResponse>
+
+    @PATCH("update-profile")
+    fun updateProfile(@Body updateProfileRequest: UpdateProfileRequest): Call<UpdateProfileResponse>
+
 }

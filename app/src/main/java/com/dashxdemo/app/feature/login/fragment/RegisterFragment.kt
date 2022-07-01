@@ -17,6 +17,7 @@ import com.dashxdemo.app.databinding.FragmentRegisterBinding
 import com.dashxdemo.app.utils.Utils.Companion.getErrorMessageFromJson
 import com.dashxdemo.app.utils.Utils.Companion.initProgressDialog
 import com.dashxdemo.app.utils.Utils.Companion.validateEmail
+import com.dashxdemo.app.utils.Utils.Companion.validateNameFields
 import com.dashxdemo.app.utils.Utils.Companion.validatePassword
 import retrofit2.Call
 import retrofit2.Callback
@@ -119,7 +120,11 @@ class RegisterFragment : Fragment() {
     }
 
     private fun validateFields(): Boolean {
-        return validateNameFields() && validateEmail(
+        return validateNameFields(
+            binding.firstNameTextInput,
+            binding.lastNameTextInput,
+            requireContext()
+        ) && validateEmail(
             binding.emailEditText.text.toString(),
             binding.emailTextInput,
             requireContext()
@@ -128,21 +133,6 @@ class RegisterFragment : Fragment() {
             binding.passwordTextInput,
             requireContext()
         )
-    }
-
-    private fun validateNameFields(): Boolean {
-        if (binding.firstNameEditText.text.isNullOrEmpty()) {
-            binding.firstNameTextInput.isErrorEnabled = true
-            binding.firstNameTextInput.error = getString(R.string.first_name_required_text)
-            return false
-        }
-
-        if (binding.lastNameEditText.text.isNullOrEmpty()) {
-            binding.lastNameTextInput.isErrorEnabled = true
-            binding.lastNameTextInput.error = getString(R.string.last_name_required_text)
-            return false
-        }
-        return true
     }
 
     private fun showDialog() {
