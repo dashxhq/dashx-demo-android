@@ -42,7 +42,7 @@ class ApiClient private constructor(private val applicationContext: Context) {
                     if (!token.isNullOrEmpty()) {
                         builder.addHeader(
                             "Authorization",
-                            "bearer $token"
+                            "Bearer $token"
                         )
                     }
                     return@Interceptor it.proceed(builder.build())
