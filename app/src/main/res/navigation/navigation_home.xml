@@ -10,4 +10,55 @@
         android:name="com.dashxdemo.app.feature.home.fragment.HomeFragment"
         android:label="Home Fragment"
         tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/nav_store"
+        android:name="com.dashxdemo.app.feature.home.fragment.StoreFragment"
+        android:label="Store Fragment"
+        tools:layout="@layout/fragment_store" />
+
+    <fragment
+        android:id="@+id/nav_more"
+        android:name="com.dashxdemo.app.feature.home.fragment.MoreFragment"
+        android:label="More Fragment"
+        tools:layout="@layout/fragment_more">
+
+        <action
+            android:id="@+id/action_nav_more_to_nav_billing"
+            app:destination="@id/nav_billing" />
+
+        <action
+            android:id="@+id/action_nav_more_to_nav_profile"
+            app:destination="@id/nav_profile" />
+
+        <action
+            android:id="@+id/action_nav_more_to_nav_settings"
+            app:destination="@id/nav_settings" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_bookmarks"
+        android:name="com.dashxdemo.app.feature.home.fragment.BookmarksFragment"
+        android:label="Bookmarks Fragment"
+        tools:layout="@layout/fragment_bookmarks" />
+
+    <fragment
+        android:id="@+id/nav_billing"
+        android:name="com.dashxdemo.app.feature.home.fragment.BillingFragment"
+        android:label="Billing Fragment"
+        tools:layout="@layout/fragment_billing" />
+
+    <fragment
+        android:id="@+id/nav_profile"
+        android:name="com.dashxdemo.app.feature.home.fragment.ProfileFragment"
+        android:label="Profile Fragment"
+        tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/nav_settings"
+        android:name="com.dashxdemo.app.feature.home.fragment.SettingsFragment"
+        android:label="Settings Fragment"
+        tools:layout="@layout/fragment_settings" />
+
 </navigation>

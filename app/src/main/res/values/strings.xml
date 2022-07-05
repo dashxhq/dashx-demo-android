@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">DashX Demo</string>
     <string name="demo_app">Demo App</string>
@@ -21,4 +22,14 @@
     <string name="something_went_wrong">Something went wrong</string>
 
     <string name="loading">Loading…</string>
+
+    <string name="home">Home</string>
+    <string name="store">Store</string>
+    <string name="bookmarks">Bookmarks</string>
+    <string name="more">More</string>
+    <string name="billing">Billing</string>
+    <string name="profile">Profile</string>
+    <string name="settings">Settings</string>
+    <string name="update">Update</string>
+
 </resources>

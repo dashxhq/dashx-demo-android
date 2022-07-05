@@ -37,10 +37,10 @@ class ForgotPasswordFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         progressDialog = ProgressDialog(requireContext())
         initProgressDialog(progressDialog, requireContext())
-        setUpUi()
+        setupUi()
     }
 
-    private fun setUpUi() {
+    private fun setupUi() {
         binding.emailEditText.addTextChangedListener {
             binding.emailTextInput.isErrorEnabled = false
         }
