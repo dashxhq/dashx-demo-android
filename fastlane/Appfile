@@ -1,0 +1,2 @@
+json_key_file('C:/Users/tilic/Downloads/dashxdemo-playstore-secrets.json')
+package_name('com.dashxdemo.app')
