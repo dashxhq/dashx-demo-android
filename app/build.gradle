@@ -6,6 +6,15 @@ plugins {
 android {
     compileSdk 32
 
+    signingConfigs {
+        release {
+            storeFile file('../secrets/dashx-demo-keystore.jks')
+            storePassword 'hvk3gva*ZWD4tup6hgc'
+            keyAlias 'release'
+            keyPassword 'hvk3gva*ZWD4tup6hgc'
+        }
+    }
+
     defaultConfig {
         applicationId "com.dashxdemo.app"
         minSdk 21
@@ -14,6 +23,7 @@ android {
         versionName "1.0.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        signingConfig signingConfigs.release
     }
 
     buildTypes {
@@ -22,13 +32,16 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     buildFeatures {
         viewBinding true
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = '1.8'
     }
