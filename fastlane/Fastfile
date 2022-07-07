@@ -21,17 +21,7 @@ platform :android do
     gradle(task: "assembleDebug")
   end
 
-  desc "Builds the release code"
-  lane :buildRelease do
-    gradle(task: "bundleRelease")
-  end
-
-  desc "Runs all the tests"
-  lane :test do
-    gradle(task: "test")
-  end
-
-  desc "Increment Build number"
+    desc "Increment Build number"
   lane :increment_build_number do
     previous_build_number = google_play_track_version_codes(
       package_name: "com.dashxdemo.app",
@@ -47,10 +37,27 @@ platform :android do
     )
     end
 
+  desc "Builds the release code"
+  lane :buildRelease do
+    gradle(task: "bundleRelease")
+  end
+
+  desc "Runs all the tests"
+  lane :test do
+    gradle(task: "test")
+  end
+
   desc "Submit a new Internal Build to Play Store"
   lane :internal do
-    upload_to_play_store(track: 'internal', aab: '/Users/ajaypuli/Documents/Github/dashx-demo-android/app/build/outputs/bundle/release/app-release.aab')
+    upload_to_play_store(track: 'internal', aab: './app/build/outputs/bundle/release/app-release.aab')
   end
+
+  desc "Publish to Internal Testing"
+  lane :internal_push do
+    buildRelease
+    increment_build_number
+    internal
+   end
 
 #   desc "Promote Internal to Alpha"
 #   lane :promote_internal_to_alpha do

@@ -23,6 +23,14 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 Builds the debug code
 
+### android increment_build_number
+
+```sh
+[bundle exec] fastlane android increment_build_number
+```
+
+Increment Build number
+
 ### android buildRelease
 
 ```sh
@@ -39,14 +47,6 @@ Builds the release code
 
 Runs all the tests
 
-### android increment_build_number
-
-```sh
-[bundle exec] fastlane android increment_build_number
-```
-
-Increment Build number
-
 ### android internal
 
 ```sh
@@ -54,6 +54,14 @@ Increment Build number
 ```
 
 Submit a new Internal Build to Play Store
+
+### android internal_push
+
+```sh
+[bundle exec] fastlane android internal_push
+```
+
+Publish to Internal Testing
 
 ----
 
