@@ -1,0 +1,7 @@
+DashX is your All-in-One Product Stack. Visit our website to learn more:
+https://dashx.com
+
+This sample application that demonstrates various features of the DashX Android SDK.
+
+Check out our documentation to understand each feature in-depth:
+https://docs.dashx.com
