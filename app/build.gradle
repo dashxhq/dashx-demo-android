@@ -8,10 +8,10 @@ android {
 
     signingConfigs {
         release {
-            storeFile file('../secrets/dashx-demo-keystore.jks')
-            storePassword 'hvk3gva*ZWD4tup6hgc'
-            keyAlias 'release'
-            keyPassword 'hvk3gva*ZWD4tup6hgc'
+            storeFile file('app/dashx-demo-keystore.jks')
+            storePassword System.getProperty("APPCENTER_KEYSTORE_PASSWORD")
+            keyAlias System.getProperty("APPCENTER_KEY_ALIAS")
+            keyPassword System.getProperty("APPCENTER_KEY_PASSWORD")
         }
     }
 
