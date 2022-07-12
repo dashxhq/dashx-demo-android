@@ -14,7 +14,7 @@ jobs:
             - name: Install ruby
               uses: actions/setup-ruby@v1
               with:
-                  ruby-version: '2.6'
+                  ruby-version: '2.7.0'
 
             - name: Install bundle
               run:
