@@ -1,2 +1,2 @@
-json_key_file('secrets/dashxdemo-playstore-secrets.json')
+json_key_file('play_config.json')
 package_name('com.dashxdemo.app')
