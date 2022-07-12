@@ -3,6 +3,7 @@ package com.dashxdemo.app.feature.login
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.dashxdemo.app.R
 import com.dashxdemo.app.databinding.ActivityLoginBinding
 import com.dashxdemo.app.feature.home.HomeActivity
 import com.dashxdemo.app.pref.AppPref
@@ -13,6 +14,9 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val window = this.window
+        window.statusBarColor = this.resources.getColor(R.color.black)
 
         if (!AppPref(this).getUserToken().isNullOrEmpty()) {
             val intent = Intent(this, HomeActivity::class.java)
