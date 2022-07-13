@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".feature.home.fragment.MoreFragment">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/navBilling"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_button_outlined"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="10dp"
+        android:text="@string/billing"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="18sp" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/navProfile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/background_button_outlined"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="10dp"
+        android:text="@string/profile"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="18sp" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/navSettings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/background_button_outlined"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="10dp"
+        android:text="@string/settings"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="18sp" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/navLogout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/background_button_outlined"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="10dp"
+        android:text="@string/logout"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="18sp" />
+
+</LinearLayout>

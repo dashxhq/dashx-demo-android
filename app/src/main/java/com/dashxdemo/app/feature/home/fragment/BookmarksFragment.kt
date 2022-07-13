@@ -5,16 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.dashxdemo.app.databinding.FragmentHomeBinding
+import com.dashxdemo.app.databinding.FragmentBookmarksBinding
 
-class HomeFragment : Fragment() {
-    private lateinit var binding: FragmentHomeBinding
+class BookmarksFragment : Fragment() {
+    private lateinit var binding: FragmentBookmarksBinding
+
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentHomeBinding.inflate(inflater)
+        binding = FragmentBookmarksBinding.inflate(inflater)
         return binding.root
     }
 }

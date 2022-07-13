@@ -54,6 +54,21 @@ class Utils {
             return password.isNotEmpty()
         }
 
+        fun validateNameFields(firstNameTextInput : TextInputLayout, lastNameTextInput : TextInputLayout, context: Context): Boolean {
+            if (firstNameTextInput.editText?.text.isNullOrEmpty()) {
+                firstNameTextInput.isErrorEnabled = true
+                firstNameTextInput.error = context.getString(R.string.first_name_required_text)
+                return false
+            }
+
+            if (lastNameTextInput.editText?.text.isNullOrEmpty()) {
+                lastNameTextInput.isErrorEnabled = true
+                lastNameTextInput.error = context.getString(R.string.last_name_required_text)
+                return false
+            }
+            return true
+        }
+
         fun initProgressDialog(progressDialog: ProgressDialog, context: Context): ProgressDialog {
             progressDialog.setMessage(context.getString(R.string.loading))
             progressDialog.setCanceledOnTouchOutside(false)

@@ -3,6 +3,7 @@ package com.dashxdemo.app.feature.login
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.dashxdemo.app.R
 import com.dashxdemo.app.databinding.ActivityLoginBinding
 import com.dashxdemo.app.feature.home.HomeActivity
 import com.dashxdemo.app.pref.AppPref
