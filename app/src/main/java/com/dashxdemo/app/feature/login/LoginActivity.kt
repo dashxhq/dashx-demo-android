@@ -15,9 +15,6 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val window = this.window
-        window.statusBarColor = this.resources.getColor(R.color.black)
-
         if (!AppPref(this).getUserToken().isNullOrEmpty()) {
             val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
