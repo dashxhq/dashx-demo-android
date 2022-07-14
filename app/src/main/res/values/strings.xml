@@ -32,4 +32,7 @@
     <string name="settings">Settings</string>
     <string name="update">Update</string>
 
+    <string name="posts">Posts</string>
+    <string name="add_posts">Add Posts</string>
+
 </resources>
