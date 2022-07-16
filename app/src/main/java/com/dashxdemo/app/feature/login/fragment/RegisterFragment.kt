@@ -94,16 +94,14 @@ class RegisterFragment : Fragment() {
                             requireContext(),
                             response.body()?.message,
                             Toast.LENGTH_LONG
-                        )
-                            .show()
+                        ).show()
                         findNavController().navigateUp()
                     } else {
                         Toast.makeText(
                             requireContext(),
                             getErrorMessageFromJson(response.errorBody()?.string()),
                             Toast.LENGTH_LONG
-                        )
-                            .show()
+                        ).show()
                     }
                 }
 

@@ -77,11 +77,19 @@ class ForgotPasswordFragment : Fragment() {
                         ).show()
                         findNavController().navigateUp()
                     } else {
-                        Toast.makeText(
-                            requireContext(),
-                            Utils.getErrorMessageFromJson(response.errorBody()?.string()),
-                            Toast.LENGTH_LONG
-                        ).show()
+                        try {
+                            Toast.makeText(
+                                requireContext(),
+                                Utils.getErrorMessageFromJson(response.errorBody()?.string()),
+                                Toast.LENGTH_LONG
+                            ).show()
+                        } catch (exception: Exception) {
+                            Toast.makeText(
+                                requireContext(),
+                                getString(R.string.something_went_wrong),
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
                     }
                 }
 

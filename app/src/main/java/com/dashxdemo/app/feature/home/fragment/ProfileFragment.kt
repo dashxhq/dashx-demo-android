@@ -16,11 +16,10 @@ import com.dashxdemo.app.api.requests.UpdateProfileRequest
 import com.dashxdemo.app.api.responses.UpdateProfileResponse
 import com.dashxdemo.app.databinding.FragmentProfileBinding
 import com.dashxdemo.app.pref.AppPref
-import com.dashxdemo.app.utils.Utils
 import com.dashxdemo.app.utils.Utils.Companion.getErrorMessageFromJson
 import com.dashxdemo.app.utils.Utils.Companion.initProgressDialog
-import com.dashxdemo.app.utils.Utils.Companion.validateNameFields
 import com.dashxdemo.app.utils.Utils.Companion.validateEmail
+import com.dashxdemo.app.utils.Utils.Companion.validateNameFields
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

@@ -1,9 +1,6 @@
 package com.dashxdemo.app.api
 
-import com.dashxdemo.app.api.requests.ForgotPasswordRequest
-import com.dashxdemo.app.api.requests.LoginRequest
-import com.dashxdemo.app.api.requests.RegisterRequest
-import com.dashxdemo.app.api.requests.UpdateProfileRequest
+import com.dashxdemo.app.api.requests.*
 import com.dashxdemo.app.api.responses.*
 import retrofit2.Call
 import retrofit2.http.Body
@@ -25,6 +22,9 @@ interface ApiService {
     fun updateProfile(@Body updateProfileRequest: UpdateProfileRequest): Call<UpdateProfileResponse>
 
     @GET("posts")
-    fun getPosts() : Call<PostsResponse>
+    fun getPosts(): Call<PostsResponse>
+
+    @POST("posts")
+    fun createPost(@Body createPostRequest: CreatePostRequest): Call<CreatePostResponse>
 
 }

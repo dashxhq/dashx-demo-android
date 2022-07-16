@@ -1,10 +1,7 @@
 package com.dashxdemo.app.api
 
 import android.content.Context
-import com.dashxdemo.app.api.requests.ForgotPasswordRequest
-import com.dashxdemo.app.api.requests.LoginRequest
-import com.dashxdemo.app.api.requests.RegisterRequest
-import com.dashxdemo.app.api.requests.UpdateProfileRequest
+import com.dashxdemo.app.api.requests.*
 import com.dashxdemo.app.api.responses.*
 import com.dashxdemo.app.pref.AppPref
 import okhttp3.Interceptor
@@ -83,8 +80,16 @@ class ApiClient private constructor(private val applicationContext: Context) {
         call.enqueue(callback)
     }
 
-    fun getPosts(callback: Callback<PostsResponse>){
+    fun getPosts(callback: Callback<PostsResponse>) {
         val call = service.getPosts()
+        call.enqueue(callback)
+    }
+
+    fun createPost(
+        createPostRequest: CreatePostRequest,
+        callback: Callback<CreatePostResponse>
+    ) {
+        val call = service.createPost(createPostRequest)
         call.enqueue(callback)
     }
 }

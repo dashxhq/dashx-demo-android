@@ -11,7 +11,7 @@ data class Post(
     @SerializedName("text")
     val text: String,
     @SerializedName("created_at")
-    val createdAt : String,
+    val createdAt: String,
     @SerializedName("user")
     val user: User
 )
@@ -20,5 +20,5 @@ data class User(
     @SerializedName("first_name")
     val firstName: String,
     @SerializedName("last_name")
-    val last_name: String
+    val lastName: String
 )
