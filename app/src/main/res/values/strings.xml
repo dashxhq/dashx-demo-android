@@ -32,4 +32,20 @@
     <string name="settings">Settings</string>
     <string name="update">Update</string>
 
+    <string name="posts">Posts</string>
+    <string name="add_posts">Add Posts</string>
+    <string name="create_post">Create a Post</string>
+    <string name="text">Text</string>
+    <string name="post">Post</string>
+    <string name="cancel">Cancel</string>
+    <string name="text_required">Text is required</string>
+
+    <string name="contact_us">Contact Us</string>
+    <string name="name">Name</string>
+    <string name="send_us_message">Send us a message</string>
+    <string name="submit">Submit</string>
+    <string name="go_back">Go Back</string>
+    <string name="name_required">Name is required</string>
+    <string name="feedback_required">Feedback is required</string>
+
 </resources>
