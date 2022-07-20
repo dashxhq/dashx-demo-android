@@ -3,10 +3,7 @@ package com.dashxdemo.app.api
 import com.dashxdemo.app.api.requests.*
 import com.dashxdemo.app.api.responses.*
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.PATCH
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface ApiService {
     @POST("login")
@@ -26,5 +23,8 @@ interface ApiService {
 
     @POST("posts")
     fun createPost(@Body createPostRequest: CreatePostRequest): Call<CreatePostResponse>
+
+    @PUT("posts/{post_id}/toggle-bookmark")
+    fun bookmark(@Path("post_id") postId: Int): Call<BookmarksReponse>
 
 }

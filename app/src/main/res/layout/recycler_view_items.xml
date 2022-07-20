@@ -30,6 +30,15 @@
             android:textColor="@color/black"
             android:textSize="20sp" />
 
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/bookmarkImageView"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentEnd="true"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ic_bookmark_outlined" />
+
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/historyTextView"
             android:layout_width="wrap_content"
