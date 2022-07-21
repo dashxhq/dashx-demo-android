@@ -10,7 +10,7 @@ import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import com.dashxdemo.app.R
-import com.dashxdemo.app.adapters.GetPostsAdapter
+import com.dashxdemo.app.adapters.PostsAdapter
 import com.dashxdemo.app.api.ApiClient
 import com.dashxdemo.app.api.requests.CreatePostRequest
 import com.dashxdemo.app.api.responses.BookmarksReponse
@@ -18,7 +18,7 @@ import com.dashxdemo.app.api.responses.CreatePostResponse
 import com.dashxdemo.app.api.responses.PostsResponse
 import com.dashxdemo.app.databinding.CreatePostDialogBinding
 import com.dashxdemo.app.databinding.FragmentHomeBinding
-import com.dashxdemo.app.utils.Utils
+import com.dashxdemo.app.utils.Utils.Companion.getErrorMessageFromJson
 import com.dashxdemo.app.utils.Utils.Companion.initProgressDialog
 import retrofit2.Call
 import retrofit2.Callback
@@ -28,6 +28,8 @@ class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var dialogBinding: CreatePostDialogBinding
     private lateinit var progressDialog: ProgressDialog
+
+    private lateinit var postsAdapter: PostsAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -85,16 +87,16 @@ class HomeFragment : Fragment() {
                 hideDialog()
                 if (response.isSuccessful) {
                     binding.recyclerView.setHasFixedSize(true)
-                    binding.recyclerView.adapter = GetPostsAdapter(response.body()!!).apply {
-                        onBookmarkClick = { post ->
-                            post.createdAt
-                            bookmarks(post.id)
+                    postsAdapter = PostsAdapter(response.body()!!, requireContext()).apply {
+                        onBookmarkClick = { post, position ->
+                            bookmarkPosts(post.id,position)
                         }
                     }
+                    binding.recyclerView.adapter = postsAdapter
                 } else {
                     try {
                         Toast.makeText(requireContext(),
-                            Utils.getErrorMessageFromJson(response.errorBody()?.string()),
+                            getErrorMessageFromJson(response.errorBody()?.string()),
                             Toast.LENGTH_LONG).show()
                     } catch (exception: Exception) {
                         Toast.makeText(requireContext(),
@@ -113,7 +115,7 @@ class HomeFragment : Fragment() {
         })
     }
 
-    private fun bookmarks(postId: Int) {
+    fun bookmarkPosts(postId: Int, itemPosition: Int) {
         ApiClient.getInstance(requireContext())
             .bookmarks(postId, object : Callback<BookmarksReponse> {
                 override fun onResponse(
@@ -126,8 +128,8 @@ class HomeFragment : Fragment() {
                     Toast.makeText(requireContext(),
                         getString(R.string.something_went_wrong),
                         Toast.LENGTH_LONG).show()
+                    postsAdapter.notifyItemChanged(itemPosition)
                 }
-
             })
     }
 
@@ -146,7 +148,7 @@ class HomeFragment : Fragment() {
                         } else {
                             try {
                                 Toast.makeText(requireContext(),
-                                    Utils.getErrorMessageFromJson(response.errorBody()?.string()),
+                                    getErrorMessageFromJson(response.errorBody()?.string()),
                                     Toast.LENGTH_LONG)
                             } catch (exception: Exception) {
                                 Toast.makeText(requireContext(),

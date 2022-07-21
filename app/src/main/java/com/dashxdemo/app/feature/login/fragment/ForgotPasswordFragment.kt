@@ -15,6 +15,7 @@ import com.dashxdemo.app.api.requests.ForgotPasswordRequest
 import com.dashxdemo.app.api.responses.ForgotPasswordResponse
 import com.dashxdemo.app.databinding.FragmentForgotPasswordBinding
 import com.dashxdemo.app.utils.Utils
+import com.dashxdemo.app.utils.Utils.Companion.getErrorMessageFromJson
 import com.dashxdemo.app.utils.Utils.Companion.initProgressDialog
 import com.dashxdemo.app.utils.Utils.Companion.validateEmail
 import retrofit2.Call
@@ -80,7 +81,7 @@ class ForgotPasswordFragment : Fragment() {
                         try {
                             Toast.makeText(
                                 requireContext(),
-                                Utils.getErrorMessageFromJson(response.errorBody()?.string()),
+                                getErrorMessageFromJson(response.errorBody()?.string()),
                                 Toast.LENGTH_LONG
                             ).show()
                         } catch (exception: Exception) {

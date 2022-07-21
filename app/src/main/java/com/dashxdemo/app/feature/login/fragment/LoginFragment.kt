@@ -18,6 +18,7 @@ import com.dashxdemo.app.databinding.FragmentLoginBinding
 import com.dashxdemo.app.feature.home.HomeActivity
 import com.dashxdemo.app.pref.AppPref
 import com.dashxdemo.app.utils.Utils
+import com.dashxdemo.app.utils.Utils.Companion.getErrorMessageFromJson
 import com.dashxdemo.app.utils.Utils.Companion.getUserDataFromToken
 import com.dashxdemo.app.utils.Utils.Companion.initProgressDialog
 import com.dashxdemo.app.utils.Utils.Companion.validateEmail
@@ -93,7 +94,7 @@ class LoginFragment : Fragment() {
                     } else {
                         Toast.makeText(
                             requireContext(),
-                            Utils.getErrorMessageFromJson(response.errorBody()?.string()),
+                            getErrorMessageFromJson(response.errorBody()?.string()),
                             Toast.LENGTH_LONG
                         )
                             .show()

@@ -104,7 +104,7 @@ class Utils {
             return UserData(Gson().fromJson(user, User::class.java), dashXToken)
         }
 
-        fun convertTimeToText(dataDate: String?): String? {
+        fun timeStampToText(dataDate: String?): String? {
 
             var convertedTime: String? = null
             val prefix = "Posted"

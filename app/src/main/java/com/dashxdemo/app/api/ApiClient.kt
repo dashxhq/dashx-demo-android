@@ -89,4 +89,9 @@ class ApiClient private constructor(private val applicationContext: Context) {
         val call = service.bookmark(id)
         call.enqueue(callback)
     }
+
+    fun bookmarkedPosts(callback: Callback<BookmarkedPostResponse>) {
+        val call = service.bookmarkedPost()
+        call.enqueue(callback)
+    }
 }

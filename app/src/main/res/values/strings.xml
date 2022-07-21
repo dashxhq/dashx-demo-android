@@ -39,5 +39,6 @@
     <string name="post">Post</string>
     <string name="cancel">Cancel</string>
     <string name="text_required">Text is required</string>
+    <string name="no_bookmarks_found">No bookmarks found.</string>
 
 </resources>
