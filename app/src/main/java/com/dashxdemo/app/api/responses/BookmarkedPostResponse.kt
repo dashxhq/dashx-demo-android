@@ -3,10 +3,8 @@ package com.dashxdemo.app.api.responses
 import com.google.gson.annotations.SerializedName
 
 data class BookmarkedPostResponse(
-    @SerializedName("message")
-    val message : String,
-    @SerializedName("bookmarks")
-    val bookmarks : List<Bookmarks>
+    @SerializedName("message") val message: String,
+    @SerializedName("bookmarks") val bookmarks: List<Bookmarks>,
 )
 
 data class Bookmarks(

@@ -11,7 +11,7 @@ data class Post(
     @SerializedName("text") val text: String,
     @SerializedName("created_at") val createdAt: String,
     @SerializedName("user") val user: User,
-    @SerializedName("bookmarked_at") val bookmarkedAt: String?
+    @SerializedName("bookmarked_at") val bookmarkedAt: String?,
 )
 
 data class User(

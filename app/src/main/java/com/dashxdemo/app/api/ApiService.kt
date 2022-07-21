@@ -28,6 +28,5 @@ interface ApiService {
     fun bookmark(@Path("post_id") postId: Int): Call<BookmarksReponse>
 
     @GET("/posts/bookmarked")
-    fun bookmarkedPost() : Call<BookmarkedPostResponse>
-
+    fun bookmarkedPost(): Call<BookmarkedPostResponse>
 }
