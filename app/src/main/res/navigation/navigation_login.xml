@@ -19,8 +19,7 @@
 
         <action
             android:id="@+id/action_nav_login_to_nav_contact"
-            app:destination="@id/contactFragment" />
-
+            app:destination="@id/nav_contact" />
     </fragment>
 
     <fragment
@@ -32,10 +31,9 @@
         android:id="@+id/nav_forgot_password"
         android:name="com.dashxdemo.app.feature.login.fragment.ForgotPasswordFragment"
         android:label="ForgotPasswordFragment" />
-    
+
     <fragment
-        android:id="@+id/contactFragment"
+        android:id="@+id/nav_contact"
         android:name="com.dashxdemo.app.feature.login.fragment.ContactFragment"
         android:label="ContactFragment" />
-
 </navigation>
