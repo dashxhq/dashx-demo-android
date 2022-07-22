@@ -24,7 +24,8 @@ class BookmarksFragment : Fragment() {
     private lateinit var progressDialog: ProgressDialog
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
         binding = FragmentBookmarksBinding.inflate(inflater)

@@ -29,8 +29,9 @@ class ProfileFragment : Fragment() {
     private lateinit var progressDialog: ProgressDialog
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View {
         binding = FragmentProfileBinding.inflate(inflater)
         return binding.root
@@ -97,63 +98,48 @@ class ProfileFragment : Fragment() {
     }
 
     private fun updateProfile() {
-        ApiClient.getInstance(requireContext()).updateProfile(
-            UpdateProfileRequest(
-                binding.firstNameEditText.text.toString(),
+        ApiClient.getInstance(requireContext())
+            .updateProfile(UpdateProfileRequest(binding.firstNameEditText.text.toString(),
                 binding.lastNameEditText.text.toString(),
-                binding.emailEditText.text.toString()
-            ), object : Callback<UpdateProfileResponse> {
+                binding.emailEditText.text.toString()), object : Callback<UpdateProfileResponse> {
                 override fun onResponse(
                     call: Call<UpdateProfileResponse>,
-                    response: Response<UpdateProfileResponse>
+                    response: Response<UpdateProfileResponse>,
                 ) {
                     hideDialog()
                     if (response.isSuccessful) {
-                        Toast.makeText(
-                            requireContext(),
+                        Toast.makeText(requireContext(),
                             response.body()?.message,
-                            Toast.LENGTH_LONG
-                        ).show()
+                            Toast.LENGTH_LONG).show()
                         findNavController().navigateUp()
                     } else {
                         try {
-                            Toast.makeText(
-                                requireContext(),
+                            Toast.makeText(requireContext(),
                                 getErrorMessageFromJson(response.errorBody()?.string()),
-                                Toast.LENGTH_LONG
-                            ).show()
+                                Toast.LENGTH_LONG).show()
                         } catch (exception: Exception) {
-                            Toast.makeText(
-                                requireContext(),
+                            Toast.makeText(requireContext(),
                                 getString(R.string.something_went_wrong),
-                                Toast.LENGTH_LONG
-                            ).show()
+                                Toast.LENGTH_LONG).show()
                         }
                     }
                 }
 
                 override fun onFailure(call: Call<UpdateProfileResponse>, t: Throwable) {
                     hideDialog()
-                    Toast.makeText(
-                        requireContext(),
+                    Toast.makeText(requireContext(),
                         getString(R.string.something_went_wrong),
-                        Toast.LENGTH_LONG
-                    )
+                        Toast.LENGTH_LONG)
                 }
-            }
-        )
+            })
     }
 
     private fun validateFields(): Boolean {
-        return validateNameFields(
-            binding.firstNameTextInput,
+        return validateNameFields(binding.firstNameTextInput,
             binding.lastNameTextInput,
-            requireContext()
-        ) && validateEmail(
-            binding.emailEditText.text.toString(),
+            requireContext()) && validateEmail(binding.emailEditText.text.toString(),
             binding.emailTextInput,
-            requireContext()
-        )
+            requireContext())
     }
 
     private fun showDialog() {

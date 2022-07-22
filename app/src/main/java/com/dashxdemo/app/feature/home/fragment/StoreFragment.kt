@@ -11,8 +11,9 @@ class StoreFragment : Fragment() {
     private lateinit var binding: FragmentStoreBinding
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View {
         binding = FragmentStoreBinding.inflate(inflater)
         return binding.root

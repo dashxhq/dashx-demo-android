@@ -87,9 +87,9 @@ class HomeFragment : Fragment() {
                 hideDialog()
                 if (response.isSuccessful) {
                     binding.recyclerView.setHasFixedSize(true)
-                    postsAdapter = PostsAdapter(response.body()!!, requireContext()).apply {
+                    postsAdapter = PostsAdapter(response.body()!!).apply {
                         onBookmarkClick = { post, position ->
-                            bookmarkPosts(post.id,position)
+                            bookmarkPosts(post.id, position)
                         }
                     }
                     binding.recyclerView.adapter = postsAdapter

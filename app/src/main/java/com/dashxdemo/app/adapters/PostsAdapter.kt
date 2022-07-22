@@ -1,6 +1,5 @@
 package com.dashxdemo.app.adapters
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -8,13 +7,9 @@ import com.dashxdemo.app.R
 import com.dashxdemo.app.api.responses.Post
 import com.dashxdemo.app.api.responses.PostsResponse
 import com.dashxdemo.app.databinding.RecyclerViewItemsBinding
-import com.dashxdemo.app.utils.Utils.Companion.timeStampToText
+import com.dashxdemo.app.utils.Utils.Companion.timestampToText
 
-
-class PostsAdapter(
-    private val postsResponse: PostsResponse,
-    private val context: Context,
-) : RecyclerView.Adapter<PostsAdapter.MyViewHolder>() {
+class PostsAdapter(private val postsResponse: PostsResponse) : RecyclerView.Adapter<PostsAdapter.MyViewHolder>() {
 
     class MyViewHolder(val binding: RecyclerViewItemsBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -29,16 +24,16 @@ class PostsAdapter(
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val item = postsResponse.posts[position]
 
-        holder.binding.nameTextView.text =
-            item.user.firstName + " " + item.user.lastName
+        holder.binding.nameTextView.text = "${item.user.firstName} ${item.user.lastName}"
         holder.binding.contentTextView.text = item.text
-        holder.binding.historyTextView.text =
-            timeStampToText(item.createdAt)
+        holder.binding.historyTextView.text = timestampToText(item.createdAt)
+
         if (item.bookmarkedAt != null) {
             holder.binding.bookmarkImageView.setImageResource(R.drawable.ic_bookmark_filled)
         } else {
             holder.binding.bookmarkImageView.setImageResource(R.drawable.ic_bookmark_outlined)
         }
+
         holder.binding.bookmarkImageView.setOnClickListener {
             if (item.bookmarkedAt == null) {
                 holder.binding.bookmarkImageView.setImageResource(R.drawable.ic_bookmark_filled)

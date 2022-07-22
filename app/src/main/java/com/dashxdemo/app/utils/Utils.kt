@@ -44,11 +44,7 @@ class Utils {
             return false
         }
 
-        fun validatePassword(
-            password: String,
-            textInput: TextInputLayout,
-            context: Context
-        ): Boolean {
+        fun validatePassword(password: String, textInput: TextInputLayout, context: Context): Boolean {
             if (password.isEmpty()) {
                 textInput.isErrorEnabled = true
                 textInput.error = context.getString(R.string.password_required_text)
@@ -56,11 +52,7 @@ class Utils {
             return password.isNotEmpty()
         }
 
-        fun validateNameFields(
-            firstNameTextInput: TextInputLayout,
-            lastNameTextInput: TextInputLayout,
-            context: Context
-        ): Boolean {
+        fun validateNameFields(firstNameTextInput: TextInputLayout, lastNameTextInput: TextInputLayout, context: Context): Boolean {
             if (firstNameTextInput.editText?.text.isNullOrEmpty()) {
                 firstNameTextInput.isErrorEnabled = true
                 firstNameTextInput.error = context.getString(R.string.first_name_required_text)
@@ -104,7 +96,7 @@ class Utils {
             return UserData(Gson().fromJson(user, User::class.java), dashXToken)
         }
 
-        fun timeStampToText(dataDate: String?): String? {
+        fun timestampToText(dataDate: String?): String? {
 
             var convertedTime: String? = null
             val prefix = "Posted"

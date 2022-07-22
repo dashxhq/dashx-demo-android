@@ -16,8 +16,9 @@ class MoreFragment : Fragment() {
     private lateinit var binding: FragmentMoreBinding
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View {
         binding = FragmentMoreBinding.inflate(inflater)
         return binding.root
