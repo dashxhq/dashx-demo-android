@@ -11,7 +11,7 @@ import com.dashxdemo.app.R
 import com.dashxdemo.app.adapters.BookmarkedPostsAdapter
 import com.dashxdemo.app.api.ApiClient
 import com.dashxdemo.app.api.responses.BookmarkedPostResponse
-import com.dashxdemo.app.api.responses.BookmarksReponse
+import com.dashxdemo.app.api.responses.BookmarksResponse
 import com.dashxdemo.app.databinding.FragmentBookmarksBinding
 import com.dashxdemo.app.utils.Utils
 import com.dashxdemo.app.utils.Utils.Companion.getErrorMessageFromJson
@@ -85,14 +85,14 @@ class BookmarksFragment : Fragment() {
     }
 
     private fun unBookmarkPosts(id: Int) {
-        ApiClient.getInstance(requireContext()).bookmarks(id, object : Callback<BookmarksReponse> {
+        ApiClient.getInstance(requireContext()).bookmarks(id, object : Callback<BookmarksResponse> {
             override fun onResponse(
-                call: Call<BookmarksReponse>,
-                response: Response<BookmarksReponse>,
+                call: Call<BookmarksResponse>,
+                response: Response<BookmarksResponse>,
             ) {
             }
 
-            override fun onFailure(call: Call<BookmarksReponse>, t: Throwable) {
+            override fun onFailure(call: Call<BookmarksResponse>, t: Throwable) {
                 Toast.makeText(requireContext(),
                     getString(R.string.something_went_wrong),
                     Toast.LENGTH_LONG).show()

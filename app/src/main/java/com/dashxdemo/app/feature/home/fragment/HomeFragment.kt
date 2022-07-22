@@ -13,7 +13,7 @@ import com.dashxdemo.app.R
 import com.dashxdemo.app.adapters.PostsAdapter
 import com.dashxdemo.app.api.ApiClient
 import com.dashxdemo.app.api.requests.CreatePostRequest
-import com.dashxdemo.app.api.responses.BookmarksReponse
+import com.dashxdemo.app.api.responses.BookmarksResponse
 import com.dashxdemo.app.api.responses.CreatePostResponse
 import com.dashxdemo.app.api.responses.PostsResponse
 import com.dashxdemo.app.databinding.CreatePostDialogBinding
@@ -117,14 +117,14 @@ class HomeFragment : Fragment() {
 
     fun bookmarkPosts(postId: Int, itemPosition: Int) {
         ApiClient.getInstance(requireContext())
-            .bookmarks(postId, object : Callback<BookmarksReponse> {
+            .bookmarks(postId, object : Callback<BookmarksResponse> {
                 override fun onResponse(
-                    call: Call<BookmarksReponse>,
-                    response: Response<BookmarksReponse>,
+                    call: Call<BookmarksResponse>,
+                    response: Response<BookmarksResponse>,
                 ) {
                 }
 
-                override fun onFailure(call: Call<BookmarksReponse>, t: Throwable) {
+                override fun onFailure(call: Call<BookmarksResponse>, t: Throwable) {
                     Toast.makeText(requireContext(),
                         getString(R.string.something_went_wrong),
                         Toast.LENGTH_LONG).show()

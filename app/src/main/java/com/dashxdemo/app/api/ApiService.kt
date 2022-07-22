@@ -25,7 +25,7 @@ interface ApiService {
     fun createPost(@Body createPostRequest: CreatePostRequest): Call<CreatePostResponse>
 
     @PUT("posts/{post_id}/toggle-bookmark")
-    fun bookmark(@Path("post_id") postId: Int): Call<BookmarksReponse>
+    fun bookmark(@Path("post_id") postId: Int): Call<BookmarksResponse>
 
     @GET("/posts/bookmarked")
     fun bookmarkedPost(): Call<BookmarkedPostResponse>

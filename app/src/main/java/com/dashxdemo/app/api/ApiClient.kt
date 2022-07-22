@@ -85,7 +85,7 @@ class ApiClient private constructor(private val applicationContext: Context) {
         call.enqueue(callback)
     }
 
-    fun bookmarks(id: Int, callback: Callback<BookmarksReponse>) {
+    fun bookmarks(id: Int, callback: Callback<BookmarksResponse>) {
         val call = service.bookmark(id)
         call.enqueue(callback)
     }
