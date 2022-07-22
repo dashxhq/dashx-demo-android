@@ -12,7 +12,7 @@ import com.dashxdemo.app.utils.Utils.Companion.timestampToText
 class BookmarkedPostsAdapter(private val bookmarkedPosts: BookmarkedPostResponse) : RecyclerView.Adapter<BookmarkedPostsAdapter.MyViewHolder>() {
     class MyViewHolder(val binding: RecyclerViewItemsBinding) : RecyclerView.ViewHolder(binding.root)
 
-    var onBookmarkClick: ((Bookmarks) -> Unit)? = null
+    var onBookmarkClick: ((Bookmarks, Int) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val view =
@@ -28,11 +28,19 @@ class BookmarkedPostsAdapter(private val bookmarkedPosts: BookmarkedPostResponse
         holder.binding.bookmarkImageView.setImageResource(R.drawable.ic_bookmark_filled)
 
         holder.binding.bookmarkImageView.setOnClickListener {
-            onBookmarkClick?.invoke(item)
+            onBookmarkClick?.invoke(item, position)
         }
     }
 
     override fun getItemCount(): Int {
         return bookmarkedPosts.bookmarks.size
+    }
+
+    fun addElementAtPosition(position: Int = 0, bookmark: Bookmarks) {
+        bookmarkedPosts.bookmarks.add(position, bookmark)
+    }
+
+    fun removeElementAtPosition(position: Int = 0) {
+        bookmarkedPosts.bookmarks.removeAt(position)
     }
 }

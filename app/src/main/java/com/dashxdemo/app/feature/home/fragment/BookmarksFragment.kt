@@ -2,6 +2,7 @@ package com.dashxdemo.app.feature.home.fragment
 
 import android.app.ProgressDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import com.dashxdemo.app.R
 import com.dashxdemo.app.adapters.BookmarkedPostsAdapter
 import com.dashxdemo.app.api.ApiClient
 import com.dashxdemo.app.api.responses.BookmarkedPostResponse
+import com.dashxdemo.app.api.responses.Bookmarks
 import com.dashxdemo.app.api.responses.BookmarksResponse
 import com.dashxdemo.app.databinding.FragmentBookmarksBinding
 import com.dashxdemo.app.utils.Utils
@@ -22,6 +24,7 @@ import retrofit2.Response
 class BookmarksFragment : Fragment() {
     private lateinit var binding: FragmentBookmarksBinding
     private lateinit var progressDialog: ProgressDialog
+    private lateinit var bookmarkedPostsAdapter: BookmarkedPostsAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -56,13 +59,15 @@ class BookmarksFragment : Fragment() {
                                 Toast.LENGTH_LONG).show()
                         }
                         binding.bookmarkedPostsRecyclerView.setHasFixedSize(true)
-                        binding.bookmarkedPostsRecyclerView.adapter =
+                         bookmarkedPostsAdapter =
                             BookmarkedPostsAdapter(response.body()!!).apply {
-                                onBookmarkClick = { Bookmarks ->
-                                    getBookmarkedPosts()
-                                    unBookmarkPosts(Bookmarks.id)
+                                onBookmarkClick = { bookmarks, position ->
+                                    unBookmarkPosts(bookmarks, position)
+                                    bookmarkedPostsAdapter.removeElementAtPosition(position)
+                                    bookmarkedPostsAdapter.notifyItemRemoved(position)
                                 }
                             }
+                        binding.bookmarkedPostsRecyclerView.adapter = bookmarkedPostsAdapter
                     } else {
                         try {
                             Toast.makeText(requireContext(),
@@ -85,18 +90,21 @@ class BookmarksFragment : Fragment() {
             })
     }
 
-    private fun unBookmarkPosts(id: Int) {
-        ApiClient.getInstance(requireContext()).bookmarks(id, object : Callback<BookmarksResponse> {
+    private fun unBookmarkPosts(bookmarks: Bookmarks, itemPosition: Int) {
+        ApiClient.getInstance(requireContext()).bookmarks(bookmarks.id, object : Callback<BookmarksResponse> {
             override fun onResponse(
                 call: Call<BookmarksResponse>,
                 response: Response<BookmarksResponse>,
             ) {
+                Log.d("h","kg")
             }
 
             override fun onFailure(call: Call<BookmarksResponse>, t: Throwable) {
                 Toast.makeText(requireContext(),
                     getString(R.string.something_went_wrong),
                     Toast.LENGTH_LONG).show()
+                bookmarkedPostsAdapter.addElementAtPosition(itemPosition,bookmarks)
+                bookmarkedPostsAdapter.notifyItemInserted(itemPosition)
             }
         })
     }

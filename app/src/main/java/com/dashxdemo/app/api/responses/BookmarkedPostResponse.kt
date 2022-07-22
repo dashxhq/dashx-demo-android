@@ -6,7 +6,7 @@ data class BookmarkedPostResponse(
     @SerializedName("message")
     val message: String,
     @SerializedName("bookmarks")
-    val bookmarks: List<Bookmarks>
+    val bookmarks: MutableList<Bookmarks>
 )
 
 data class Bookmarks(
