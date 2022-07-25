@@ -42,11 +42,7 @@ class Utils {
             return false
         }
 
-        fun validatePassword(
-            password: String,
-            textInput: TextInputLayout,
-            context: Context
-        ): Boolean {
+        fun validatePassword(password: String, textInput: TextInputLayout, context: Context): Boolean {
             if (password.isEmpty()) {
                 textInput.isErrorEnabled = true
                 textInput.error = context.getString(R.string.password_required_text)
@@ -54,7 +50,7 @@ class Utils {
             return password.isNotEmpty()
         }
 
-        fun validateNameFields(firstNameTextInput : TextInputLayout, lastNameTextInput : TextInputLayout, context: Context): Boolean {
+        fun validateNameFields(firstNameTextInput: TextInputLayout, lastNameTextInput: TextInputLayout, context: Context): Boolean {
             if (firstNameTextInput.editText?.text.isNullOrEmpty()) {
                 firstNameTextInput.isErrorEnabled = true
                 firstNameTextInput.error = context.getString(R.string.first_name_required_text)
@@ -64,6 +60,23 @@ class Utils {
             if (lastNameTextInput.editText?.text.isNullOrEmpty()) {
                 lastNameTextInput.isErrorEnabled = true
                 lastNameTextInput.error = context.getString(R.string.last_name_required_text)
+                return false
+            }
+            return true
+        }
+
+        fun validateFeedbackEditFields(nameTextInput: TextInputLayout, feedbackTextInput: TextInputLayout, emailTextInput: TextInputLayout, context: Context): Boolean {
+            if (nameTextInput.editText?.text.toString().trim().isNullOrEmpty()) {
+                nameTextInput.isErrorEnabled = true
+                nameTextInput.error = context.getString(R.string.name_required)
+                return false
+            }
+
+            validateEmail(emailTextInput.editText?.text.toString(), emailTextInput, context)
+
+            if (feedbackTextInput.editText?.text.toString().trim().isNullOrEmpty()) {
+                feedbackTextInput.isErrorEnabled = true
+                feedbackTextInput.error = context.getString(R.string.feedback_required)
                 return false
             }
             return true
@@ -80,11 +93,7 @@ class Utils {
             val parts = token?.split(TOKEN_DELIMITER)
             return try {
                 val charset = charset("UTF-8")
-                val payload =
-                    String(
-                        Base64.getUrlDecoder().decode(parts?.get(1)?.toByteArray(charset)),
-                        charset
-                    )
+                val payload = String(Base64.getUrlDecoder().decode(parts?.get(1)?.toByteArray(charset)), charset)
                 payload
             } catch (e: Exception) {
                 "Error parsing JWT: $e"
