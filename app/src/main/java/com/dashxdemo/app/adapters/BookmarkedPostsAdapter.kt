@@ -4,13 +4,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.dashxdemo.app.R
-import com.dashxdemo.app.api.responses.BookmarkedPostResponse
 import com.dashxdemo.app.api.responses.Bookmarks
 import com.dashxdemo.app.databinding.RecyclerViewItemsBinding
 import com.dashxdemo.app.utils.Utils.Companion.timestampToText
 
-class BookmarkedPostsAdapter(private val bookmarkedPosts: BookmarkedPostResponse) : RecyclerView.Adapter<BookmarkedPostsAdapter.MyViewHolder>() {
-    class MyViewHolder(val binding: RecyclerViewItemsBinding) : RecyclerView.ViewHolder(binding.root)
+class BookmarkedPostsAdapter(private val bookmarkedPosts: MutableList<Bookmarks>) :
+    RecyclerView.Adapter<BookmarkedPostsAdapter.MyViewHolder>() {
+    class MyViewHolder(val binding: RecyclerViewItemsBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
     var onBookmarkClick: ((Bookmarks, Int) -> Unit)? = null
 
@@ -21,7 +22,7 @@ class BookmarkedPostsAdapter(private val bookmarkedPosts: BookmarkedPostResponse
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val item = bookmarkedPosts.bookmarks[position]
+        val item = bookmarkedPosts[position]
         holder.binding.nameTextView.text = "${item.user.firstName} ${item.user.lastName}"
         holder.binding.contentTextView.text = item.text
         holder.binding.historyTextView.text = timestampToText(item.createdAt)
@@ -33,14 +34,14 @@ class BookmarkedPostsAdapter(private val bookmarkedPosts: BookmarkedPostResponse
     }
 
     override fun getItemCount(): Int {
-        return bookmarkedPosts.bookmarks.size
+        return bookmarkedPosts.size
     }
 
     fun addElementAtPosition(position: Int = 0, bookmark: Bookmarks) {
-        bookmarkedPosts.bookmarks.add(position, bookmark)
+        bookmarkedPosts.add(position, bookmark)
     }
 
     fun removeElementAtPosition(position: Int = 0) {
-        bookmarkedPosts.bookmarks.removeAt(position)
+        bookmarkedPosts.removeAt(position)
     }
 }

@@ -55,28 +55,27 @@ class BookmarksFragment : Fragment() {
                     if (response.isSuccessful) {
                         if (response.body()?.bookmarks?.isEmpty()!!) {
                             Toast.makeText(requireContext(),
-                                getString(R.string.no_bookmarks_found),
-                                Toast.LENGTH_LONG).show()
+                                           getString(R.string.no_bookmarks_found),
+                                           Toast.LENGTH_LONG).show()
                         }
                         binding.bookmarkedPostsRecyclerView.setHasFixedSize(true)
-                         bookmarkedPostsAdapter =
-                            BookmarkedPostsAdapter(response.body()!!).apply {
-                                onBookmarkClick = { bookmarks, position ->
-                                    unBookmarkPosts(bookmarks, position)
-                                    bookmarkedPostsAdapter.removeElementAtPosition(position)
-                                    bookmarkedPostsAdapter.notifyItemRemoved(position)
-                                }
+                        bookmarkedPostsAdapter = BookmarkedPostsAdapter(response.body()?.bookmarks ?: mutableListOf()).apply {
+                            onBookmarkClick = { bookmarks, position ->
+                                unBookmarkPosts(bookmarks, position)
+                                removeElementAtPosition(position)
+                                notifyDataSetChanged()
                             }
+                        }
                         binding.bookmarkedPostsRecyclerView.adapter = bookmarkedPostsAdapter
                     } else {
                         try {
                             Toast.makeText(requireContext(),
-                                getErrorMessageFromJson(response.errorBody()?.string()),
-                                Toast.LENGTH_LONG).show()
+                                           getErrorMessageFromJson(response.errorBody()?.string()),
+                                           Toast.LENGTH_LONG).show()
                         } catch (exception: Exception) {
                             Toast.makeText(requireContext(),
-                                getString(R.string.something_went_wrong),
-                                Toast.LENGTH_LONG).show()
+                                           getString(R.string.something_went_wrong),
+                                           Toast.LENGTH_LONG).show()
                         }
                     }
                 }
@@ -84,29 +83,30 @@ class BookmarksFragment : Fragment() {
                 override fun onFailure(call: Call<BookmarkedPostResponse>, t: Throwable) {
                     hideDialog()
                     Toast.makeText(requireContext(),
-                        getString(R.string.something_went_wrong),
-                        Toast.LENGTH_LONG).show()
+                                   getString(R.string.something_went_wrong),
+                                   Toast.LENGTH_LONG).show()
                 }
             })
     }
 
     private fun unBookmarkPosts(bookmarks: Bookmarks, itemPosition: Int) {
-        ApiClient.getInstance(requireContext()).bookmarks(bookmarks.id, object : Callback<BookmarksResponse> {
-            override fun onResponse(
-                call: Call<BookmarksResponse>,
-                response: Response<BookmarksResponse>,
-            ) {
-                Log.d("h","kg")
-            }
+        ApiClient.getInstance(requireContext())
+            .bookmarks(bookmarks.id, object : Callback<BookmarksResponse> {
+                override fun onResponse(
+                    call: Call<BookmarksResponse>,
+                    response: Response<BookmarksResponse>,
+                ) {
+                    Log.d("h", "kg")
+                }
 
-            override fun onFailure(call: Call<BookmarksResponse>, t: Throwable) {
-                Toast.makeText(requireContext(),
-                    getString(R.string.something_went_wrong),
-                    Toast.LENGTH_LONG).show()
-                bookmarkedPostsAdapter.addElementAtPosition(itemPosition,bookmarks)
-                bookmarkedPostsAdapter.notifyItemInserted(itemPosition)
-            }
-        })
+                override fun onFailure(call: Call<BookmarksResponse>, t: Throwable) {
+                    Toast.makeText(requireContext(),
+                                   getString(R.string.something_went_wrong),
+                                   Toast.LENGTH_LONG).show()
+                    bookmarkedPostsAdapter.addElementAtPosition(itemPosition, bookmarks)
+                    bookmarkedPostsAdapter.notifyItemInserted(itemPosition)
+                }
+            })
     }
 
     private fun showDialog() {
