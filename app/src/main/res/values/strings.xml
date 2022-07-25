@@ -41,4 +41,7 @@
     <string name="text_required">Text is required</string>
     <string name="no_bookmarks_found">No bookmarks found.</string>
 
+    <string name="back_to_login">Back to Login</string>
+    <string name="submit">Submit</string>
+
 </resources>

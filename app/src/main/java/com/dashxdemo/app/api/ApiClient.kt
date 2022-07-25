@@ -3,6 +3,13 @@ package com.dashxdemo.app.api
 import android.content.Context
 import com.dashxdemo.app.api.requests.*
 import com.dashxdemo.app.api.responses.*
+import com.dashxdemo.app.api.requests.ForgotPasswordRequest
+import com.dashxdemo.app.api.requests.LoginRequest
+import com.dashxdemo.app.api.requests.RegisterRequest
+import com.dashxdemo.app.api.requests.UpdateProfileRequest
+import com.dashxdemo.app.api.responses.ForgotPasswordResponse
+import com.dashxdemo.app.api.responses.LoginResponse
+import com.dashxdemo.app.api.responses.RegisterResponse
 import com.dashxdemo.app.pref.AppPref
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient

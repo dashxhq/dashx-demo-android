@@ -53,6 +53,10 @@ class ForgotPasswordFragment : Fragment() {
             }
         }
 
+        binding.backToLoginButton.setOnClickListener {
+            findNavController().navigateUp()
+        }
+
     }
 
     private fun forgotPassword() {

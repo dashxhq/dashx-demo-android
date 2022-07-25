@@ -129,7 +129,7 @@ class ProfileFragment : Fragment() {
                     hideDialog()
                     Toast.makeText(requireContext(),
                         getString(R.string.something_went_wrong),
-                        Toast.LENGTH_LONG)
+                        Toast.LENGTH_LONG).show()
                 }
             })
     }
