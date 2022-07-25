@@ -2,7 +2,6 @@ package com.dashxdemo.app.feature.home.fragment
 
 import android.app.ProgressDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,11 +39,11 @@ class BookmarksFragment : Fragment() {
         progressDialog = ProgressDialog(requireContext())
         Utils.initProgressDialog(progressDialog, requireContext())
 
-        getBookmarkedPosts()
+        bookmarkedPosts()
         showDialog()
     }
 
-    private fun getBookmarkedPosts() {
+    private fun bookmarkedPosts() {
         ApiClient.getInstance(requireContext())
             .bookmarkedPosts(object : Callback<BookmarkedPostResponse> {
                 override fun onResponse(
@@ -96,7 +95,6 @@ class BookmarksFragment : Fragment() {
                     call: Call<BookmarksResponse>,
                     response: Response<BookmarksResponse>,
                 ) {
-                    Log.d("h", "kg")
                 }
 
                 override fun onFailure(call: Call<BookmarksResponse>, t: Throwable) {

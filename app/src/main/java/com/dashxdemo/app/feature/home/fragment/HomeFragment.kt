@@ -45,7 +45,7 @@ class HomeFragment : Fragment() {
         progressDialog = ProgressDialog(requireContext())
         initProgressDialog(progressDialog, requireContext())
 
-        getPosts()
+        posts()
         showDialog()
         setUpUi()
     }
@@ -80,7 +80,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun getPosts() {
+    private fun posts() {
         ApiClient.getInstance(requireContext()).getPosts(object : Callback<PostsResponse> {
             override fun onResponse(call: Call<PostsResponse>, response: Response<PostsResponse>) {
 
