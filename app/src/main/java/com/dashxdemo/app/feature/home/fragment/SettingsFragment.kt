@@ -12,9 +12,33 @@ class SettingsFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         binding = FragmentSettingsBinding.inflate(inflater)
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setUpUi()
+    }
+
+    private fun setUpUi() {
+        binding.cancelButton.setOnClickListener {
+
+        }
+
+        binding.saveButton.setOnClickListener {
+
+        }
+
+        binding.createPostToggle.setOnCheckedChangeListener({
+
+        })
+
+        binding.bookmarkPostToggle.setOnCheckedChangeListener({
+
+        })
     }
 }
