@@ -60,6 +60,10 @@ class LoginFragment : Fragment() {
             }
         }
 
+        binding.contactUsText.setOnClickListener {
+            findNavController().navigate(R.id.action_nav_login_to_nav_contact)
+        }
+
         binding.emailEditText.addTextChangedListener {
             binding.emailTextInput.isErrorEnabled = false
         }

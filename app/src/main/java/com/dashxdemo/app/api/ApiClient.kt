@@ -101,4 +101,9 @@ class ApiClient private constructor(private val applicationContext: Context) {
         val call = service.bookmarkedPost()
         call.enqueue(callback)
     }
+
+    fun contact(contactRequest: ContactRequest, callback: Callback<ContactResponse>) {
+        val call = service.contact(contactRequest)
+        call.enqueue(callback)
+    }
 }

@@ -42,6 +42,13 @@
     <string name="no_bookmarks_found">No bookmarks found.</string>
 
     <string name="back_to_login">Back to Login</string>
+
+    <string name="contact_us">Contact Us</string>
+    <string name="name">Name</string>
+    <string name="send_us_message">Send us a message</string>
     <string name="submit">Submit</string>
+    <string name="go_back">Go Back</string>
+    <string name="name_required">Name is required</string>
+    <string name="feedback_required">Feedback is required</string>
 
 </resources>

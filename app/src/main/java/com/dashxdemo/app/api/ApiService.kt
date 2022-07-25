@@ -40,4 +40,7 @@ interface ApiService {
 
     @GET("/posts/bookmarked")
     fun bookmarkedPost(): Call<BookmarkedPostResponse>
+
+    @POST("contact")
+    fun contact(@Body contactRequest: ContactRequest): Call<ContactResponse>
 }
