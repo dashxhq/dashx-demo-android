@@ -78,7 +78,7 @@ class SettingsFragment : Fragment() {
 
         binding.cancelButton.setOnClickListener {
             if (::preferenceData.isInitialized && (preferenceData.newPost.enabled != binding.newPostToggle.isChecked || preferenceData.newBookmark.enabled != binding.bookmarkPostToggle.isChecked)) {
-                setToggles(preferenceData.newBookmark.enabled, preferenceData.newBookmark.enabled)
+                setToggles(preferenceData.newBookmark.enabled, preferenceData.newPost.enabled)
             }
         }
     }
