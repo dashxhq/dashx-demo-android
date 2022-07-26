@@ -14,14 +14,15 @@
         android:text="@string/settings"
         android:textColor="@color/black"
         android:textSize="24sp"
+        android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/createPostTextView"
+        android:id="@+id/newPostSettingTitle"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="20dp"
         android:text="@string/whenCreateAPost"
         android:textColor="@color/black"
         android:textSize="16sp"
@@ -29,27 +30,28 @@
         app:layout_constraintTop_toBottomOf="@id/settingTextView" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/createPostNotificationTextView"
+        android:id="@+id/newPostSettingDescription"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/createPostTextView"
         android:layout_marginTop="2dp"
         android:text="@string/createPostNotification"
         android:textSize="16sp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/createPostTextView" />
+        app:layout_constraintTop_toBottomOf="@id/newPostSettingTitle" />
 
-    <androidx.appcompat.widget.SwitchCompat
-        android:id="@+id/createPostToggle"
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/newPostToggle"
         style="@style/SwitchStyle"
         android:layout_width="wrap_content"
-        android:layout_height="4dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="35dp"
         android:checked="false"
+        android:thumb="@drawable/switch_thumb_selector"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/settingTextView"
-        app:switchMinWidth="54dp" />
+        app:switchMinWidth="54dp"
+        app:track="@drawable/switch_track_selector" />
 
 
     <View
@@ -58,10 +60,10 @@
         android:layout_height="1dp"
         android:layout_marginTop="15dp"
         android:background="#D3D3D3"
-        app:layout_constraintTop_toBottomOf="@id/createPostNotificationTextView" />
+        app:layout_constraintTop_toBottomOf="@id/newPostSettingDescription" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/bookmarksPostTextView"
+        android:id="@+id/bookmarksPostSettingTitle"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
@@ -72,27 +74,29 @@
         app:layout_constraintTop_toBottomOf="@id/view" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/bookmarkPostNotificationTextView"
+        android:id="@+id/bookmarksPostSettingDescription"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/bookmarksPostTextView"
         android:layout_marginTop="2dp"
         android:text="@string/bookmarksPostNotification"
         android:textSize="16sp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/bookmarksPostTextView" />
+        app:layout_constraintTop_toBottomOf="@id/bookmarksPostSettingTitle" />
 
-    <androidx.appcompat.widget.SwitchCompat
+    <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/bookmarkPostToggle"
         style="@style/SwitchStyle"
         android:layout_width="wrap_content"
         android:layout_height="4dp"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="35dp"
+
         android:checked="false"
+        android:thumb="@drawable/switch_thumb_selector"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/view"
-        app:switchMinWidth="54dp" />
+        app:switchMinWidth="54dp"
+        app:track="@drawable/switch_track_selector" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/cancelButton"
@@ -103,7 +107,7 @@
         android:layout_marginEnd="20dp"
         android:text="@string/cancel"
         app:layout_constraintEnd_toStartOf="@id/saveButton"
-        app:layout_constraintTop_toBottomOf="@id/bookmarkPostNotificationTextView" />
+        app:layout_constraintTop_toBottomOf="@id/bookmarksPostSettingDescription" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/saveButton"
@@ -114,6 +118,6 @@
         android:enabled="false"
         android:text="@string/save"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/bookmarkPostNotificationTextView" />
+        app:layout_constraintTop_toBottomOf="@id/bookmarksPostSettingDescription" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

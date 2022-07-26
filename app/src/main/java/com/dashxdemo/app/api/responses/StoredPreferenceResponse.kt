@@ -12,7 +12,8 @@ data class StoredPreferenceResponse(
 data class StoredPreferenceData(
     @SerializedName("email")
     val email: Boolean,
-    @SerializedName("enabled") var enabled: Boolean,
+    @SerializedName("enabled")
+    var enabled: Boolean,
     @SerializedName("push")
     val push: Boolean,
     @SerializedName("sms")

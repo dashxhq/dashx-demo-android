@@ -2,6 +2,9 @@ package com.dashxdemo.app.utils
 
 import android.app.ProgressDialog
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
+import android.widget.Toast
 import com.dashxdemo.app.R
 import com.dashxdemo.app.api.responses.ErrorResponse
 import com.dashxdemo.app.pref.data.User
@@ -107,5 +110,14 @@ class Utils {
             return UserData(Gson().fromJson(user, User::class.java), dashXToken)
         }
 
+        fun showToast(context: Context, string: String) {
+            Toast.makeText(context, string, Toast.LENGTH_LONG).show()
+        }
+
+        fun runOnUiThread(runBlock:() -> Unit){
+            Handler(Looper.getMainLooper()).post {
+                runBlock.invoke()
+            }
+        }
     }
 }
