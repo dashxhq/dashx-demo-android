@@ -13,10 +13,10 @@ import com.dashxdemo.app.R
 import com.dashxdemo.app.adapters.PostsAdapter
 import com.dashxdemo.app.api.ApiClient
 import com.dashxdemo.app.api.requests.CreatePostRequest
-import com.dashxdemo.app.api.responses.BookmarksResponse
 import com.dashxdemo.app.api.responses.CreatePostResponse
 import com.dashxdemo.app.api.responses.PostsResponse
-import com.dashxdemo.app.databinding.CreatePostDialogBinding
+import com.dashxdemo.app.api.responses.ToggleBookmarkResponse
+import com.dashxdemo.app.databinding.DialogCreatePostBinding
 import com.dashxdemo.app.databinding.FragmentHomeBinding
 import com.dashxdemo.app.utils.Utils.Companion.getErrorMessageFromJson
 import com.dashxdemo.app.utils.Utils.Companion.initProgressDialog
@@ -26,7 +26,7 @@ import retrofit2.Response
 
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
-    private lateinit var dialogBinding: CreatePostDialogBinding
+    private lateinit var dialogBinding: DialogCreatePostBinding
     private lateinit var progressDialog: ProgressDialog
 
     private lateinit var postsAdapter: PostsAdapter
@@ -45,8 +45,8 @@ class HomeFragment : Fragment() {
         progressDialog = ProgressDialog(requireContext())
         initProgressDialog(progressDialog, requireContext())
 
-        posts()
-        showDialog()
+        getPosts()
+        showProgressBar()
         setUpUi()
     }
 
@@ -57,7 +57,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun showCreatePostDialog() {
-        dialogBinding = CreatePostDialogBinding.inflate(layoutInflater)
+        dialogBinding = DialogCreatePostBinding.inflate(layoutInflater)
         val dialogBoxBuilder = AlertDialog.Builder(activity).setView(dialogBinding.root)
         val dialogBoxInstance = dialogBoxBuilder.show()
 
@@ -74,103 +74,85 @@ class HomeFragment : Fragment() {
                 dialogBinding.contentTextInput.isErrorEnabled = true
                 dialogBinding.contentTextInput.error = getString(R.string.text_required)
             } else {
+                showProgressBar()
                 createPost()
                 dialogBoxInstance.dismiss()
             }
         }
     }
 
-    private fun posts() {
+    private fun getPosts() {
         ApiClient.getInstance(requireContext()).getPosts(object : Callback<PostsResponse> {
             override fun onResponse(call: Call<PostsResponse>, response: Response<PostsResponse>) {
-
-                hideDialog()
+                hideProgressBar()
                 if (response.isSuccessful) {
                     binding.recyclerView.setHasFixedSize(true)
-                    postsAdapter = PostsAdapter(response.body()!!).apply {
+                    postsAdapter = PostsAdapter(response.body()?.posts ?: mutableListOf()).apply {
                         onBookmarkClick = { post, position ->
-                            bookmarkPosts(post.id, position)
+                            bookmarkPost(post.id, position)
                         }
                     }
                     binding.recyclerView.adapter = postsAdapter
                 } else {
                     try {
-                        Toast.makeText(requireContext(),
-                            getErrorMessageFromJson(response.errorBody()?.string()),
-                            Toast.LENGTH_LONG).show()
+                        Toast.makeText(requireContext(), getErrorMessageFromJson(response.errorBody()?.string()), Toast.LENGTH_LONG).show()
                     } catch (exception: Exception) {
-                        Toast.makeText(requireContext(),
-                            getString(R.string.something_went_wrong),
-                            Toast.LENGTH_LONG).show()
+                        Toast.makeText(requireContext(), getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show()
                     }
                 }
             }
 
             override fun onFailure(call: Call<PostsResponse>, t: Throwable) {
-                hideDialog()
-                Toast.makeText(requireContext(),
-                    getString(R.string.something_went_wrong),
-                    Toast.LENGTH_LONG).show()
+                hideProgressBar()
+                Toast.makeText(requireContext(), getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show()
             }
         })
     }
 
-    fun bookmarkPosts(postId: Int, itemPosition: Int) {
-        ApiClient.getInstance(requireContext())
-            .bookmarks(postId, object : Callback<BookmarksResponse> {
-                override fun onResponse(
-                    call: Call<BookmarksResponse>,
-                    response: Response<BookmarksResponse>,
-                ) {
-                }
+    fun bookmarkPost(postId: Int, itemPosition: Int) {
+        ApiClient.getInstance(requireContext()).bookmarkPost(postId, object : Callback<ToggleBookmarkResponse> {
+            override fun onResponse(
+                call: Call<ToggleBookmarkResponse>,
+                response: Response<ToggleBookmarkResponse>,
+            ) {
+            }
 
-                override fun onFailure(call: Call<BookmarksResponse>, t: Throwable) {
-                    Toast.makeText(requireContext(),
-                        getString(R.string.something_went_wrong),
-                        Toast.LENGTH_LONG).show()
-                    postsAdapter.notifyItemChanged(itemPosition)
-                }
-            })
+            override fun onFailure(call: Call<ToggleBookmarkResponse>, t: Throwable) {
+                Toast.makeText(requireContext(), getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show()
+                postsAdapter.notifyItemChanged(itemPosition)
+            }
+        })
     }
 
     private fun createPost() {
-        ApiClient.getInstance(requireContext())
-            .createPost(CreatePostRequest(dialogBinding.contentEditText.text.toString()),
-                object : Callback<CreatePostResponse> {
-                    override fun onResponse(
-                        call: Call<CreatePostResponse>,
-                        response: Response<CreatePostResponse>,
-                    ) {
-                        if (response.isSuccessful) {
-                            Toast.makeText(requireContext(),
-                                response.body()?.message,
-                                Toast.LENGTH_LONG).show()
-                        } else {
-                            try {
-                                Toast.makeText(requireContext(),
-                                    getErrorMessageFromJson(response.errorBody()?.string()),
-                                    Toast.LENGTH_LONG)
-                            } catch (exception: Exception) {
-                                Toast.makeText(requireContext(),
-                                    getString(R.string.something_went_wrong),
-                                    Toast.LENGTH_LONG).show()
-                            }
-                        }
+        ApiClient.getInstance(requireContext()).createPost(CreatePostRequest(dialogBinding.contentEditText.text.toString()), object : Callback<CreatePostResponse> {
+            override fun onResponse(
+                call: Call<CreatePostResponse>,
+                response: Response<CreatePostResponse>,
+            ) {
+                if (response.isSuccessful) {
+                    Toast.makeText(requireContext(), response.body()?.message, Toast.LENGTH_LONG).show()
+                    getPosts()
+                } else {
+                    try {
+                        Toast.makeText(requireContext(), getErrorMessageFromJson(response.errorBody()?.string()), Toast.LENGTH_LONG)
+                    } catch (exception: Exception) {
+                        Toast.makeText(requireContext(), getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show()
                     }
+                }
+            }
 
-                    override fun onFailure(call: Call<CreatePostResponse>, t: Throwable) {
-                        Toast.makeText(requireContext(),
-                            getString(R.string.something_went_wrong),
-                            Toast.LENGTH_LONG).show()
-                    }
-                })
+            override fun onFailure(call: Call<CreatePostResponse>, t: Throwable) {
+                Toast.makeText(requireContext(), getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show()
+            }
+        })
     }
 
-    private fun showDialog() {
+    private fun showProgressBar() {
         progressDialog.show()
     }
 
-    private fun hideDialog() {
+    private fun hideProgressBar() {
         progressDialog.dismiss()
     }
 }

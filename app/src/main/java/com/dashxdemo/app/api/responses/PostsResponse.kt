@@ -3,8 +3,10 @@ package com.dashxdemo.app.api.responses
 import com.google.gson.annotations.SerializedName
 
 data class PostsResponse(
+    @SerializedName("message")
+    val message: String,
     @SerializedName("posts")
-    val posts: List<Post>
+    val posts: MutableList<Post>
 )
 
 data class Post(

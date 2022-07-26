@@ -109,33 +109,34 @@ class Utils {
             return UserData(Gson().fromJson(user, User::class.java), dashXToken)
         }
 
-        fun timestampToText(dataDate: String?): String? {
-
+        fun timeAgo(dateString: String?): String? {
             var convertedTime: String? = null
             val prefix = "Posted"
             val suffix = "ago"
             val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
-            val pasTime: Date = dateFormat.parse(dataDate)
-            val nowTime = Date()
-            val dateDiff: Long = nowTime.time - pasTime.time
+            dateFormat.timeZone = TimeZone.getTimeZone("GMT")
+            val date: Date = dateFormat.parse(dateString)
+
+            val dateDiff: Long = Calendar.getInstance().timeInMillis - date.time
             val second: Long = TimeUnit.MILLISECONDS.toSeconds(dateDiff)
             val minute: Long = TimeUnit.MILLISECONDS.toMinutes(dateDiff)
             val hour: Long = TimeUnit.MILLISECONDS.toHours(dateDiff)
             val day: Long = TimeUnit.MILLISECONDS.toDays(dateDiff)
+            
             if (second < 60) {
                 convertedTime = "$prefix a few seconds $suffix"
             } else if (second > 60 && minute < 60) {
                 convertedTime = "$prefix $minute minutes $suffix"
             } else if (second > 60 && minute > 60 && hour < 24) {
-                convertedTime = "$prefix $hour hours $suffix"
+                convertedTime = "$prefix ${hour+1} hours $suffix"
             } else if (second > 60 && minute > 60 && hour > 24 && hour < 48) {
                 convertedTime = "$prefix a day $suffix"
             } else if (day > 360) {
                 convertedTime = prefix + (day / 360).toString() + " years " + suffix
             } else if (day < 30) {
-                convertedTime = "$prefix $day days $suffix"
+                convertedTime = "$prefix ${day+1} days $suffix"
             } else if (day > 30) {
-                convertedTime = prefix + (day / 30).toString() + " months " + suffix
+                convertedTime = prefix + ((day / 30)+1).toString() + " months " + suffix
             }
             return convertedTime
         }

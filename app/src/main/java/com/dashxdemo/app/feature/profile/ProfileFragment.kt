@@ -1,4 +1,4 @@
-package com.dashxdemo.app.feature.home.fragment
+package com.dashxdemo.app.feature.profile
 
 import android.app.ProgressDialog
 import android.os.Bundle

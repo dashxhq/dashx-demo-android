@@ -1,4 +1,4 @@
-package com.dashxdemo.app.feature.home.fragment
+package com.dashxdemo.app.feature.settings
 
 import android.os.Bundle
 import android.view.LayoutInflater

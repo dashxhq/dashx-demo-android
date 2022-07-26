@@ -5,28 +5,26 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.dashxdemo.app.R
 import com.dashxdemo.app.api.responses.Post
-import com.dashxdemo.app.api.responses.PostsResponse
-import com.dashxdemo.app.databinding.RecyclerViewItemsBinding
-import com.dashxdemo.app.utils.Utils.Companion.timestampToText
+import com.dashxdemo.app.databinding.ViewPostItemBinding
+import com.dashxdemo.app.utils.Utils.Companion.timeAgo
 
-class PostsAdapter(private val postsResponse: PostsResponse) : RecyclerView.Adapter<PostsAdapter.MyViewHolder>() {
+class PostsAdapter(private val posts: MutableList<Post>) : RecyclerView.Adapter<PostsAdapter.MyViewHolder>() {
 
-    class MyViewHolder(val binding: RecyclerViewItemsBinding) : RecyclerView.ViewHolder(binding.root)
+    class MyViewHolder(val binding: ViewPostItemBinding) : RecyclerView.ViewHolder(binding.root)
 
     var onBookmarkClick: ((Post, Int) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val view =
-            RecyclerViewItemsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val view = ViewPostItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MyViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val item = postsResponse.posts[position]
+        val item = posts[position]
 
         holder.binding.nameTextView.text = "${item.user.firstName} ${item.user.lastName}"
         holder.binding.contentTextView.text = item.text
-        holder.binding.historyTextView.text = timestampToText(item.createdAt)
+        holder.binding.historyTextView.text = timeAgo(item.createdAt)
 
         if (item.bookmarkedAt != null) {
             holder.binding.bookmarkImageView.setImageResource(R.drawable.ic_bookmark_filled)
@@ -45,6 +43,14 @@ class PostsAdapter(private val postsResponse: PostsResponse) : RecyclerView.Adap
     }
 
     override fun getItemCount(): Int {
-        return postsResponse.posts.size
+        return posts.size
+    }
+
+    fun addElementAtPosition(position: Int = 0, post: Post) {
+        posts.add(position, post)
+    }
+
+    fun removeElementAtPosition(position: Int = 0) {
+        posts.removeAt(position)
     }
 }
