@@ -95,5 +95,4 @@ class SettingsFragment : Fragment() {
         binding.bookmarkPostToggle.isChecked = isNewBookmarkToggleEnabled
         binding.newPostToggle.isChecked = isNewPostToggleEnabled
     }
-
 }

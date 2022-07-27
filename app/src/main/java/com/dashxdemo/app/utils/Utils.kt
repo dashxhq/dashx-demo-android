@@ -53,7 +53,7 @@ class Utils {
             return password.isNotEmpty()
         }
 
-        fun validateNameFields(firstNameTextInput : TextInputLayout, lastNameTextInput : TextInputLayout, context: Context): Boolean {
+        fun validateNameFields(firstNameTextInput: TextInputLayout, lastNameTextInput: TextInputLayout, context: Context): Boolean {
             if (firstNameTextInput.editText?.text.isNullOrEmpty()) {
                 firstNameTextInput.isErrorEnabled = true
                 firstNameTextInput.error = context.getString(R.string.first_name_required_text)
@@ -114,7 +114,7 @@ class Utils {
             Toast.makeText(context, string, Toast.LENGTH_LONG).show()
         }
 
-        fun runOnUiThread(runBlock:() -> Unit){
+        fun runOnUiThread(runBlock: () -> Unit) {
             Handler(Looper.getMainLooper()).post {
                 runBlock.invoke()
             }
