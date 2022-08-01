@@ -27,7 +27,7 @@ interface ApiService {
     @PUT("posts/{post_id}/toggle-bookmark")
     fun toggleBookmark(@Path("post_id") postId: Int): Call<ToggleBookmarkResponse>
 
-    @GET("/posts/bookmarked")
+    @GET("posts/bookmarked")
     fun getBookmarkedPosts(): Call<PostsResponse>
 
     @POST("contact")

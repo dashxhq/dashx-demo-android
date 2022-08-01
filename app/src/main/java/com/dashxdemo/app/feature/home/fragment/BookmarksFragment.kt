@@ -39,11 +39,11 @@ class BookmarksFragment : Fragment() {
         progressDialog = ProgressDialog(requireContext())
         Utils.initProgressDialog(progressDialog, requireContext())
 
-        bookmarkedPosts()
+        toggleBookmark()
         showDialog()
     }
 
-    private fun bookmarkedPosts() {
+    private fun toggleBookmark() {
         ApiClient.getInstance(requireContext()).getBookmarkedPosts(object : Callback<PostsResponse> {
                 override fun onResponse(
                     call: Call<PostsResponse>,
@@ -57,7 +57,7 @@ class BookmarksFragment : Fragment() {
                         binding.bookmarkedPostsRecyclerView.setHasFixedSize(true)
                         bookmarkedPostsAdapter = PostsAdapter(response.body()?.posts ?: mutableListOf()).apply {
                             onBookmarkClick = { bookmarks, position ->
-                                unBookmarkPost(bookmarks, position)
+                                toggleBookmark(bookmarks, position)
                                 removeElementAtPosition(position)
                                 notifyDataSetChanged()
                             }
@@ -79,7 +79,7 @@ class BookmarksFragment : Fragment() {
             })
     }
 
-    private fun unBookmarkPost(bookmarks: Post, itemPosition: Int) {
+    private fun toggleBookmark(bookmarks: Post, itemPosition: Int) {
         ApiClient.getInstance(requireContext()).bookmarkPost(bookmarks.id, object : Callback<ToggleBookmarkResponse> {
                 override fun onResponse(
                     call: Call<ToggleBookmarkResponse>,
