@@ -39,11 +39,11 @@ class BookmarksFragment : Fragment() {
         progressDialog = ProgressDialog(requireContext())
         Utils.initProgressDialog(progressDialog, requireContext())
 
-        toggleBookmark()
+        getBookmarkedPosts()
         showDialog()
     }
 
-    private fun toggleBookmark() {
+    private fun getBookmarkedPosts() {
         ApiClient.getInstance(requireContext()).getBookmarkedPosts(object : Callback<PostsResponse> {
                 override fun onResponse(
                     call: Call<PostsResponse>,
@@ -80,7 +80,7 @@ class BookmarksFragment : Fragment() {
     }
 
     private fun toggleBookmark(bookmarks: Post, itemPosition: Int) {
-        ApiClient.getInstance(requireContext()).bookmarkPost(bookmarks.id, object : Callback<ToggleBookmarkResponse> {
+        ApiClient.getInstance(requireContext()).toggleBookmark(bookmarks.id, object : Callback<ToggleBookmarkResponse> {
                 override fun onResponse(
                     call: Call<ToggleBookmarkResponse>,
                     response: Response<ToggleBookmarkResponse>,

@@ -89,7 +89,7 @@ class HomeFragment : Fragment() {
                     binding.recyclerView.setHasFixedSize(true)
                     postsAdapter = PostsAdapter(response.body()?.posts ?: mutableListOf()).apply {
                         onBookmarkClick = { post, position ->
-                            bookmarkPost(post.id, position)
+                            toggleBookmark(post.id, position)
                         }
                     }
                     binding.recyclerView.adapter = postsAdapter
@@ -109,8 +109,8 @@ class HomeFragment : Fragment() {
         })
     }
 
-    fun bookmarkPost(postId: Int, itemPosition: Int) {
-        ApiClient.getInstance(requireContext()).bookmarkPost(postId, object : Callback<ToggleBookmarkResponse> {
+    fun toggleBookmark(postId: Int, itemPosition: Int) {
+        ApiClient.getInstance(requireContext()).toggleBookmark(postId, object : Callback<ToggleBookmarkResponse> {
             override fun onResponse(
                 call: Call<ToggleBookmarkResponse>,
                 response: Response<ToggleBookmarkResponse>,

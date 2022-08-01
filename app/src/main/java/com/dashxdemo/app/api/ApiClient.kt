@@ -84,7 +84,7 @@ class ApiClient private constructor(private val applicationContext: Context) {
         call.enqueue(callback)
     }
 
-    fun bookmarkPost(id: Int, callback: Callback<ToggleBookmarkResponse>) {
+    fun toggleBookmark(id: Int, callback: Callback<ToggleBookmarkResponse>) {
         val call = service.toggleBookmark(id)
         call.enqueue(callback)
     }
