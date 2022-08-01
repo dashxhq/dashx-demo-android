@@ -1,4 +1,4 @@
-package com.dashxdemo.app.feature.home.fragment
+package com.dashxdemo.app.feature.store
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,8 +11,9 @@ class StoreFragment : Fragment() {
     private lateinit var binding: FragmentStoreBinding
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View {
         binding = FragmentStoreBinding.inflate(inflater)
         return binding.root

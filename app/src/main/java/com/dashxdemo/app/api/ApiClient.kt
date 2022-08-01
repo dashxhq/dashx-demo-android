@@ -29,26 +29,17 @@ class ApiClient private constructor(private val applicationContext: Context) {
 
     init {
         val okHttpClient = OkHttpClient.Builder().apply {
-            addInterceptor(
-                Interceptor {
-                    val builder = it.request().newBuilder()
-                    val token = AppPref(applicationContext).getUserToken()
-                    if (!token.isNullOrEmpty()) {
-                        builder.addHeader(
-                            "Authorization",
-                            "Bearer $token"
-                        )
-                    }
-                    return@Interceptor it.proceed(builder.build())
+            addInterceptor(Interceptor {
+                val builder = it.request().newBuilder()
+                val token = AppPref(applicationContext).getUserToken()
+                if (!token.isNullOrEmpty()) {
+                    builder.addHeader("Authorization", "Bearer $token")
                 }
-            )
+                return@Interceptor it.proceed(builder.build())
+            })
         }.build()
 
-        val retrofit = Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .client(okHttpClient)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+        val retrofit = Retrofit.Builder().baseUrl(BASE_URL).client(okHttpClient).addConverterFactory(GsonConverterFactory.create()).build()
 
         service = retrofit.create(ApiService::class.java)
 
@@ -66,7 +57,7 @@ class ApiClient private constructor(private val applicationContext: Context) {
 
     fun forgotPassword(
         forgotPasswordRequest: ForgotPasswordRequest,
-        callback: Callback<ForgotPasswordResponse>
+        callback: Callback<ForgotPasswordResponse>,
     ) {
         val call = service.forgotPassword(forgotPasswordRequest)
         call.enqueue(callback)
@@ -74,9 +65,32 @@ class ApiClient private constructor(private val applicationContext: Context) {
 
     fun updateProfile(
         updateProfileRequest: UpdateProfileRequest,
-        callback: Callback<UpdateProfileResponse>
+        callback: Callback<UpdateProfileResponse>,
     ) {
         val call = service.updateProfile(updateProfileRequest)
+        call.enqueue(callback)
+    }
+
+    fun getPosts(callback: Callback<PostsResponse>) {
+        val call = service.getPosts()
+        call.enqueue(callback)
+    }
+
+    fun createPost(
+        createPostRequest: CreatePostRequest,
+        callback: Callback<CreatePostResponse>,
+    ) {
+        val call = service.createPost(createPostRequest)
+        call.enqueue(callback)
+    }
+
+    fun toggleBookmark(id: Int, callback: Callback<ToggleBookmarkResponse>) {
+        val call = service.toggleBookmark(id)
+        call.enqueue(callback)
+    }
+
+    fun getBookmarkedPosts(callback: Callback<PostsResponse>) {
+        val call = service.getBookmarkedPosts()
         call.enqueue(callback)
     }
 

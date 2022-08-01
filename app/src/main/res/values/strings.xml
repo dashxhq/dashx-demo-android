@@ -33,12 +33,15 @@
     <string name="update">Update</string>
 
     <string name="posts">Posts</string>
-    <string name="add_posts">Add Posts</string>
+    <string name="add_post">Add Post</string>
     <string name="create_post">Create a Post</string>
     <string name="text">Text</string>
     <string name="post">Post</string>
     <string name="cancel">Cancel</string>
     <string name="text_required">Text is required</string>
+    <string name="no_bookmarks_found">No bookmarks found.</string>
+
+    <string name="back_to_login">Back to Login</string>
 
     <string name="contact_us">Contact Us</string>
     <string name="name">Name</string>
@@ -48,5 +51,4 @@
     <string name="name_required">Name is required</string>
     <string name="feedback_required">Feedback is required</string>
 
-    <string name="back_to_login">Back to Login</string>
 </resources>

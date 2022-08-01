@@ -9,7 +9,9 @@ import com.dashxdemo.app.pref.data.UserData
 import com.google.android.material.textfield.TextInputLayout
 import com.google.gson.Gson
 import org.json.JSONObject
+import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 class Utils {
     companion object {
@@ -107,5 +109,36 @@ class Utils {
             return UserData(Gson().fromJson(user, User::class.java), dashXToken)
         }
 
+        fun timeAgo(dateString: String?): String? {
+            var convertedTime: String? = null
+            val prefix = "Posted"
+            val suffix = "ago"
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+            dateFormat.timeZone = TimeZone.getTimeZone("GMT")
+            val date: Date = dateFormat.parse(dateString)
+
+            val dateDiff: Long = Calendar.getInstance().timeInMillis - date.time
+            val second: Long = TimeUnit.MILLISECONDS.toSeconds(dateDiff)
+            val minute: Long = TimeUnit.MILLISECONDS.toMinutes(dateDiff)
+            val hour: Long = TimeUnit.MILLISECONDS.toHours(dateDiff)
+            val day: Long = TimeUnit.MILLISECONDS.toDays(dateDiff)
+            
+            if (second < 60) {
+                convertedTime = "$prefix a few seconds $suffix"
+            } else if (second > 60 && minute < 60) {
+                convertedTime = "$prefix $minute minutes $suffix"
+            } else if (second > 60 && minute > 60 && hour < 24) {
+                convertedTime = "$prefix ${hour+1} hours $suffix"
+            } else if (second > 60 && minute > 60 && hour > 24 && hour < 48) {
+                convertedTime = "$prefix a day $suffix"
+            } else if (day > 360) {
+                convertedTime = prefix + (day / 360).toString() + " years " + suffix
+            } else if (day < 30) {
+                convertedTime = "$prefix ${day+1} days $suffix"
+            } else if (day > 30) {
+                convertedTime = prefix + ((day / 30)+1).toString() + " months " + suffix
+            }
+            return convertedTime
+        }
     }
 }
