@@ -18,7 +18,7 @@ import com.dashxdemo.app.api.responses.LoginResponse
 import com.dashxdemo.app.databinding.FragmentLoginBinding
 import com.dashxdemo.app.feature.home.HomeActivity
 import com.dashxdemo.app.pref.AppPref
-import com.dashxdemo.app.utils.Utils
+import com.dashxdemo.app.utils.Utils.Companion.getErrorMessageFromJson
 import com.dashxdemo.app.utils.Utils.Companion.getUserDataFromToken
 import com.dashxdemo.app.utils.Utils.Companion.initProgressDialog
 import com.dashxdemo.app.utils.Utils.Companion.showToast
@@ -35,11 +35,7 @@ class LoginFragment : Fragment() {
 
     private val appPref by lazy { AppPref(requireContext()) }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentLoginBinding.inflate(inflater)
         return binding.root
     }

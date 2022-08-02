@@ -1,4 +1,4 @@
-package com.dashxdemo.app.feature.home.fragment
+package com.dashxdemo.app.feature.settings
 
 import android.app.ProgressDialog
 import android.os.Bundle
@@ -21,7 +21,8 @@ class SettingsFragment : Fragment() {
     private lateinit var progressDialog: ProgressDialog
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
         binding = FragmentSettingsBinding.inflate(inflater)

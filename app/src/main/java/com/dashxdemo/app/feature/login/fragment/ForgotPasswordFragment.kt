@@ -14,7 +14,7 @@ import com.dashxdemo.app.api.ApiClient
 import com.dashxdemo.app.api.requests.ForgotPasswordRequest
 import com.dashxdemo.app.api.responses.ForgotPasswordResponse
 import com.dashxdemo.app.databinding.FragmentForgotPasswordBinding
-import com.dashxdemo.app.utils.Utils
+import com.dashxdemo.app.utils.Utils.Companion.getErrorMessageFromJson
 import com.dashxdemo.app.utils.Utils.Companion.initProgressDialog
 import com.dashxdemo.app.utils.Utils.Companion.validateEmail
 import retrofit2.Call
@@ -24,11 +24,7 @@ import retrofit2.Response
 class ForgotPasswordFragment : Fragment() {
     private lateinit var binding: FragmentForgotPasswordBinding
     private lateinit var progressDialog: ProgressDialog
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentForgotPasswordBinding.inflate(inflater)
         return binding.root
     }
@@ -68,10 +64,7 @@ class ForgotPasswordFragment : Fragment() {
             ForgotPasswordRequest(
                 binding.emailEditText.text.toString()
             ), object : Callback<ForgotPasswordResponse> {
-                override fun onResponse(
-                    call: Call<ForgotPasswordResponse>,
-                    response: Response<ForgotPasswordResponse>
-                ) {
+                override fun onResponse(call: Call<ForgotPasswordResponse>, response: Response<ForgotPasswordResponse>) {
                     hideDialog()
                     if (response.isSuccessful) {
                         Toast.makeText(
@@ -81,11 +74,19 @@ class ForgotPasswordFragment : Fragment() {
                         ).show()
                         findNavController().navigateUp()
                     } else {
-                        Toast.makeText(
-                            requireContext(),
-                            Utils.getErrorMessageFromJson(response.errorBody()?.string()),
-                            Toast.LENGTH_LONG
-                        ).show()
+                        try {
+                            Toast.makeText(
+                                requireContext(),
+                                getErrorMessageFromJson(response.errorBody()?.string()),
+                                Toast.LENGTH_LONG
+                            ).show()
+                        } catch (exception: Exception) {
+                            Toast.makeText(
+                                requireContext(),
+                                getString(R.string.something_went_wrong),
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
                     }
                 }
 
