@@ -2,10 +2,11 @@ package com.dashxdemo.app.application
 
 import android.app.Application
 import com.dashx.sdk.DashXClient
+import com.dashxdemo.app.BuildConfig
 
-class MyApplication: Application() {
+class MyApplication : Application() {
     override fun onCreate() {
         super.onCreate()
-        DashXClient.createInstance(this,"TLy2w3kxf8ePXEyEjTepcPiq","https://api.dashx-staging.com/graphql","staging")
+        DashXClient.createInstance(this, BuildConfig.DASHX_PUBLIC_KEY, BuildConfig.DASHX_BASE_URI, BuildConfig.DASHX_TARGET_ENVIRONMENT)
     }
 }

@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import com.dashx.sdk.DashXClient
+import com.dashx.sdk.UserAttributes
 import com.dashxdemo.app.databinding.FragmentHomeBinding
 import com.dashxdemo.app.pref.AppPref
 import com.dashxdemo.app.R
@@ -47,7 +48,14 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        DashXClient.getInstance().identify(appPref.getUserData().userData.id.toString())
+        val userData = appPref.getUserData().userData
+        val hashMap = hashMapOf<String,String>()
+        hashMap[UserAttributes.UID] = userData.id.toString()
+        hashMap[UserAttributes.EMAIL] = userData.email
+        hashMap[UserAttributes.NAME] = userData.firstName + userData.lastName
+        hashMap[UserAttributes.FIRST_NAME] = userData.firstName
+        hashMap[UserAttributes.LAST_NAME] = userData.lastName
+        DashXClient.getInstance().identify(hashMap)
         progressDialog = ProgressDialog(requireContext())
         initProgressDialog(progressDialog, requireContext())
 

@@ -1,8 +1,9 @@
 package com.dashxdemo.app.api.responses
 
+import com.dashx.sdk.DashXClient
 import com.google.gson.annotations.SerializedName
 
-data class StoredPreferenceResponse(
+data class StoredPreferencesResponse(
     @SerializedName("new-bookmark")
     val newBookmark: StoredPreferenceData,
     @SerializedName("new-post")

@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.dashx.sdk.DashXClient
 import com.dashxdemo.app.R
-import com.dashxdemo.app.api.responses.StoredPreferenceResponse
+import com.dashxdemo.app.api.responses.StoredPreferencesResponse
 import com.dashxdemo.app.databinding.FragmentSettingsBinding
 import com.dashxdemo.app.utils.Utils.Companion.initProgressDialog
 import com.dashxdemo.app.utils.Utils.Companion.runOnUiThread
@@ -17,7 +17,7 @@ import com.google.gson.Gson
 
 class SettingsFragment : Fragment() {
     private lateinit var binding: FragmentSettingsBinding
-    private lateinit var preferenceData: StoredPreferenceResponse
+    private lateinit var preferenceData: StoredPreferencesResponse
     private lateinit var progressDialog: ProgressDialog
 
     override fun onCreateView(
@@ -42,7 +42,7 @@ class SettingsFragment : Fragment() {
     private fun getStoredPreferences() {
         DashXClient.getInstance().fetchStoredPreferences(onSuccess = {
             hideProgressBar()
-            preferenceData = Gson().fromJson(it, StoredPreferenceResponse::class.java)
+            preferenceData = Gson().fromJson(it, StoredPreferencesResponse::class.java)
             runOnUiThread {
                 binding.saveButton.isEnabled = true
                 if (::preferenceData.isInitialized && (preferenceData.newPost.enabled != binding.newPostToggle.isChecked || preferenceData.newBookmark.enabled != binding.bookmarkPostToggle.isChecked)) {
@@ -63,7 +63,7 @@ class SettingsFragment : Fragment() {
                 showProgressBar()
                 preferenceData.newBookmark.enabled = binding.bookmarkPostToggle.isChecked
                 preferenceData.newPost.enabled = binding.newPostToggle.isChecked
-                DashXClient.getInstance().saveStoredPreferences(Gson().toJsonTree(preferenceData, StoredPreferenceResponse::class.java), onSuccess = {
+                DashXClient.getInstance().saveStoredPreferences(Gson().toJsonTree(preferenceData, StoredPreferencesResponse::class.java), onSuccess = {
                     runOnUiThread {
                         hideProgressBar()
                         showToast(requireContext(), getString(R.string.preferences_saved))

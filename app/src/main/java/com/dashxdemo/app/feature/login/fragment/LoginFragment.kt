@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -48,7 +47,6 @@ class LoginFragment : Fragment() {
     }
 
     private fun setupUi() {
-
         binding.registerButton.setOnClickListener {
             findNavController().navigate(R.id.action_nav_login_to_nav_register)
         }
@@ -82,11 +80,19 @@ class LoginFragment : Fragment() {
                 if (response.isSuccessful) {
                     appPref.setUserToken(response.body()?.token)
                     appPref.setUserData(getUserDataFromToken(response.body()?.token))
+                    val userData = appPref.getUserData().userData
+                    val hashMap = hashMapOf<String,String>()
+                    hashMap["uid"] = userData.id.toString()
+                    hashMap["email"] = userData.email
+                    hashMap["name"] = userData.firstName + userData.lastName
+                    hashMap["firstName"] = userData.firstName
+                    hashMap["lastName"] = userData.lastName
+                    DashXClient.getInstance().identify(hashMap)
                     val intent = Intent(requireContext(), HomeActivity::class.java)
                     startActivity(intent)
                     requireActivity().finish()
                 } else {
-                    showToast(requireContext(), Utils.getErrorMessageFromJson(response.errorBody()?.string()))
+                    showToast(requireContext(), getErrorMessageFromJson(response.errorBody()?.string()))
                 }
                 hideDialog()
             }

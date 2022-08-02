@@ -121,6 +121,7 @@ class Utils {
                 runBlock.invoke()
             }
         }
+
         fun timeAgo(dateString: String?): String? {
             var convertedTime: String? = null
             val prefix = "Posted"
