@@ -20,6 +20,7 @@
         <action
             android:id="@+id/action_nav_login_to_nav_contact"
             app:destination="@id/nav_contact" />
+
     </fragment>
 
     <fragment
