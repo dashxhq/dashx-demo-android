@@ -13,6 +13,13 @@ android {
         versionCode 1
         versionName '1.0.0'
 
+        Properties localProperties = new Properties()
+        localProperties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+        buildConfigField 'String', 'DASHX_PUBLIC_KEY', localProperties.getProperty('DASHX_PUBLIC_KEY')
+        buildConfigField 'String', 'DASHX_BASE_URI', localProperties.getProperty('DASHX_BASE_URI')
+        buildConfigField 'String', 'DASHX_TARGET_ENVIRONMENT', localProperties.getProperty('DASHX_TARGET_ENVIRONMENT')
+
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
 
@@ -43,8 +50,8 @@ dependencies {
     implementation 'com.google.android.material:material:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
-    //DashX
-    implementation "com.dashx:dashx-android:1.0.1"
+    // DashX
+    implementation "com.dashx:dashx-android:1.0.2"
 
     // Network
     implementation 'com.squareup.retrofit2:retrofit:2.8.1'

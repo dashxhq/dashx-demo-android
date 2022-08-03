@@ -10,6 +10,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.dashx.sdk.DashXClient
+import com.dashx.sdk.UserAttributes
 import com.dashxdemo.app.R
 import com.dashxdemo.app.api.ApiClient
 import com.dashxdemo.app.api.requests.LoginRequest
@@ -82,11 +83,11 @@ class LoginFragment : Fragment() {
                     appPref.setUserData(getUserDataFromToken(response.body()?.token))
                     val userData = appPref.getUserData().userData
                     val hashMap = hashMapOf<String,String>()
-                    hashMap["uid"] = userData.id.toString()
-                    hashMap["email"] = userData.email
-                    hashMap["name"] = userData.firstName + userData.lastName
-                    hashMap["firstName"] = userData.firstName
-                    hashMap["lastName"] = userData.lastName
+                    hashMap[UserAttributes.UID] = userData.id.toString()
+                    hashMap[UserAttributes.EMAIL] = userData.email
+                    hashMap[UserAttributes.NAME] = userData.firstName + userData.lastName
+                    hashMap[UserAttributes.FIRST_NAME] = userData.firstName
+                    hashMap[UserAttributes.LAST_NAME] = userData.lastName
                     DashXClient.getInstance().identify(hashMap)
                     val intent = Intent(requireContext(), HomeActivity::class.java)
                     startActivity(intent)
