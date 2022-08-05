@@ -31,6 +31,7 @@ class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
     private val appPref by lazy { AppPref(requireContext()) }
+
     private lateinit var dialogBinding: DialogCreatePostBinding
     private lateinit var progressDialog: ProgressDialog
 
