@@ -1,4 +1,4 @@
-package com.dashxdemo.app.feature.home.fragment
+package com.dashxdemo.app.feature.profile
 
 import android.Manifest
 import android.app.Activity.RESULT_OK
@@ -46,8 +46,7 @@ class ProfileFragment : Fragment() {
     private lateinit var progressDialog: ProgressDialog
     private lateinit var dialogBinding: DialogToSelectImageBinding
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
         binding = FragmentProfileBinding.inflate(inflater)
@@ -214,8 +213,7 @@ class ProfileFragment : Fragment() {
     }
 
     private fun updateProfile() {
-        ApiClient.getInstance(requireContext())
-            .updateProfile(UpdateProfileRequest(binding.firstNameEditText.text.toString(), binding.lastNameEditText.text.toString(), binding.emailEditText.text.toString()),
+        ApiClient.getInstance(requireContext()).updateProfile(UpdateProfileRequest(binding.firstNameEditText.text.toString(), binding.lastNameEditText.text.toString(), binding.emailEditText.text.toString()),
                 object : Callback<UpdateProfileResponse> {
                     override fun onResponse(call: Call<UpdateProfileResponse>, response: Response<UpdateProfileResponse>) {
                         hideDialog()

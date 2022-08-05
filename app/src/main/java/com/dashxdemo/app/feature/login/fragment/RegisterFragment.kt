@@ -28,11 +28,7 @@ class RegisterFragment : Fragment() {
 
     private lateinit var binding: FragmentRegisterBinding
     private lateinit var progressDialog: ProgressDialog
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentRegisterBinding.inflate(inflater)
         return binding.root
     }
@@ -84,26 +80,21 @@ class RegisterFragment : Fragment() {
                 lastName = binding.lastNameEditText.text.toString()
             ), object :
                 Callback<RegisterResponse> {
-                override fun onResponse(
-                    call: Call<RegisterResponse>,
-                    response: Response<RegisterResponse>
-                ) {
+                override fun onResponse(call: Call<RegisterResponse>, response: Response<RegisterResponse>) {
                     hideDialog()
                     if (response.isSuccessful) {
                         Toast.makeText(
                             requireContext(),
                             response.body()?.message,
                             Toast.LENGTH_LONG
-                        )
-                            .show()
+                        ).show()
                         findNavController().navigateUp()
                     } else {
                         Toast.makeText(
                             requireContext(),
                             getErrorMessageFromJson(response.errorBody()?.string()),
                             Toast.LENGTH_LONG
-                        )
-                            .show()
+                        ).show()
                     }
                 }
 
