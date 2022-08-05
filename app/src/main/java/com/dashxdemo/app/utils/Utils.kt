@@ -1,7 +1,10 @@
 package com.dashxdemo.app.utils
 
+import android.Manifest
 import android.app.ProgressDialog
 import android.content.Context
+import android.content.pm.PackageManager
+import androidx.core.content.ContextCompat
 import com.dashxdemo.app.R
 import com.dashxdemo.app.api.responses.ErrorResponse
 import com.dashxdemo.app.pref.data.User
@@ -106,6 +109,5 @@ class Utils {
             val dashXToken = JSONObject(decodedToken).getString(DASHX_TOKEN)
             return UserData(Gson().fromJson(user, User::class.java), dashXToken)
         }
-
     }
 }

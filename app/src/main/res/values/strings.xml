@@ -49,4 +49,6 @@
     <string name="feedback_required">Feedback is required</string>
 
     <string name="back_to_login">Back to Login</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
 </resources>

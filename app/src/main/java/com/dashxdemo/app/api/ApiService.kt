@@ -4,6 +4,7 @@ import com.dashxdemo.app.api.requests.*
 import com.dashxdemo.app.api.responses.*
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.PATCH
 import retrofit2.http.POST
 
@@ -22,4 +23,7 @@ interface ApiService {
 
     @POST("contact")
     fun contact(@Body contactRequest: ContactRequest): Call<ContactResponse>
+
+    @GET("profile")
+    fun getProfile(): Call<ProfileResponse>
 }
