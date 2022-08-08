@@ -8,5 +8,7 @@ data class UpdateProfileRequest(
     @SerializedName("last_name")
     val lastName: String,
     @SerializedName("email")
-    val email: String
+    val email: String,
+    @SerializedName("avatar")
+    val avatar: String? = null,
 )

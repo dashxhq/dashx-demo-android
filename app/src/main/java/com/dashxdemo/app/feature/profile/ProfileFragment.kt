@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.Activity.RESULT_OK
 import android.app.AlertDialog
 import android.app.ProgressDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -15,7 +16,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat.requestPermissions
-import androidx.core.content.ContextCompat.checkSelfPermission
+import androidx.core.content.PermissionChecker
+import androidx.core.content.PermissionChecker.checkSelfPermission
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -28,7 +30,9 @@ import com.dashxdemo.app.api.responses.ProfileResponse
 import com.dashxdemo.app.api.responses.UpdateProfileResponse
 import com.dashxdemo.app.databinding.DialogToSelectImageBinding
 import com.dashxdemo.app.databinding.FragmentProfileBinding
+import com.dashxdemo.app.utils.Utils
 import com.dashxdemo.app.utils.Utils.Companion.getErrorMessageFromJson
+import com.dashxdemo.app.utils.Utils.Companion.getPath
 import com.dashxdemo.app.utils.Utils.Companion.initProgressDialog
 import com.dashxdemo.app.utils.Utils.Companion.validateEmail
 import com.dashxdemo.app.utils.Utils.Companion.validateNameFields
@@ -37,7 +41,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
 
-private const val ALL_PERMISSIONS = 1
+
 private const val CAMERA_REQUEST_CODE = 100
 private const val GALLERY_REQUEST_CODE = 200
 
@@ -46,7 +50,13 @@ class ProfileFragment : Fragment() {
     private lateinit var progressDialog: ProgressDialog
     private lateinit var dialogBinding: DialogToSelectImageBinding
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+    private val PICK_IMAGE_CAMERA = 0
+    val PICK_IMAGE_GALLERY = 1
+
+    private var avatar: String? = null
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
         binding = FragmentProfileBinding.inflate(inflater)
@@ -59,7 +69,7 @@ class ProfileFragment : Fragment() {
         initProgressDialog(progressDialog, requireContext())
 
         setupUi()
-        showDialog()
+        showProgressDialog()
         getProfile()
     }
 
@@ -68,25 +78,26 @@ class ProfileFragment : Fragment() {
         when (requestCode) {
             0 -> if (resultCode == RESULT_OK) {
                 val selectedImage: Uri? = data?.data
-                DashXClient.getInstance().uploadExternalAsset(File(selectedImage?.path), "e8b7b42f-1f23-431c-b739-9de0fba3dadf", onSuccess = {
-                    Log.d("ds", it.toString())
+                DashXClient.getInstance().uploadExternalAsset(File(getPath(requireContext(), selectedImage)!!), "e8b7b42f-1f23-431c-b739-9de0fba3dadf", onSuccess = {
+                    avatar = it.data.asset.url
                 }, onError = {
-                    Log.d("sda", it)
+                    Utils.showToast(requireContext(), it)
                 })
             }
             1 -> if (resultCode == RESULT_OK) {
                 val selectedImage: Uri? = data?.data
-                DashXClient.getInstance().uploadExternalAsset(File(selectedImage?.path), "e8b7b42f-1f23-431c-b739-9de0fba3dadf", onSuccess = {
-                    Log.d("asd", it.toString())
+                //File(getPath(requireContext(), selectedImage)!!
+                DashXClient.getInstance().uploadExternalAsset(File(getPath(requireContext(), selectedImage)), "e8b7b42f-1f23-431c-b739-9de0fba3dadf", onSuccess = {
+                    avatar = it.data.asset.url
                 }, onError = {
-                    Log.d("dsa", it)
+                    Utils.showToast(requireContext(), it)
                 })
                 binding.imageView.setImageURI(selectedImage)
             }
         }
     }
 
-    private fun setDataToInputFields(firstName: String, lastName: String, email: String, avatar: String) {
+    private fun setDataToInputFields(firstName: String, lastName: String, email: String, avatar: String?) {
         binding.firstNameEditText.setText(firstName)
         binding.lastNameEditText.setText(lastName)
         binding.emailEditText.setText(email)
@@ -113,18 +124,19 @@ class ProfileFragment : Fragment() {
 
         binding.updateButton.setOnClickListener {
             if (validateFields()) {
-                showDialog()
+                showProgressDialog()
                 updateProfile()
             }
         }
 
         binding.addImageButton.setOnClickListener {
+            //selectImage()
             dialogBinding = DialogToSelectImageBinding.inflate(layoutInflater)
             val dialogBoxBuilder = AlertDialog.Builder(activity).setView(dialogBinding.root)
             val dialogBoxInstance = dialogBoxBuilder.show()
 
             dialogBinding.iconCamera.setOnClickListener {
-                if (checkSelfPermission(requireActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                if (checkSelfPermission(requireActivity(), Manifest.permission.CAMERA) != PermissionChecker.PERMISSION_GRANTED) {
                     requestPermissions(requireActivity(), arrayOf(Manifest.permission.CAMERA), CAMERA_REQUEST_CODE)
                     dialogBoxInstance.dismiss()
                 } else {
@@ -135,7 +147,7 @@ class ProfileFragment : Fragment() {
             }
             
             dialogBinding.iconGallery.setOnClickListener {
-                if (checkSelfPermission(requireActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                if (checkSelfPermission(requireActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PermissionChecker.PERMISSION_GRANTED) {
                     requestPermissions(requireActivity(), arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), GALLERY_REQUEST_CODE)
                     dialogBoxInstance.dismiss()
                 } else {
@@ -144,6 +156,66 @@ class ProfileFragment : Fragment() {
                     dialogBoxInstance.dismiss()
                 }
             }
+            /*showFilePicker(
+                limitItemSelection = 1,
+                fileType = FileType.VIDEO,
+                listDirection = ListDirection.RTL,
+                accentColor = ContextCompat.getColor(requireContext(), R.color.purple_700),
+                titleTextColor = ContextCompat.getColor(requireContext(), R.color.purple_700),
+                onSubmitClickListener = object : OnSubmitClickListener {
+                    override fun onClick(files: List<Media>) {
+                        // Do something here with selected files
+                        Log.d("ds",files.toString())
+                        DashXClient.getInstance().uploadExternalAsset(files[0].file,"e8b7b42f-1f23-431c-b739-9de0fba3dadf", onSuccess = {
+                            Log.d("dsaas",it.data.externalAssetData.asset.url)
+                        }, onError = {
+                            Log.d("dsfssdfs",it)
+                        })
+                    }
+                },
+                onItemClickListener = object : OnItemClickListener {
+                    override fun onClick(media: Media, position: Int, adapter: FilePickerAdapter) {
+                        if (!media.file.isDirectory) {
+                            adapter.setSelected(position)
+                        }
+                    }
+                }
+            )*/
+        }
+    }
+
+    private fun selectImage() {
+        try {
+            val pm: PackageManager = requireActivity().getPackageManager()
+            val hasPerm = pm.checkPermission(Manifest.permission.CAMERA, requireActivity().getPackageName())
+//            if (hasPerm == PackageManager.PERMISSION_GRANTED) {
+            val options = arrayOf<CharSequence>("Take Photo", "Choose From Gallery", "Cancel")
+            val builder = AlertDialog.Builder(activity)
+            builder.setTitle("Select Option")
+            builder.setItems(options, DialogInterface.OnClickListener { dialog, item ->
+                if (options[item] == "Take Photo") {
+                    dialog.dismiss()
+                    if (hasPerm == PackageManager.PERMISSION_GRANTED) {
+                        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                        startActivityForResult(intent, PICK_IMAGE_CAMERA)
+                    } else {
+                        requestPermissions(requireActivity(), arrayOf(Manifest.permission.CAMERA), CAMERA_REQUEST_CODE)
+                    }
+                } else if (options[item] == "Choose From Gallery") {
+                    dialog.dismiss()
+                    val pickPhoto = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                    startActivityForResult(pickPhoto, PICK_IMAGE_GALLERY)
+                } else if (options[item] == "Cancel") {
+                    dialog.dismiss()
+                }
+            })
+            builder.show()
+            /*} else {
+
+            }*/
+        } catch (e: java.lang.Exception) {
+            Toast.makeText(requireContext(), "Camera Permission error", Toast.LENGTH_SHORT).show()
+            e.printStackTrace()
         }
     }
 
@@ -155,17 +227,17 @@ class ProfileFragment : Fragment() {
                 val permission: HashMap<String, Int> = HashMap()
                 permission[Manifest.permission.CAMERA] = PackageManager.PERMISSION_GRANTED
                 permission[permissions[0]] = grantResults[0]
-                if (permission[Manifest.permission.CAMERA] == PackageManager.PERMISSION_GRANTED) {
+                val pm: PackageManager = requireActivity().getPackageManager()
+                val hasPerm = pm.checkPermission(Manifest.permission.CAMERA, requireActivity().getPackageName())
+                if (hasPerm == PackageManager.PERMISSION_GRANTED) {
                     val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
                     startActivityForResult(cameraIntent, 0)
                 } else {
-                    
+
                 }
 
             }
         }
-
-
 
 
         if (requestCode == CAMERA_REQUEST_CODE) {
@@ -187,66 +259,64 @@ class ProfileFragment : Fragment() {
         }
     }
 
-
-
     private fun getProfile() {
         ApiClient.getInstance(requireContext()).getProfile(object : Callback<ProfileResponse> {
             override fun onResponse(call: Call<ProfileResponse>, response: Response<ProfileResponse>) {
-                hideDialog()
+                hideProgressDialog()
                 if (response.isSuccessful) {
                     val responseBody = response.body()!!
                     setDataToInputFields(responseBody.user.firstName, responseBody.user.lastName, responseBody.user.email, responseBody.user.avatar)
                 } else {
                     try {
-                        Toast.makeText(requireContext(), getErrorMessageFromJson(response.errorBody()?.string()), Toast.LENGTH_LONG).show()
+                        Utils.showToast(requireContext(), getErrorMessageFromJson(response.errorBody()?.string()))
                     } catch (exception: Exception) {
-                        Toast.makeText(requireContext(), getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show()
+                        Utils.showToast(requireContext(), getString(R.string.something_went_wrong))
                     }
                 }
             }
 
             override fun onFailure(call: Call<ProfileResponse>, t: Throwable) {
-                hideDialog()
-                Toast.makeText(requireContext(), getString(R.string.something_went_wrong), Toast.LENGTH_LONG)
+                hideProgressDialog()
+                Utils.showToast(requireContext(), getString(R.string.something_went_wrong))
             }
         })
     }
 
     private fun updateProfile() {
-        ApiClient.getInstance(requireContext()).updateProfile(UpdateProfileRequest(binding.firstNameEditText.text.toString(), binding.lastNameEditText.text.toString(), binding.emailEditText.text.toString()),
-                object : Callback<UpdateProfileResponse> {
-                    override fun onResponse(call: Call<UpdateProfileResponse>, response: Response<UpdateProfileResponse>) {
-                        hideDialog()
-                        if (response.isSuccessful) {
-                            Toast.makeText(requireContext(), response.body()?.message, Toast.LENGTH_LONG).show()
-                            findNavController().navigateUp()
-                        } else {
-                            try {
-                                Toast.makeText(requireContext(), getErrorMessageFromJson(response.errorBody()?.string()), Toast.LENGTH_LONG).show()
-                            } catch (exception: Exception) {
-                                Toast.makeText(requireContext(), getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show()
-                            }
-                        }
-                    }
+        ApiClient.getInstance(requireContext())
+            .updateProfile(UpdateProfileRequest(binding.firstNameEditText.text.toString(), binding.lastNameEditText.text.toString(), binding.emailEditText.text.toString(), avatar),
+                           object : Callback<UpdateProfileResponse> {
+                               override fun onResponse(call: Call<UpdateProfileResponse>, response: Response<UpdateProfileResponse>) {
+                                   hideProgressDialog()
+                                   if (response.isSuccessful) {
+                                       Utils.showToast(requireContext(), response.body()?.message.toString())
+                                       findNavController().navigateUp()
+                                   } else {
+                                       try {
+                                           Utils.showToast(requireContext(), getErrorMessageFromJson(response.errorBody()?.string()))
+                                       } catch (exception: Exception) {
+                                           Utils.showToast(requireContext(), getString(R.string.something_went_wrong))
+                                       }
+                                   }
+                               }
 
-                    override fun onFailure(call: Call<UpdateProfileResponse>, t: Throwable) {
-                        hideDialog()
-                        Toast.makeText(requireContext(), getString(R.string.something_went_wrong), Toast.LENGTH_LONG)
-                    }
-                })
+                               override fun onFailure(call: Call<UpdateProfileResponse>, t: Throwable) {
+                                   hideProgressDialog()
+                                   Utils.showToast(requireContext(), getString(R.string.something_went_wrong))
+                               }
+                           })
     }
 
     private fun validateFields(): Boolean {
-        return validateNameFields(binding.firstNameTextInput, binding.lastNameTextInput, requireContext()) && validateEmail(binding.emailEditText.text.toString(),
-            binding.emailTextInput,
-            requireContext())
+        return validateNameFields(binding.firstNameTextInput, binding.lastNameTextInput, requireContext())
+            && validateEmail(binding.emailEditText.text.toString(), binding.emailTextInput, requireContext())
     }
 
-    private fun showDialog() {
+    private fun showProgressDialog() {
         progressDialog.show()
     }
 
-    private fun hideDialog() {
+    private fun hideProgressDialog() {
         progressDialog.dismiss()
     }
 }

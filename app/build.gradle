@@ -55,7 +55,7 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.13.2'
 
     // DashX
-    implementation "com.dashx:dashx-android:1.0.2"
+    implementation 'com.dashx:dashx-android:1.0.3'
 
     // Network
     implementation 'com.squareup.retrofit2:retrofit:2.8.1'

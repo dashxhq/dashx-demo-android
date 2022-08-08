@@ -1,10 +1,12 @@
 package com.dashxdemo.app.utils
 
-import android.Manifest
 import android.app.ProgressDialog
 import android.content.Context
+import android.database.Cursor
+import android.net.Uri
 import android.os.Handler
 import android.os.Looper
+import android.provider.MediaStore
 import android.widget.Toast
 import com.dashxdemo.app.R
 import com.dashxdemo.app.api.responses.ErrorResponse
@@ -153,6 +155,16 @@ class Utils {
                 convertedTime = prefix + ((day / 30)+1).toString() + " months " + suffix
             }
             return convertedTime
+        }
+
+        fun getPath(context: Context, uri: Uri?): String? {
+            val projection = arrayOf(MediaStore.Images.Media.DATA)
+            val cursor: Cursor = context.contentResolver.query(uri!!, projection, null, null, null) ?: return null
+            val columnIndex: Int = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+            cursor.moveToFirst()
+            val path: String = cursor.getString(columnIndex)
+            cursor.close()
+            return path
         }
     }
 }
