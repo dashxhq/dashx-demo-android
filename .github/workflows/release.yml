@@ -44,7 +44,7 @@ jobs:
 #                  versionCode: ${{ env.version_code }}
 
             - name: Build & deploy Android release
-              run: bundle exec fastlane android deploy
+              run: bundle exec fastlane android beta
               env:
                   ANDROID_KEY_STORE: ${{ steps.android_keystore.outputs.filePath }}
                   KEYSTORE_STORE_PASSWORD: ${{ secrets.KEYSTORE_STORE_PASSWORD }}
