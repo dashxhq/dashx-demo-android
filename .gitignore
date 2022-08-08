@@ -3,9 +3,11 @@
 
 .gradle/
 build/
+secrets/
 
 # Local configuration file (sdk path, etc)
 local.properties
+keystore.properties
 
 # Log/OS Files
 *.log
