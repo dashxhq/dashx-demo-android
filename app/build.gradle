@@ -23,7 +23,7 @@ android {
         applicationId 'com.dashxdemo.app'
         minSdk 21
         targetSdk 32
-        versionCode 1
+        versionCode 4
         versionName '1.0.0'
 
         buildConfigField 'String', 'DASHX_PUBLIC_KEY', "\"TLy2w3kxf8ePXEyEjTepcPiq\""
