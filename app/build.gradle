@@ -26,9 +26,9 @@ android {
         versionCode 1
         versionName '1.0.0'
 
-        buildConfigField 'String', 'DASHX_PUBLIC_KEY', "TLy2w3kxf8ePXEyEjTepcPiq"
-        buildConfigField 'String', 'DASHX_BASE_URI', "https://api.dashx-staging.com/graphql"
-        buildConfigField 'String', 'DASHX_TARGET_ENVIRONMENT', "staging"
+        buildConfigField 'String', 'DASHX_PUBLIC_KEY', "\"TLy2w3kxf8ePXEyEjTepcPiq\""
+        buildConfigField 'String', 'DASHX_BASE_URI', "\"https://api.dashx-staging.com/graphql\""
+        buildConfigField 'String', 'DASHX_TARGET_ENVIRONMENT', "\"staging\""
 
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         signingConfig signingConfigs.release
