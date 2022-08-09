@@ -43,7 +43,8 @@ jobs:
 #                  gradlePath: android/app/build.gradle
 #                  versionCode: ${{ env.version_code }}
 
-            - name: Build & deploy Android release
+            if: github.ref == 'refs/heads/ci-cd-integration'
+            - name: Build & deploy Android Beta release
               run: bundle exec fastlane android beta
               env:
                   ANDROID_KEY_STORE: ${{ steps.android_keystore.outputs.filePath }}
@@ -51,6 +52,16 @@ jobs:
                   KEYSTORE_KEY_ALIAS: ${{ secrets.KEYSTORE_KEY_ALIAS}}
                   KEYSTORE_KEY_PASSWORD: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
                   ANDROID_JSON_KEY_FILE: ${{ steps.service_account_json_file.outputs.filePath }}
+
+            if: github.ref == 'refs/heads/main'
+                - name: Build & deploy Android Production release
+                run: bundle exec fastlane android production
+                    env:
+                        ANDROID_KEY_STORE: ${{ steps.android_keystore.outputs.filePath }}
+                        KEYSTORE_STORE_PASSWORD: ${{ secrets.KEYSTORE_STORE_PASSWORD }}
+                        KEYSTORE_KEY_ALIAS: ${{ secrets.KEYSTORE_KEY_ALIAS}}
+                        KEYSTORE_KEY_PASSWORD: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
+                        ANDROID_JSON_KEY_FILE: ${{ steps.service_account_json_file.outputs.filePath }}
 
             - name: Upload build artifacts
               uses: actions/upload-artifact@v2

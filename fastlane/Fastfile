@@ -19,7 +19,7 @@ platform :android do
 
   desc "Deploy a beta version to the Google Play"
   lane :beta do
-    gradle(task: "bundle", build_type: "release", print_command: false,
+    gradle(task: "bundle", build_type: "debug", print_command: false,
     properties: {
         "android.injected.signing.store.file" => ENV["ANDROID_KEY_STORE"],
         "android.injected.signing.store.password" => ENV["KEYSTORE_STORE_PASSWORD"],
@@ -28,6 +28,19 @@ platform :android do
 
     })
     upload_to_play_store(json_key: ENV["ANDROID_JSON_KEY_FILE"], track: 'beta')
+  end
+
+  desc "Deploy a prod version to the Google Play"
+  lane :production do
+    gradle(task: "bundle", build_type: "release", print_command: false,
+        properties: {
+            "android.injected.signing.store.file" => ENV["ANDROID_KEY_STORE"],
+            "android.injected.signing.store.password" => ENV["KEYSTORE_STORE_PASSWORD"],
+            "android.injected.signing.key.alias" => ENV["KEYSTORE_KEY_ALIAS"],
+            "android.injected.signing.key.password" => ENV["KEYSTORE_KEY_PASSWORD"]
+
+        })
+        upload_to_play_store(json_key: ENV["ANDROID_JSON_KEY_FILE"], track: 'production')
   end
 
 end
