@@ -19,7 +19,7 @@ platform :android do
 
   desc "Deploy a beta version to the Google Play"
   lane :beta do
-    gradle(task: "bundle", build_type: "debug", print_command: false,
+    gradle(task: "bundleDebug", build_type: "debug", print_command: false,
     properties: {
         "android.injected.signing.store.file" => ENV["ANDROID_KEY_STORE"],
         "android.injected.signing.store.password" => ENV["KEYSTORE_STORE_PASSWORD"],
