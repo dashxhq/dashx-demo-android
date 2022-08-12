@@ -3,6 +3,7 @@ package com.dashxdemo.app.utils
 import android.app.ProgressDialog
 import android.content.Context
 import android.database.Cursor
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Handler
 import android.os.Looper
@@ -15,6 +16,7 @@ import com.dashxdemo.app.pref.data.UserData
 import com.google.android.material.textfield.TextInputLayout
 import com.google.gson.Gson
 import org.json.JSONObject
+import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -24,6 +26,10 @@ class Utils {
         const val USER = "user"
         const val DASHX_TOKEN = "dashx_token"
         const val TOKEN_DELIMITER = "."
+        const val PERM_CAMERA = 911
+        const val PERM_READ_EXT_STORAGE = 912
+        const val TAKE_CAMERA_IMAGE = 811
+        const val PICK_GALLERY_IMAGE = 812
 
         private fun isValidEmail(emailString: String): Boolean {
             return android.util.Patterns.EMAIL_ADDRESS.matcher(emailString).matches()
@@ -165,6 +171,13 @@ class Utils {
             val path: String = cursor.getString(columnIndex)
             cursor.close()
             return path
+        }
+
+        fun getFileFromBitmap(bitmap: Bitmap, context: Context): Uri? {
+            val bytes = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+            val path: String = MediaStore.Images.Media.insertImage(context.getContentResolver(), bitmap, "Title", null)
+            return Uri.parse(path)
         }
     }
 }

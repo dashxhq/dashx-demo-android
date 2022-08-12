@@ -33,7 +33,7 @@
         app:shapeAppearanceOverlay="@style/RoundedImageView" />
 
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/addImageButton"
+        android:id="@+id/addImageIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"

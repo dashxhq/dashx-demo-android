@@ -13,12 +13,9 @@ android {
         versionCode 5
         versionName '1.0.0'
 
-        Properties localProperties = new Properties()
-        localProperties.load(project.rootProject.file('local.properties').newDataInputStream())
-
-        buildConfigField 'String', 'DASHX_PUBLIC_KEY', localProperties.getProperty('DASHX_PUBLIC_KEY')
-        buildConfigField 'String', 'DASHX_BASE_URI', localProperties.getProperty('DASHX_BASE_URI')
-        buildConfigField 'String', 'DASHX_TARGET_ENVIRONMENT', localProperties.getProperty('DASHX_TARGET_ENVIRONMENT')
+        buildConfigField 'String', 'DASHX_PUBLIC_KEY', "\"TLy2w3kxf8ePXEyEjTepcPiq\""
+        buildConfigField 'String', 'DASHX_BASE_URI', "\"https://api.dashx-staging.com/graphql\""
+        buildConfigField 'String', 'DASHX_TARGET_ENVIRONMENT', "\"staging\""
 
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
@@ -27,6 +24,16 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            buildConfigField 'String', 'DASHX_PUBLIC_KEY', "\"TLy2w3kxf8ePXEyEjTepcPiq\""
+            buildConfigField 'String', 'DASHX_BASE_URI', "\"https://api.dashx-staging.com/graphql\""
+            buildConfigField 'String', 'DASHX_TARGET_ENVIRONMENT', "\"staging\""
+        }
+
+        debug {
+            buildConfigField 'String', 'DASHX_PUBLIC_KEY', "\"TLy2w3kxf8ePXEyEjTepcPiq\""
+            buildConfigField 'String', 'DASHX_BASE_URI', "\"https://api.dashx-staging.com/graphql\""
+            buildConfigField 'String', 'DASHX_TARGET_ENVIRONMENT', "\"staging\""
         }
     }
 
