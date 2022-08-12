@@ -14,8 +14,8 @@
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iconCamera"
-            android:layout_width="57dp"
-            android:layout_height="68dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_marginStart="75dp"
             android:src="@drawable/icon_camera"
             app:layout_constraintBottom_toBottomOf="parent"

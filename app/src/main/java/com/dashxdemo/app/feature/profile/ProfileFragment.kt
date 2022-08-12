@@ -1,7 +1,6 @@
 package com.dashxdemo.app.feature.profile
 
 import android.Manifest
-import android.app.Activity
 import android.app.Activity.RESULT_OK
 import android.app.AlertDialog
 import android.app.ProgressDialog
@@ -14,7 +13,6 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
@@ -53,7 +51,7 @@ class ProfileFragment : Fragment() {
 
     private var avatar: com.dashx.sdk.data.AssetData? = null
 
-    val cameraRequestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+    private val cameraRequestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
         if (isGranted) {
             cameraIntent(MediaStore.ACTION_IMAGE_CAPTURE, TAKE_CAMERA_IMAGE)
         } else {
@@ -61,7 +59,7 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    val galleryRequestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+    private val galleryRequestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
         if (isGranted) {
             galleryIntent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI, PICK_GALLERY_IMAGE)
         } else {
@@ -99,7 +97,7 @@ class ProfileFragment : Fragment() {
                 }, onError = {
                     showToast(requireContext(), it)
                 })
-                binding.imageView.setImageURI(file)
+                binding.profilePicture.setImageURI(file)
             }
 
             PICK_GALLERY_IMAGE -> if (resultCode == RESULT_OK) {
@@ -109,7 +107,7 @@ class ProfileFragment : Fragment() {
                 }, onError = {
                     showToast(requireContext(), it)
                 })
-                binding.imageView.setImageURI(selectedImage)
+                binding.profilePicture.setImageURI(selectedImage)
             }
         }
     }
@@ -122,18 +120,18 @@ class ProfileFragment : Fragment() {
 
             PERM_CAMERA -> {
                 if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    cameraIntent(MediaStore.ACTION_IMAGE_CAPTURE, 811)
+                    cameraIntent(MediaStore.ACTION_IMAGE_CAPTURE, TAKE_CAMERA_IMAGE)
                 } else {
-                    Toast.makeText(requireContext(), "Camera permission denied", Toast.LENGTH_SHORT).show()
+                    showToast(requireContext(), "Camera permission denied")
                 }
                 return
             }
 
             PERM_READ_EXT_STORAGE -> {
                 if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    galleryIntent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI, 812)
+                    galleryIntent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI, PICK_GALLERY_IMAGE)
                 } else {
-                    Toast.makeText(requireContext(), "Gallery permission denied", Toast.LENGTH_SHORT).show()
+                    showToast(requireContext(), "Gallery permission denied")
                 }
                 return
             }
@@ -149,9 +147,9 @@ class ProfileFragment : Fragment() {
         binding.emailEditText.setText(email)
 
         if (avatar?.url.isNullOrEmpty()) {
-            binding.imageView.setImageResource(R.drawable.icon_profile)
+            binding.profilePicture.setImageResource(R.drawable.icon_profile)
         } else {
-            Glide.with(requireContext()).load(avatar?.url).into(binding.imageView)
+            Glide.with(requireContext()).load(avatar?.url).into(binding.profilePicture)
         }
     }
 
@@ -175,7 +173,7 @@ class ProfileFragment : Fragment() {
             }
         }
 
-        binding.addImageIcon.setOnClickListener {
+        binding.profilePicture.setOnClickListener {
             dialogBinding = DialogToSelectImageBinding.inflate(layoutInflater)
             val dialogBoxBuilder = AlertDialog.Builder(activity).setView(dialogBinding.root)
             val dialogBoxInstance = dialogBoxBuilder.show()
@@ -217,10 +215,8 @@ class ProfileFragment : Fragment() {
     }
 
     private fun updateProfile() {
-        ApiClient.getInstance(requireContext()).updateProfile(UpdateProfileRequest(binding.firstNameEditText.text.toString(),
-            binding.lastNameEditText.text.toString(),
-            binding.emailEditText.text.toString(),
-            AssetData(avatar?.status, avatar?.url)), object : Callback<UpdateProfileResponse> {
+        ApiClient.getInstance(requireContext()).updateProfile(
+            UpdateProfileRequest(binding.firstNameEditText.text.toString(), binding.lastNameEditText.text.toString(), binding.emailEditText.text.toString(), AssetData(avatar?.status, avatar?.url)), object : Callback<UpdateProfileResponse> {
             override fun onResponse(call: Call<UpdateProfileResponse>, response: Response<UpdateProfileResponse>) {
                 hideProgressDialog()
                 if (response.isSuccessful) {
@@ -253,9 +249,8 @@ class ProfileFragment : Fragment() {
     }
 
     private fun validateFields(): Boolean {
-        return validateNameFields(binding.firstNameTextInput, binding.lastNameTextInput, requireContext()) && validateEmail(binding.emailEditText.text.toString(),
-            binding.emailTextInput,
-            requireContext())
+        return validateNameFields(binding.firstNameTextInput, binding.lastNameTextInput, requireContext())
+            && validateEmail(binding.emailEditText.text.toString(), binding.emailTextInput, requireContext())
     }
 
     private fun showProgressDialog() {
