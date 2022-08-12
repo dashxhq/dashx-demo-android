@@ -122,7 +122,7 @@ class ProfileFragment : Fragment() {
 
             PERM_CAMERA -> {
                 if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    cameraIntent(requireActivity(), MediaStore.ACTION_IMAGE_CAPTURE, 811)
+                    cameraIntent(MediaStore.ACTION_IMAGE_CAPTURE, 811)
                 } else {
                     Toast.makeText(requireContext(), "Camera permission denied", Toast.LENGTH_SHORT).show()
                 }
@@ -131,7 +131,7 @@ class ProfileFragment : Fragment() {
 
             PERM_READ_EXT_STORAGE -> {
                 if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    galleryIntent(requireActivity(), Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI, 812)
+                    galleryIntent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI, 812)
                 } else {
                     Toast.makeText(requireContext(), "Gallery permission denied", Toast.LENGTH_SHORT).show()
                 }
@@ -244,12 +244,12 @@ class ProfileFragment : Fragment() {
 
     private fun cameraIntent(permission: String, requestCode: Int) {
         val pictureIntent = Intent(permission)
-        activity?.startActivityForResult(pictureIntent, requestCode)
+        requireActivity().startActivityForResult(pictureIntent, requestCode)
     }
 
     private fun galleryIntent(intentAction: String, externalContentUri: Uri, requestCode: Int) {
         val pickPhoto = Intent(intentAction, externalContentUri)
-        activity?.startActivityForResult(pickPhoto, requestCode)
+        requireActivity().startActivityForResult(pickPhoto, requestCode)
     }
 
     private fun validateFields(): Boolean {
