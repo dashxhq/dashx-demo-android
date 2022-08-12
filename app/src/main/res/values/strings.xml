@@ -61,4 +61,7 @@
     <string name="preferences_saved">Preferences saved</string>
     <string name="edit_profile">Edit Profile</string>
 
+    <string name="camera_permission_denied">Camera permission denied</string>
+    <string name="gallery_permission_denied">Gallery permission denied</string>
+
 </resources>

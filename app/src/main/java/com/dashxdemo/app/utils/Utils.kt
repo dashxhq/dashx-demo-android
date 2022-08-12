@@ -9,6 +9,7 @@ import android.os.Handler
 import android.os.Looper
 import android.provider.MediaStore
 import android.widget.Toast
+import androidx.loader.content.CursorLoader
 import com.dashxdemo.app.R
 import com.dashxdemo.app.api.responses.ErrorResponse
 import com.dashxdemo.app.pref.data.User
@@ -17,6 +18,7 @@ import com.google.android.material.textfield.TextInputLayout
 import com.google.gson.Gson
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -163,7 +165,7 @@ class Utils {
             return convertedTime
         }
 
-        fun getPath(context: Context, uri: Uri?): String? {
+        fun getPath(context: Context, uri: Uri?): String {
             val projection = arrayOf(MediaStore.Images.Media.DATA)
             val cursor: Cursor = context.contentResolver.query(uri!!, projection, null, null, null) ?: return null
             val columnIndex: Int = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
@@ -173,11 +175,12 @@ class Utils {
             return path
         }
 
-        fun getFileFromBitmap(bitmap: Bitmap, context: Context): Uri? {
+        fun getFileFromBitmap(bitmap: Bitmap, context: Context): File {
             val bytes = ByteArrayOutputStream()
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
-            val path: String = MediaStore.Images.Media.insertImage(context.getContentResolver(), bitmap, "Title", null)
-            return Uri.parse(path)
+            val path: String = MediaStore.Images.Media.insertImage(context.contentResolver, bitmap, "", null)
+            val uri =  Uri.parse(path)
+            return File(getPath(context, uri))
         }
     }
 }

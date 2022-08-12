@@ -22,10 +22,11 @@
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/profilePicture"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_marginTop="50dp"
         android:background="#DCDCDC"
+        android:scaleType="centerCrop"
         android:src="@drawable/icon_profile"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -48,6 +49,7 @@
             android:inputType="textCapWords"
             android:textColor="@color/black"
             android:textStyle="normal" />
+
     </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -68,6 +70,7 @@
             android:inputType="textCapWords"
             android:textColor="@color/black"
             android:textStyle="normal" />
+
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -87,6 +90,7 @@
             android:inputType="textEmailAddress"
             android:textColor="@color/black"
             android:textStyle="normal" />
+
     </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.appcompat.widget.AppCompatButton

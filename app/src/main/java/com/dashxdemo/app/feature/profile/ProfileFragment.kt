@@ -53,7 +53,7 @@ class ProfileFragment : Fragment() {
 
     private val cameraRequestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
         if (isGranted) {
-            cameraIntent(MediaStore.ACTION_IMAGE_CAPTURE, TAKE_CAMERA_IMAGE)
+            cameraIntent()
         } else {
             requestPermissions(arrayOf(Manifest.permission.CAMERA), PERM_CAMERA)
         }
@@ -61,7 +61,7 @@ class ProfileFragment : Fragment() {
 
     private val galleryRequestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
         if (isGranted) {
-            galleryIntent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI, PICK_GALLERY_IMAGE)
+            galleryIntent()
         } else {
             requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), PERM_READ_EXT_STORAGE)
         }
@@ -83,62 +83,6 @@ class ProfileFragment : Fragment() {
         setupUi()
         showProgressDialog()
         getProfile()
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        when (requestCode) {
-            TAKE_CAMERA_IMAGE -> if (resultCode == RESULT_OK) {
-                val bitmap: Bitmap = data?.extras?.get("data") as Bitmap
-                val file = getFileFromBitmap(bitmap, requireContext())
-                DashXClient.getInstance().uploadExternalAsset(File(getPath(requireContext(), file)!!), "e8b7b42f-1f23-431c-b739-9de0fba3dadf", onSuccess = {
-                    avatar = it.data.asset
-                }, onError = {
-                    showToast(requireContext(), it)
-                })
-                binding.profilePicture.setImageURI(file)
-            }
-
-            PICK_GALLERY_IMAGE -> if (resultCode == RESULT_OK) {
-                val selectedImage: Uri? = data?.data
-                DashXClient.getInstance().uploadExternalAsset(File(getPath(requireContext(), selectedImage)!!), "e8b7b42f-1f23-431c-b739-9de0fba3dadf", onSuccess = {
-                    avatar = it.data.asset
-                }, onError = {
-                    showToast(requireContext(), it)
-                })
-                binding.profilePicture.setImageURI(selectedImage)
-            }
-        }
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>, grantResults: IntArray,
-    ) {
-        when (requestCode) {
-
-            PERM_CAMERA -> {
-                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    cameraIntent(MediaStore.ACTION_IMAGE_CAPTURE, TAKE_CAMERA_IMAGE)
-                } else {
-                    showToast(requireContext(), "Camera permission denied")
-                }
-                return
-            }
-
-            PERM_READ_EXT_STORAGE -> {
-                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    galleryIntent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI, PICK_GALLERY_IMAGE)
-                } else {
-                    showToast(requireContext(), "Gallery permission denied")
-                }
-                return
-            }
-
-            else -> {
-            }
-        }
     }
 
     private fun setDataToInputFields(firstName: String, lastName: String, email: String, avatar: AssetData?) {
@@ -238,15 +182,69 @@ class ProfileFragment : Fragment() {
         })
     }
 
-    private fun cameraIntent(permission: String, requestCode: Int) {
-        val pictureIntent = Intent(permission)
-        requireActivity().startActivityForResult(pictureIntent, requestCode)
+    private fun cameraIntent() {
+        val pictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        startActivityForResult(pictureIntent, TAKE_CAMERA_IMAGE)
     }
 
-    private fun galleryIntent(intentAction: String, externalContentUri: Uri, requestCode: Int) {
-        val pickPhoto = Intent(intentAction, externalContentUri)
-        requireActivity().startActivityForResult(pickPhoto, requestCode)
+    private fun galleryIntent() {
+        val pickPhoto = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        startActivityForResult(pickPhoto, PICK_GALLERY_IMAGE)
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        when (requestCode) {
+            TAKE_CAMERA_IMAGE -> if (resultCode == RESULT_OK) {
+                val bitmap = data?.extras?.get("data") as Bitmap
+                val file = getFileFromBitmap(bitmap, requireContext())
+                showProgressDialog()
+                DashXClient.getInstance().uploadExternalAsset(file, "e8b7b42f-1f23-431c-b739-9de0fba3dadf", onSuccess = {
+                    hideProgressDialog()
+                    avatar = it.data.asset
+                }, onError = {
+                    hideProgressDialog()
+                    showToast(requireContext(), it)
+                })
+                binding.profilePicture.setImageBitmap(bitmap)
+            }
+
+            PICK_GALLERY_IMAGE -> if (resultCode == RESULT_OK) {
+                val selectedImage: Uri? = data?.data
+                showProgressDialog()
+                DashXClient.getInstance().uploadExternalAsset(File(getPath(requireContext(), selectedImage!!)), "e8b7b42f-1f23-431c-b739-9de0fba3dadf", onSuccess = {
+                    avatar = it.data.asset
+                    hideProgressDialog()
+                }, onError = {
+                    hideProgressDialog()
+                    showToast(requireContext(), it)
+                })
+                binding.profilePicture.setImageURI(selectedImage)
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        when (requestCode) {
+            PERM_CAMERA -> {
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    cameraIntent()
+                } else {
+                    showToast(requireContext(), getString(R.string.camera_permission_denied))
+                }
+                return
+            }
+
+            PERM_READ_EXT_STORAGE -> {
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    galleryIntent()
+                } else {
+                    showToast(requireContext(), getString(R.string.gallery_permission_denied))
+                }
+                return
+            }
+        }
+    }
+
 
     private fun validateFields(): Boolean {
         return validateNameFields(binding.firstNameTextInput, binding.lastNameTextInput, requireContext())
