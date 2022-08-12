@@ -10,23 +10,39 @@ android {
         applicationId 'com.dashxdemo.app'
         minSdk 21
         targetSdk 32
-        versionCode 1
+        versionCode 5
         versionName '1.0.0'
-
-        Properties localProperties = new Properties()
-        localProperties.load(project.rootProject.file('local.properties').newDataInputStream())
-
-        buildConfigField 'String', 'DASHX_PUBLIC_KEY', localProperties.getProperty('DASHX_PUBLIC_KEY')
-        buildConfigField 'String', 'DASHX_BASE_URI', localProperties.getProperty('DASHX_BASE_URI')
-        buildConfigField 'String', 'DASHX_TARGET_ENVIRONMENT', localProperties.getProperty('DASHX_TARGET_ENVIRONMENT')
 
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
 
     buildTypes {
-        release {
+
+        debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    flavorDimensions 'default'
+    productFlavors {
+        staging {
+            dimension 'default'
+            buildConfigField 'java.lang.String', 'DASHX_PUBLIC_KEY', '\"TLy2w3kxf8ePXEyEjTepcPiq\"'
+            buildConfigField 'java.lang.String', 'DASHX_BASE_URI', '\"https://api.dashx-staging.com/graphql\"'
+            buildConfigField 'java.lang.String', 'DASHX_TARGET_ENVIRONMENT', '\"staging\"'
+        }
+
+        production {
+            dimension 'default'
+            buildConfigField 'java.lang.String', 'DASHX_PUBLIC_KEY', '\"TLy2w3kxf8ePXEyEjTepcPiq\"'
+            buildConfigField 'java.lang.String', 'DASHX_BASE_URI', '\"https://api.dashx-staging.com/graphql\"'
+            buildConfigField 'java.lang.String', 'DASHX_TARGET_ENVIRONMENT', '\"production\"'
         }
     }
 
@@ -51,7 +67,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
     // DashX
-    implementation "com.dashx:dashx-android:1.0.2"
+    implementation 'com.dashx:dashx-android:1.0.3'
 
     // Network
     implementation 'com.squareup.retrofit2:retrofit:2.8.1'
