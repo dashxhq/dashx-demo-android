@@ -21,16 +21,6 @@ android {
         debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-
-            buildConfigField 'String', 'DASHX_PUBLIC_KEY', "\"TLy2w3kxf8ePXEyEjTepcPiq\""
-            buildConfigField 'String', 'DASHX_BASE_URI', "\"https://api.dashx-staging.com/graphql\""
-            buildConfigField 'String', 'DASHX_TARGET_ENVIRONMENT', "\"staging\""
-        }
-
-        debug {
-            buildConfigField 'String', 'DASHX_PUBLIC_KEY', "\"TLy2w3kxf8ePXEyEjTepcPiq\""
-            buildConfigField 'String', 'DASHX_BASE_URI', "\"https://api.dashx-staging.com/graphql\""
-            buildConfigField 'String', 'DASHX_TARGET_ENVIRONMENT', "\"staging\""
         }
 
         release {

@@ -27,10 +27,10 @@ import com.dashxdemo.app.api.responses.ProfileResponse
 import com.dashxdemo.app.api.responses.UpdateProfileResponse
 import com.dashxdemo.app.databinding.DialogToSelectImageBinding
 import com.dashxdemo.app.databinding.FragmentProfileBinding
-import com.dashxdemo.app.utils.Utils.Companion.PERM_CAMERA
-import com.dashxdemo.app.utils.Utils.Companion.PERM_READ_EXT_STORAGE
-import com.dashxdemo.app.utils.Utils.Companion.PICK_GALLERY_IMAGE
-import com.dashxdemo.app.utils.Utils.Companion.TAKE_CAMERA_IMAGE
+import com.dashxdemo.app.utils.Constants.PERM_CAMERA
+import com.dashxdemo.app.utils.Constants.PERM_READ_EXT_STORAGE
+import com.dashxdemo.app.utils.Constants.PICK_GALLERY_IMAGE
+import com.dashxdemo.app.utils.Constants.TAKE_CAMERA_IMAGE
 import com.dashxdemo.app.utils.Utils.Companion.getErrorMessageFromJson
 import com.dashxdemo.app.utils.Utils.Companion.getFileFromBitmap
 import com.dashxdemo.app.utils.Utils.Companion.getPath
@@ -231,7 +231,6 @@ class ProfileFragment : Fragment() {
                 } else {
                     showToast(requireContext(), getString(R.string.camera_permission_denied))
                 }
-                return
             }
 
             PERM_READ_EXT_STORAGE -> {
@@ -240,7 +239,6 @@ class ProfileFragment : Fragment() {
                 } else {
                     showToast(requireContext(), getString(R.string.gallery_permission_denied))
                 }
-                return
             }
         }
     }

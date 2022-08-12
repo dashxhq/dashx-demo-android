@@ -28,10 +28,6 @@ class Utils {
         const val USER = "user"
         const val DASHX_TOKEN = "dashx_token"
         const val TOKEN_DELIMITER = "."
-        const val PERM_CAMERA = 911
-        const val PERM_READ_EXT_STORAGE = 912
-        const val TAKE_CAMERA_IMAGE = 811
-        const val PICK_GALLERY_IMAGE = 812
 
         private fun isValidEmail(emailString: String): Boolean {
             return android.util.Patterns.EMAIL_ADDRESS.matcher(emailString).matches()
@@ -165,7 +161,7 @@ class Utils {
             return convertedTime
         }
 
-        fun getPath(context: Context, uri: Uri?): String {
+        fun getPath(context: Context, uri: Uri?): String? {
             val projection = arrayOf(MediaStore.Images.Media.DATA)
             val cursor: Cursor = context.contentResolver.query(uri!!, projection, null, null, null) ?: return null
             val columnIndex: Int = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
@@ -180,7 +176,7 @@ class Utils {
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
             val path: String = MediaStore.Images.Media.insertImage(context.contentResolver, bitmap, "", null)
             val uri =  Uri.parse(path)
-            return File(getPath(context, uri))
+            return File(getPath(context, uri)!!)
         }
     }
 }
