@@ -19,35 +19,30 @@ android {
     buildTypes {
 
         debug {
-            buildConfigField 'java.lang.String', 'DASHX_PUBLIC_KEY', "\"TLy2w3kxf8ePXEyEjTepcPiq\""
-            buildConfigField 'java.lang.String', 'DASHX_BASE_URI', "\"https://api.dashx-staging.com/graphql\""
-            buildConfigField 'java.lang.String', 'DASHX_TARGET_ENVIRONMENT', "\"staging\""
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
 
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-
-            buildConfigField 'java.lang.String', 'DASHX_PUBLIC_KEY', "\"TLy2w3kxf8ePXEyEjTepcPiq\""
-            buildConfigField 'java.lang.String', 'DASHX_BASE_URI', "\"https://api.dashx-staging.com/graphql\""
-            buildConfigField 'java.lang.String', 'DASHX_TARGET_ENVIRONMENT', "\"staging\""
         }
     }
 
-    flavorDimensions "default"
+    flavorDimensions 'default'
     productFlavors {
         staging {
-            dimension "default"
-            buildConfigField 'java.lang.String', 'DASHX_PUBLIC_KEY', "\"TLy2w3kxf8ePXEyEjTepcPiq\""
-            buildConfigField 'java.lang.String', 'DASHX_BASE_URI', "\"https://api.dashx-staging.com/graphql\""
-            buildConfigField 'java.lang.String', 'DASHX_TARGET_ENVIRONMENT', "\"staging\""
+            dimension 'default'
+            buildConfigField 'java.lang.String', 'DASHX_PUBLIC_KEY', '\"TLy2w3kxf8ePXEyEjTepcPiq\"'
+            buildConfigField 'java.lang.String', 'DASHX_BASE_URI', '\"https://api.dashx-staging.com/graphql\"'
+            buildConfigField 'java.lang.String', 'DASHX_TARGET_ENVIRONMENT', '\"staging\"'
         }
 
         production {
-            dimension "default"
-            buildConfigField 'java.lang.String', 'DASHX_PUBLIC_KEY', "\"TLy2w3kxf8ePXEyEjTepcPiq\""
-            buildConfigField 'java.lang.String', 'DASHX_BASE_URI', "\"https://api.dashx-staging.com/graphql\""
-            buildConfigField 'java.lang.String', 'DASHX_TARGET_ENVIRONMENT', "\"staging\""
+            dimension 'default'
+            buildConfigField 'java.lang.String', 'DASHX_PUBLIC_KEY', '\"TLy2w3kxf8ePXEyEjTepcPiq\"'
+            buildConfigField 'java.lang.String', 'DASHX_BASE_URI', '\"https://api.dashx-staging.com/graphql\"'
+            buildConfigField 'java.lang.String', 'DASHX_TARGET_ENVIRONMENT', '\"production\"'
         }
     }
 
@@ -72,7 +67,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
     // DashX
-    implementation "com.dashx:dashx-android:1.0.2"
+    implementation 'com.dashx:dashx-android:1.0.3'
 
     // Network
     implementation 'com.squareup.retrofit2:retrofit:2.8.1'
