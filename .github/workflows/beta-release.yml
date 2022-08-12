@@ -1,0 +1,48 @@
+name: Android Build & Deploy
+
+on:
+    push:
+        branches:
+            - develop
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+
+            - name: Set up ruby env
+              uses: ruby/setup-ruby@v1
+              with:
+                  ruby-version: 2.7.2
+                  bundler-cache: true
+
+            - name: Decode Service Account Key JSON File
+              uses: timheuer/base64-to-file@v1
+              id: service_account_json_file
+              with:
+                  fileName: "serviceAccount.json"
+                  encodedString: ${{ secrets.PLAY_CONFIG_JSON }}
+
+            - name: Decode Keystore File
+              uses: timheuer/base64-to-file@v1
+              id: android_keystore
+              with:
+                  fileName: "android_keystore.jks"
+                  encodedString: ${{ secrets.ANDROID_KEY_STORE }}
+
+            - name: Build & deploy Android Beta release
+              run: bundle exec fastlane android beta
+              env:
+                  ANDROID_KEY_STORE: ${{ steps.android_keystore.outputs.filePath }}
+                  KEYSTORE_STORE_PASSWORD: ${{ secrets.KEYSTORE_STORE_PASSWORD }}
+                  KEYSTORE_KEY_ALIAS: ${{ secrets.KEYSTORE_KEY_ALIAS}}
+                  KEYSTORE_KEY_PASSWORD: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
+                  ANDROID_JSON_KEY_FILE: ${{ steps.service_account_json_file.outputs.filePath }}
+
+            - name: Upload build artifacts
+              uses: actions/upload-artifact@v2
+              with:
+                  name: assets
+                  path: |
+                      ${{ github.workspace }}/app/build/outputs/bundle/release

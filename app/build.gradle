@@ -13,15 +13,12 @@ android {
         versionCode 5
         versionName '1.0.0'
 
-        buildConfigField 'String', 'DASHX_PUBLIC_KEY', "\"TLy2w3kxf8ePXEyEjTepcPiq\""
-        buildConfigField 'String', 'DASHX_BASE_URI', "\"https://api.dashx-staging.com/graphql\""
-        buildConfigField 'String', 'DASHX_TARGET_ENVIRONMENT', "\"staging\""
-
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
 
     buildTypes {
-        release {
+
+        debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
 
@@ -34,6 +31,28 @@ android {
             buildConfigField 'String', 'DASHX_PUBLIC_KEY', "\"TLy2w3kxf8ePXEyEjTepcPiq\""
             buildConfigField 'String', 'DASHX_BASE_URI', "\"https://api.dashx-staging.com/graphql\""
             buildConfigField 'String', 'DASHX_TARGET_ENVIRONMENT', "\"staging\""
+        }
+
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    flavorDimensions 'default'
+    productFlavors {
+        staging {
+            dimension 'default'
+            buildConfigField 'java.lang.String', 'DASHX_PUBLIC_KEY', '\"TLy2w3kxf8ePXEyEjTepcPiq\"'
+            buildConfigField 'java.lang.String', 'DASHX_BASE_URI', '\"https://api.dashx-staging.com/graphql\"'
+            buildConfigField 'java.lang.String', 'DASHX_TARGET_ENVIRONMENT', '\"staging\"'
+        }
+
+        production {
+            dimension 'default'
+            buildConfigField 'java.lang.String', 'DASHX_PUBLIC_KEY', '\"TLy2w3kxf8ePXEyEjTepcPiq\"'
+            buildConfigField 'java.lang.String', 'DASHX_BASE_URI', '\"https://api.dashx-staging.com/graphql\"'
+            buildConfigField 'java.lang.String', 'DASHX_TARGET_ENVIRONMENT', '\"production\"'
         }
     }
 
