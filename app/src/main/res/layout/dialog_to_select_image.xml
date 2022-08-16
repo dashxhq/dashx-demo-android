@@ -10,15 +10,17 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp">
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iconCamera"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_marginStart="75dp"
+            android:layout_marginStart="70dp"
             android:src="@drawable/icon_camera"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearanceOverlay="@style/RoundedImageView" />
@@ -27,7 +29,7 @@
             android:id="@+id/cameraTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="75dp"
+            android:layout_marginStart="70dp"
             android:text="@string/camera"
             android:textColor="@color/black"
             android:textSize="18sp"
@@ -38,9 +40,8 @@
             android:id="@+id/iconGallery"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_marginEnd="75dp"
+            android:layout_marginEnd="70dp"
             android:src="@drawable/icon_gallery"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearanceOverlay="@style/RoundedImageView" />
@@ -49,7 +50,7 @@
             android:id="@+id/galleryTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="78dp"
+            android:layout_marginEnd="73dp"
             android:text="@string/gallery"
             android:textColor="@color/black"
             android:textSize="18sp"
