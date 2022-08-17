@@ -1,5 +1,6 @@
 package com.dashxdemo.app.api.responses
 
+import com.dashxdemo.app.pref.data.User
 import com.google.gson.annotations.SerializedName
 
 data class PostsResponse(
@@ -24,15 +25,4 @@ data class Post(
     val bookmarkedAt: String?,
     @SerializedName("user")
     val user: User
-)
-
-data class User(
-    @SerializedName("id")
-    val id: Int,
-    @SerializedName("first_name")
-    val firstName: String,
-    @SerializedName("last_name")
-    val lastName: String,
-    @SerializedName("email")
-    val email: String
 )

@@ -32,4 +32,7 @@ interface ApiService {
 
     @POST("contact")
     fun contact(@Body contactRequest: ContactRequest): Call<ContactResponse>
+
+    @GET("profile")
+    fun getProfile(): Call<ProfileResponse>
 }

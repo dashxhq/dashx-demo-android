@@ -82,13 +82,7 @@ class LoginFragment : Fragment() {
                     appPref.setUserToken(response.body()?.token)
                     appPref.setUserData(getUserDataFromToken(response.body()?.token))
                     val userData = appPref.getUserData().userData
-                    val hashMap = hashMapOf<String,String>()
-                    hashMap[UserAttributes.UID] = userData.id.toString()
-                    hashMap[UserAttributes.EMAIL] = userData.email
-                    hashMap[UserAttributes.NAME] = userData.firstName + userData.lastName
-                    hashMap[UserAttributes.FIRST_NAME] = userData.firstName
-                    hashMap[UserAttributes.LAST_NAME] = userData.lastName
-                    DashXClient.getInstance().identify(hashMap)
+                    DashXClient.getInstance().setIdentity(userData.id.toString(), appPref.getUserData().token)
                     val intent = Intent(requireContext(), HomeActivity::class.java)
                     startActivity(intent)
                     requireActivity().finish()

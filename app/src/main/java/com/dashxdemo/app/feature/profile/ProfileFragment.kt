@@ -1,36 +1,74 @@
 package com.dashxdemo.app.feature.profile
 
+import android.Manifest
+import android.app.Activity.RESULT_OK
+import android.app.AlertDialog
 import android.app.ProgressDialog
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.core.view.isVisible
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
+import com.dashx.sdk.DashXClient
 import com.dashxdemo.app.R
 import com.dashxdemo.app.api.ApiClient
 import com.dashxdemo.app.api.requests.UpdateProfileRequest
+import com.dashxdemo.app.api.responses.AssetData
+import com.dashxdemo.app.api.responses.ProfileResponse
 import com.dashxdemo.app.api.responses.UpdateProfileResponse
+import com.dashxdemo.app.databinding.DialogToSelectImageBinding
 import com.dashxdemo.app.databinding.FragmentProfileBinding
-import com.dashxdemo.app.pref.AppPref
+import com.dashxdemo.app.utils.Constants.PERM_CAMERA
+import com.dashxdemo.app.utils.Constants.PERM_READ_EXT_STORAGE
+import com.dashxdemo.app.utils.Constants.PICK_GALLERY_IMAGE
+import com.dashxdemo.app.utils.Constants.TAKE_CAMERA_IMAGE
 import com.dashxdemo.app.utils.Utils.Companion.getErrorMessageFromJson
+import com.dashxdemo.app.utils.Utils.Companion.getFileFromBitmap
+import com.dashxdemo.app.utils.Utils.Companion.getPath
 import com.dashxdemo.app.utils.Utils.Companion.initProgressDialog
+import com.dashxdemo.app.utils.Utils.Companion.showToast
 import com.dashxdemo.app.utils.Utils.Companion.validateEmail
 import com.dashxdemo.app.utils.Utils.Companion.validateNameFields
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
 
 class ProfileFragment : Fragment() {
+
     private lateinit var binding: FragmentProfileBinding
     private lateinit var progressDialog: ProgressDialog
+    private lateinit var dialogBinding: DialogToSelectImageBinding
+
+    private var avatar: com.dashx.sdk.data.AssetData? = null
+
+    private val cameraRequestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+        if (isGranted) {
+            cameraIntent()
+        } else {
+            requestPermissions(arrayOf(Manifest.permission.CAMERA), PERM_CAMERA)
+        }
+    }
+
+    private val galleryRequestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+        if (isGranted) {
+            galleryIntent()
+        } else {
+            requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), PERM_READ_EXT_STORAGE)
+        }
+    }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
         binding = FragmentProfileBinding.inflate(inflater)
@@ -43,22 +81,23 @@ class ProfileFragment : Fragment() {
         initProgressDialog(progressDialog, requireContext())
 
         setupUi()
-        setDataToInputFields()
+        showProgressDialog()
+        getProfile()
     }
 
-    private fun setDataToInputFields() {
-        val dataString = AppPref(requireContext()).getUserData()
+    private fun setDataToInputFields(firstName: String, lastName: String, email: String, avatar: AssetData?) {
+        binding.firstNameEditText.setText(firstName)
+        binding.lastNameEditText.setText(lastName)
+        binding.emailEditText.setText(email)
 
-        binding.firstNameEditText.setText(dataString.userData.firstName)
-        binding.lastNameEditText.setText(dataString.userData.lastName)
-        binding.emailEditText.setText(dataString.userData.email)
+        if (avatar?.url.isNullOrEmpty()) {
+            binding.profilePicture.setImageResource(R.drawable.icon_profile)
+        } else {
+            Glide.with(requireContext()).load(avatar?.url).into(binding.profilePicture)
+        }
     }
 
     private fun setupUi() {
-        binding.editButton.setOnClickListener {
-            enableEditMode(true)
-        }
-
         binding.firstNameEditText.addTextChangedListener {
             binding.firstNameTextInput.isErrorEnabled = false
         }
@@ -73,80 +112,148 @@ class ProfileFragment : Fragment() {
 
         binding.updateButton.setOnClickListener {
             if (validateFields()) {
-                showDialog()
+                showProgressDialog()
                 updateProfile()
+            }
+        }
+
+        binding.profilePicture.setOnClickListener {
+            dialogBinding = DialogToSelectImageBinding.inflate(layoutInflater)
+            val dialogBoxBuilder = AlertDialog.Builder(activity).setView(dialogBinding.root)
+            val dialogBoxInstance = dialogBoxBuilder.show()
+
+            dialogBinding.iconCamera.setOnClickListener {
+                dialogBoxInstance.dismiss()
+                cameraRequestPermissionLauncher.launch(Manifest.permission.CAMERA)
+            }
+
+            dialogBinding.iconGallery.setOnClickListener {
+                dialogBoxInstance.dismiss()
+                galleryRequestPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+
             }
         }
     }
 
-    private fun enableEditMode(enabled: Boolean) {
-        binding.editButton.isVisible = !enabled
+    private fun getProfile() {
+        ApiClient.getInstance(requireContext()).getProfile(object : Callback<ProfileResponse> {
+            override fun onResponse(call: Call<ProfileResponse>, response: Response<ProfileResponse>) {
+                hideProgressDialog()
+                if (response.isSuccessful) {
+                    val responseBody = response.body()!!
+                    setDataToInputFields(responseBody.user.firstName, responseBody.user.lastName, responseBody.user.email, responseBody.user.avatar)
+                } else {
+                    try {
+                        showToast(requireContext(), getErrorMessageFromJson(response.errorBody()?.string()))
+                    } catch (exception: Exception) {
+                        showToast(requireContext(), getString(R.string.something_went_wrong))
+                    }
+                }
+            }
 
-        binding.firstNameEditText.isEnabled = enabled
-        binding.firstNameEditText.isFocusable = enabled
-        binding.firstNameEditText.isFocusableInTouchMode = enabled
-
-        binding.lastNameEditText.isEnabled = enabled
-        binding.lastNameEditText.isFocusable = enabled
-        binding.lastNameEditText.isFocusableInTouchMode = enabled
-
-        binding.emailEditText.isEnabled = enabled
-        binding.emailEditText.isFocusable = enabled
-        binding.emailEditText.isFocusableInTouchMode = enabled
-
-        binding.updateButton.isVisible = enabled
+            override fun onFailure(call: Call<ProfileResponse>, t: Throwable) {
+                hideProgressDialog()
+                showToast(requireContext(), getString(R.string.something_went_wrong))
+            }
+        })
     }
 
     private fun updateProfile() {
-        ApiClient.getInstance(requireContext())
-            .updateProfile(UpdateProfileRequest(binding.firstNameEditText.text.toString(),
-                binding.lastNameEditText.text.toString(),
-                binding.emailEditText.text.toString()), object : Callback<UpdateProfileResponse> {
-                override fun onResponse(
-                    call: Call<UpdateProfileResponse>,
-                    response: Response<UpdateProfileResponse>,
-                ) {
-                    hideDialog()
-                    if (response.isSuccessful) {
-                        Toast.makeText(requireContext(),
-                            response.body()?.message,
-                            Toast.LENGTH_LONG).show()
-                        findNavController().navigateUp()
-                    } else {
-                        try {
-                            Toast.makeText(requireContext(),
-                                getErrorMessageFromJson(response.errorBody()?.string()),
-                                Toast.LENGTH_LONG).show()
-                        } catch (exception: Exception) {
-                            Toast.makeText(requireContext(),
-                                getString(R.string.something_went_wrong),
-                                Toast.LENGTH_LONG).show()
-                        }
+        ApiClient.getInstance(requireContext()).updateProfile(
+            UpdateProfileRequest(binding.firstNameEditText.text.toString(), binding.lastNameEditText.text.toString(), binding.emailEditText.text.toString(), AssetData(avatar?.status, avatar?.url)), object : Callback<UpdateProfileResponse> {
+            override fun onResponse(call: Call<UpdateProfileResponse>, response: Response<UpdateProfileResponse>) {
+                hideProgressDialog()
+                if (response.isSuccessful) {
+                    showToast(requireContext(), response.body()?.message.toString())
+                    findNavController().navigateUp()
+                } else {
+                    try {
+                        showToast(requireContext(), getErrorMessageFromJson(response.errorBody()?.string()))
+                    } catch (exception: Exception) {
+                        showToast(requireContext(), getString(R.string.something_went_wrong))
                     }
                 }
+            }
 
-                override fun onFailure(call: Call<UpdateProfileResponse>, t: Throwable) {
-                    hideDialog()
-                    Toast.makeText(requireContext(),
-                        getString(R.string.something_went_wrong),
-                        Toast.LENGTH_LONG).show()
-                }
-            })
+            override fun onFailure(call: Call<UpdateProfileResponse>, t: Throwable) {
+                hideProgressDialog()
+                showToast(requireContext(), getString(R.string.something_went_wrong))
+            }
+        })
     }
+
+    private fun cameraIntent() {
+        val pictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        startActivityForResult(pictureIntent, TAKE_CAMERA_IMAGE)
+    }
+
+    private fun galleryIntent() {
+        val pickPhoto = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        startActivityForResult(pickPhoto, PICK_GALLERY_IMAGE)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        when (requestCode) {
+            TAKE_CAMERA_IMAGE -> if (resultCode == RESULT_OK) {
+                val bitmap = data?.extras?.get("data") as Bitmap
+                val file = getFileFromBitmap(bitmap, requireContext())
+                showProgressDialog()
+                DashXClient.getInstance().uploadExternalAsset(file, "e8b7b42f-1f23-431c-b739-9de0fba3dadf", onSuccess = {
+                    hideProgressDialog()
+                    avatar = it.data.asset
+                }, onError = {
+                    hideProgressDialog()
+                    showToast(requireContext(), it)
+                })
+                binding.profilePicture.setImageBitmap(bitmap)
+            }
+
+            PICK_GALLERY_IMAGE -> if (resultCode == RESULT_OK) {
+                val selectedImage: Uri? = data?.data
+                showProgressDialog()
+                DashXClient.getInstance().uploadExternalAsset(File(getPath(requireContext(), selectedImage!!)), "e8b7b42f-1f23-431c-b739-9de0fba3dadf", onSuccess = {
+                    avatar = it.data.asset
+                    hideProgressDialog()
+                }, onError = {
+                    hideProgressDialog()
+                    showToast(requireContext(), it)
+                })
+                binding.profilePicture.setImageURI(selectedImage)
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        when (requestCode) {
+            PERM_CAMERA -> {
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    cameraIntent()
+                } else {
+                    showToast(requireContext(), getString(R.string.camera_permission_denied))
+                }
+            }
+
+            PERM_READ_EXT_STORAGE -> {
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    galleryIntent()
+                } else {
+                    showToast(requireContext(), getString(R.string.gallery_permission_denied))
+                }
+            }
+        }
+    }
+
 
     private fun validateFields(): Boolean {
-        return validateNameFields(binding.firstNameTextInput,
-            binding.lastNameTextInput,
-            requireContext()) && validateEmail(binding.emailEditText.text.toString(),
-            binding.emailTextInput,
-            requireContext())
+        return validateNameFields(binding.firstNameTextInput, binding.lastNameTextInput, requireContext())
+            && validateEmail(binding.emailEditText.text.toString(), binding.emailTextInput, requireContext())
     }
 
-    private fun showDialog() {
+    private fun showProgressDialog() {
         progressDialog.show()
     }
 
-    private fun hideDialog() {
+    private fun hideProgressDialog() {
         progressDialog.dismiss()
     }
 }

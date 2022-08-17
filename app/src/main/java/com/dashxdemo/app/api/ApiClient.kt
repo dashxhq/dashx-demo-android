@@ -98,4 +98,9 @@ class ApiClient private constructor(private val applicationContext: Context) {
         val call = service.contact(contactRequest)
         call.enqueue(callback)
     }
+
+    fun getProfile(callback: Callback<ProfileResponse>) {
+        val call = service.getProfile()
+        call.enqueue(callback)
+    }
 }

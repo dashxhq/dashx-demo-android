@@ -1,5 +1,6 @@
 package com.dashxdemo.app.api.requests
 
+import com.dashxdemo.app.api.responses.AssetData
 import com.google.gson.annotations.SerializedName
 
 data class UpdateProfileRequest(
@@ -8,5 +9,7 @@ data class UpdateProfileRequest(
     @SerializedName("last_name")
     val lastName: String,
     @SerializedName("email")
-    val email: String
+    val email: String,
+    @SerializedName("avatar")
+    val avatar: AssetData? = null,
 )
