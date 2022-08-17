@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import com.dashxdemo.app.databinding.FragmentHomeBinding
 import com.dashxdemo.app.R
 import com.dashxdemo.app.adapters.PostsAdapter
 import com.dashxdemo.app.api.ApiClient
@@ -17,7 +18,6 @@ import com.dashxdemo.app.api.responses.CreatePostResponse
 import com.dashxdemo.app.api.responses.PostsResponse
 import com.dashxdemo.app.api.responses.ToggleBookmarkResponse
 import com.dashxdemo.app.databinding.DialogCreatePostBinding
-import com.dashxdemo.app.databinding.FragmentHomeBinding
 import com.dashxdemo.app.utils.Utils.Companion.getErrorMessageFromJson
 import com.dashxdemo.app.utils.Utils.Companion.initProgressDialog
 import retrofit2.Call
@@ -25,7 +25,9 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class HomeFragment : Fragment() {
+
     private lateinit var binding: FragmentHomeBinding
+
     private lateinit var dialogBinding: DialogCreatePostBinding
     private lateinit var progressDialog: ProgressDialog
 
@@ -42,6 +44,7 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         progressDialog = ProgressDialog(requireContext())
         initProgressDialog(progressDialog, requireContext())
 

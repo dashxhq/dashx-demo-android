@@ -10,16 +10,39 @@ android {
         applicationId 'com.dashxdemo.app'
         minSdk 21
         targetSdk 32
-        versionCode 1
+        versionCode 5
         versionName '1.0.0'
 
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
 
     buildTypes {
-        release {
+
+        debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    flavorDimensions 'default'
+    productFlavors {
+        staging {
+            dimension 'default'
+            buildConfigField 'java.lang.String', 'DASHX_PUBLIC_KEY', '\"TLy2w3kxf8ePXEyEjTepcPiq\"'
+            buildConfigField 'java.lang.String', 'DASHX_BASE_URI', '\"https://api.dashx-staging.com/graphql\"'
+            buildConfigField 'java.lang.String', 'DASHX_TARGET_ENVIRONMENT', '\"staging\"'
+        }
+
+        production {
+            dimension 'default'
+            buildConfigField 'java.lang.String', 'DASHX_PUBLIC_KEY', '\"TLy2w3kxf8ePXEyEjTepcPiq\"'
+            buildConfigField 'java.lang.String', 'DASHX_BASE_URI', '\"https://api.dashx-staging.com/graphql\"'
+            buildConfigField 'java.lang.String', 'DASHX_TARGET_ENVIRONMENT', '\"production\"'
         }
     }
 
@@ -42,6 +65,13 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.4.2'
     implementation 'com.google.android.material:material:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+
+    // Glide
+    implementation 'com.github.bumptech.glide:glide:4.13.2'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.13.2'
+
+    // DashX
+    implementation 'com.dashx:dashx-android:1.0.3'
 
     // Network
     implementation 'com.squareup.retrofit2:retrofit:2.8.1'

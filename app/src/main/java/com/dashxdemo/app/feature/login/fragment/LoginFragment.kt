@@ -6,10 +6,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.dashx.sdk.DashXClient
 import com.dashxdemo.app.R
 import com.dashxdemo.app.api.ApiClient
 import com.dashxdemo.app.api.requests.LoginRequest
@@ -20,6 +20,7 @@ import com.dashxdemo.app.pref.AppPref
 import com.dashxdemo.app.utils.Utils.Companion.getErrorMessageFromJson
 import com.dashxdemo.app.utils.Utils.Companion.getUserDataFromToken
 import com.dashxdemo.app.utils.Utils.Companion.initProgressDialog
+import com.dashxdemo.app.utils.Utils.Companion.showToast
 import com.dashxdemo.app.utils.Utils.Companion.validateEmail
 import com.dashxdemo.app.utils.Utils.Companion.validatePassword
 import retrofit2.Call
@@ -30,6 +31,8 @@ class LoginFragment : Fragment() {
 
     private lateinit var binding: FragmentLoginBinding
     private lateinit var progressDialog: ProgressDialog
+
+    private val appPref by lazy { AppPref(requireContext()) }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentLoginBinding.inflate(inflater)
@@ -44,7 +47,6 @@ class LoginFragment : Fragment() {
     }
 
     private fun setupUi() {
-
         binding.registerButton.setOnClickListener {
             findNavController().navigate(R.id.action_nav_login_to_nav_register)
         }
@@ -70,56 +72,36 @@ class LoginFragment : Fragment() {
     }
 
     private fun loginUser() {
-        ApiClient.getInstance(requireContext()).login(
-            LoginRequest(
-                binding.emailEditText.text.toString(),
-                binding.passwordEditText.text.toString()
-            ), object : Callback<LoginResponse> {
-                override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
-                    if (response.isSuccessful) {
-                        AppPref(requireContext()).setUserToken(response.body()?.token)
-                        AppPref(requireContext()).setUserData(
-                            getUserDataFromToken(
-                                response.body()?.token
-                            )
-                        )
-                        AppPref(requireContext()).getUserData()
-                        val intent = Intent(requireContext(), HomeActivity::class.java)
-                        startActivity(intent)
-                        requireActivity().finish()
-                    } else {
-                        Toast.makeText(
-                            requireContext(),
-                            getErrorMessageFromJson(response.errorBody()?.string()),
-                            Toast.LENGTH_LONG
-                        )
-                            .show()
-                    }
-                    hideDialog()
+        ApiClient.getInstance(requireContext()).login(LoginRequest(binding.emailEditText.text.toString(), binding.passwordEditText.text.toString()), object : Callback<LoginResponse> {
+            override fun onResponse(
+                call: Call<LoginResponse>,
+                response: Response<LoginResponse>,
+            ) {
+                if (response.isSuccessful) {
+                    appPref.setUserToken(response.body()?.token)
+                    appPref.setUserData(getUserDataFromToken(response.body()?.token))
+                    val userData = appPref.getUserData().userData
+                    DashXClient.getInstance().setIdentity(userData.id.toString(), appPref.getUserData().token)
+                    val intent = Intent(requireContext(), HomeActivity::class.java)
+                    startActivity(intent)
+                    requireActivity().finish()
+                } else {
+                    showToast(requireContext(), getErrorMessageFromJson(response.errorBody()?.string()))
                 }
+                hideDialog()
+            }
 
-                override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                    hideDialog()
-                    Toast.makeText(
-                        requireContext(),
-                        getString(R.string.something_went_wrong),
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
+            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                hideDialog()
+                showToast(requireContext(), getString(R.string.something_went_wrong))
+            }
 
-            })
+        })
     }
 
     private fun validateFields(): Boolean {
-        return validateEmail(
-            binding.emailEditText.text.toString(),
-            binding.emailTextInput,
-            requireContext()
-        ) && validatePassword(
-            binding.passwordEditText.text.toString(),
-            binding.passwordTextInput,
-            requireContext()
-        )
+        return validateEmail(binding.emailEditText.text.toString(), binding.emailTextInput, requireContext()) &&
+            validatePassword(binding.passwordEditText.text.toString(), binding.passwordTextInput, requireContext())
     }
 
     private fun showDialog() {
