@@ -63,5 +63,8 @@
 
     <string name="camera_permission_denied">Camera permission denied</string>
     <string name="gallery_permission_denied">Gallery permission denied</string>
+    <string name="select_image">Select image:</string>
+    <string name="choose_file">Choose file</string>
+    <string name="select_video">Select video:</string>
 
 </resources>

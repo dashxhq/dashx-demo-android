@@ -2,7 +2,6 @@ package com.dashxdemo.app.pref.data
 
 import com.dashxdemo.app.api.responses.AssetData
 import com.google.gson.annotations.SerializedName
-import java.net.URI
 
 data class UserData(
     @SerializedName("user")

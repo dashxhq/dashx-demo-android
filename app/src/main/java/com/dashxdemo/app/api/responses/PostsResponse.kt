@@ -17,6 +17,10 @@ data class Post(
     val userId: Int,
     @SerializedName("text")
     val text: String,
+    @SerializedName("image")
+    val image: AssetData?,
+    @SerializedName("video")
+    val video: AssetData?,
     @SerializedName("created_at")
     val createdAt: String,
     @SerializedName("updated_at")

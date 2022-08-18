@@ -82,7 +82,7 @@ class LoginFragment : Fragment() {
                     appPref.setUserToken(response.body()?.token)
                     appPref.setUserData(getUserDataFromToken(response.body()?.token))
                     val userData = appPref.getUserData().userData
-                    DashXClient.getInstance().setIdentity(userData.id.toString(), appPref.getUserData().token)
+                    DashXClient.getInstance().setIdentity(userData.id.toString(),null)// appPref.getUserData().token)
                     val intent = Intent(requireContext(), HomeActivity::class.java)
                     startActivity(intent)
                     requireActivity().finish()
