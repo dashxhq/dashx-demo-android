@@ -62,7 +62,7 @@ platform :android do
   lane :gitpush do
 
           git_add
-          git_commit(path: "*", message: "Version")
+          git_commit(path: "*", message: "Version bump")
           push_to_git_remote
 
 
@@ -71,6 +71,7 @@ platform :android do
 
   lane :beta_push do
         sh "fastlane IncrementBuildNumber"
+        sh "fastlane gitpush"
         sh "fastlane beta"
   end
 
