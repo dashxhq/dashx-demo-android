@@ -49,6 +49,7 @@ platform :android do
   lane :IncrementBuildNumber do
 
       path = '../app/build.gradle'
+      re = /versionCode\s+(\d+)/
       version_code_from_play_store_strings = google_play_track_version_codes(
             package_name: "com.dashxdemo.app",   # PACKAGE_NAME is a global variable defined earlier
             track: "production",          # this can be alpha, beta etc.
