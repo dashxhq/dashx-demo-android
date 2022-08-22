@@ -52,7 +52,7 @@ platform :android do
       version_code_from_play_store_strings = google_play_track_version_codes(
             package_name: "com.dashxdemo.app",   # PACKAGE_NAME is a global variable defined earlier
             track: "production",          # this can be alpha, beta etc.
-            json_key: "/Users/ajaypuli/Documents/dashx-demo-store-secret.json",
+            json_key: ENV["ANDROID_JSON_KEY_FILE"],
           )
           version_code_from_play_store = version_code_from_play_store_strings[0].to_i
           UPDATED_VERSION_CODE = version_code_from_play_store + 1
