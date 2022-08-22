@@ -77,7 +77,7 @@ platform :android do
 
   lane :beta_push do
         sh "fastlane IncrementBuildNumber"
-        sh "fastlane gitpush"
+#         sh "fastlane gitpush"
         sh "fastlane beta"
   end
 
