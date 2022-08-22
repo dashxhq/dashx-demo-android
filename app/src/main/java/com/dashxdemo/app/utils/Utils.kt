@@ -2,13 +2,13 @@ package com.dashxdemo.app.utils
 
 import android.app.ProgressDialog
 import android.content.Context
-import android.os.Handler
-import android.os.Looper
-import android.widget.Toast
 import android.database.Cursor
 import android.graphics.Bitmap
 import android.net.Uri
+import android.os.Handler
+import android.os.Looper
 import android.provider.MediaStore
+import android.widget.Toast
 import com.dashxdemo.app.R
 import com.dashxdemo.app.api.responses.ErrorResponse
 import com.dashxdemo.app.pref.data.User
@@ -141,21 +141,21 @@ class Utils {
             val minute: Long = TimeUnit.MILLISECONDS.toMinutes(dateDiff)
             val hour: Long = TimeUnit.MILLISECONDS.toHours(dateDiff)
             val day: Long = TimeUnit.MILLISECONDS.toDays(dateDiff)
-            
+
             if (second < 60) {
                 convertedTime = "$prefix a few seconds $suffix"
             } else if (second > 60 && minute < 60) {
                 convertedTime = "$prefix $minute minutes $suffix"
             } else if (second > 60 && minute > 60 && hour < 24) {
-                convertedTime = "$prefix ${hour+1} hours $suffix"
+                convertedTime = "$prefix ${hour + 1} hours $suffix"
             } else if (second > 60 && minute > 60 && hour > 24 && hour < 48) {
                 convertedTime = "$prefix a day $suffix"
             } else if (day > 360) {
                 convertedTime = prefix + (day / 360).toString() + " years " + suffix
             } else if (day < 30) {
-                convertedTime = "$prefix ${day+1} days $suffix"
+                convertedTime = "$prefix ${day + 1} days $suffix"
             } else if (day > 30) {
-                convertedTime = prefix + ((day / 30)+1).toString() + " months " + suffix
+                convertedTime = prefix + ((day / 30) + 1).toString() + " months " + suffix
             }
             return convertedTime
         }
@@ -174,8 +174,20 @@ class Utils {
             val bytes = ByteArrayOutputStream()
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
             val path: String = MediaStore.Images.Media.insertImage(context.contentResolver, bitmap, "", null)
-            val uri =  Uri.parse(path)
+            val uri = Uri.parse(path)
             return File(getPath(context, uri)!!)
+        }
+
+        fun getInitials(name: String): String {
+            if (name.isEmpty()) {
+                return name
+            }
+            val nameSplit = name.split(" ")
+            return if (nameSplit.size > 1) {
+                nameSplit[0][0].toString() + nameSplit[1][0].toString()
+            } else {
+                nameSplit[0][0].toString()
+            }
         }
     }
 }

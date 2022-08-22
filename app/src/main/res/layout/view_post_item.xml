@@ -18,15 +18,24 @@
             android:id="@+id/imageView"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            app:shapeAppearanceOverlay="@style/RoundedImageView"
-            app:srcCompat="@drawable/image_icon" />
+            app:shapeAppearanceOverlay="@style/RoundedImageView" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/imageTextView"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/rounded_text_view"
+            android:gravity="center"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="10sp" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/nameTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:layout_toEndOf="@id/imageView"
+            android:layout_marginStart="45dp"
             android:textColor="@color/black"
             android:textSize="14sp" />
 
@@ -44,9 +53,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/nameTextView"
-            android:layout_marginStart="15dp"
+            android:layout_marginStart="45dp"
             android:layout_marginTop="3dp"
-            android:layout_toEndOf="@id/imageView"
             android:textSize="14sp" />
 
         <com.google.android.material.textview.MaterialTextView
@@ -54,9 +62,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/historyTextView"
-            android:layout_marginStart="15dp"
+            android:layout_marginStart="45dp"
             android:layout_marginTop="6dp"
-            android:layout_toEndOf="@id/imageView"
             android:textColor="@color/black"
             android:textSize="16sp" />
     </RelativeLayout>
