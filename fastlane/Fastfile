@@ -70,8 +70,8 @@ platform :android do
 
 
   lane :beta_push do
-        IncrementBuildNumber
-        beta
+        sh "fastlane IncrementBuildNumber"
+        sh "fastlane beta"
   end
 
   desc "Deploy a prod version to the Google Play"
