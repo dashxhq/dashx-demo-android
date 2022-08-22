@@ -55,7 +55,7 @@ class BookmarksFragment : Fragment() {
                             Toast.makeText(requireContext(), getString(R.string.no_bookmarks_found), Toast.LENGTH_LONG).show()
                         }
                         binding.bookmarkedPostsRecyclerView.setHasFixedSize(true)
-                        bookmarkedPostsAdapter = PostsAdapter(response.body()?.posts ?: mutableListOf()).apply {
+                        bookmarkedPostsAdapter = PostsAdapter(response.body()?.posts ?: mutableListOf(), requireContext()).apply {
                             onBookmarkClick = { bookmarks, position ->
                                 toggleBookmark(bookmarks, position)
                                 removeElementAtPosition(position)

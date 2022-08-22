@@ -33,8 +33,10 @@ import com.dashxdemo.app.utils.Constants.PICK_GALLERY_IMAGE
 import com.dashxdemo.app.utils.Constants.TAKE_CAMERA_IMAGE
 import com.dashxdemo.app.utils.Utils.Companion.getErrorMessageFromJson
 import com.dashxdemo.app.utils.Utils.Companion.getFileFromBitmap
+import com.dashxdemo.app.utils.Utils.Companion.getInitials
 import com.dashxdemo.app.utils.Utils.Companion.getPath
 import com.dashxdemo.app.utils.Utils.Companion.initProgressDialog
+import com.dashxdemo.app.utils.Utils.Companion.runOnUiThread
 import com.dashxdemo.app.utils.Utils.Companion.showToast
 import com.dashxdemo.app.utils.Utils.Companion.validateEmail
 import com.dashxdemo.app.utils.Utils.Companion.validateNameFields
@@ -91,8 +93,10 @@ class ProfileFragment : Fragment() {
         binding.emailEditText.setText(email)
 
         if (avatar?.url.isNullOrEmpty()) {
-            binding.profilePicture.setImageResource(R.drawable.icon_profile)
+            binding.profilePicture.visibility = View.GONE
+            binding.profilePictureTextView.text = getInitials("$firstName $lastName")
         } else {
+            binding.profilePictureTextView.visibility = View.GONE
             Glide.with(requireContext()).load(avatar?.url).into(binding.profilePicture)
         }
     }
@@ -117,21 +121,28 @@ class ProfileFragment : Fragment() {
             }
         }
 
+        binding.profilePictureTextView.setOnClickListener {
+            showImagePickerDialog()
+        }
+
         binding.profilePicture.setOnClickListener {
-            dialogBinding = DialogToSelectImageBinding.inflate(layoutInflater)
-            val dialogBoxBuilder = AlertDialog.Builder(activity).setView(dialogBinding.root)
-            val dialogBoxInstance = dialogBoxBuilder.show()
+           showImagePickerDialog()
+        }
+    }
 
-            dialogBinding.iconCamera.setOnClickListener {
-                dialogBoxInstance.dismiss()
-                cameraRequestPermissionLauncher.launch(Manifest.permission.CAMERA)
-            }
+    private fun showImagePickerDialog() {
+        dialogBinding = DialogToSelectImageBinding.inflate(layoutInflater)
+        val dialogBoxBuilder = AlertDialog.Builder(activity).setView(dialogBinding.root)
+        val dialogBoxInstance = dialogBoxBuilder.show()
 
-            dialogBinding.iconGallery.setOnClickListener {
-                dialogBoxInstance.dismiss()
-                galleryRequestPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+        dialogBinding.iconCamera.setOnClickListener {
+            dialogBoxInstance.dismiss()
+            cameraRequestPermissionLauncher.launch(Manifest.permission.CAMERA)
+        }
 
-            }
+        dialogBinding.iconGallery.setOnClickListener {
+            dialogBoxInstance.dismiss()
+            galleryRequestPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
         }
     }
 
@@ -159,8 +170,10 @@ class ProfileFragment : Fragment() {
     }
 
     private fun updateProfile() {
-        ApiClient.getInstance(requireContext()).updateProfile(
-            UpdateProfileRequest(binding.firstNameEditText.text.toString(), binding.lastNameEditText.text.toString(), binding.emailEditText.text.toString(), AssetData(avatar?.status, avatar?.url)), object : Callback<UpdateProfileResponse> {
+        ApiClient.getInstance(requireContext()).updateProfile(UpdateProfileRequest(binding.firstNameEditText.text.toString(),
+            binding.lastNameEditText.text.toString(),
+            binding.emailEditText.text.toString(),
+            AssetData(avatar?.status, avatar?.url)), object : Callback<UpdateProfileResponse> {
             override fun onResponse(call: Call<UpdateProfileResponse>, response: Response<UpdateProfileResponse>) {
                 hideProgressDialog()
                 if (response.isSuccessful) {
@@ -198,29 +211,33 @@ class ProfileFragment : Fragment() {
                 val bitmap = data?.extras?.get("data") as Bitmap
                 val file = getFileFromBitmap(bitmap, requireContext())
                 showProgressDialog()
-                DashXClient.getInstance().uploadExternalAsset(file, "e8b7b42f-1f23-431c-b739-9de0fba3dadf", onSuccess = {
-                    hideProgressDialog()
-                    avatar = it.data.asset
-                }, onError = {
-                    hideProgressDialog()
-                    showToast(requireContext(), it)
-                })
+                uploadExternalAsset(file, "e8b7b42f-1f23-431c-b739-9de0fba3dadf")
                 binding.profilePicture.setImageBitmap(bitmap)
             }
 
             PICK_GALLERY_IMAGE -> if (resultCode == RESULT_OK) {
                 val selectedImage: Uri? = data?.data
                 showProgressDialog()
-                DashXClient.getInstance().uploadExternalAsset(File(getPath(requireContext(), selectedImage!!)), "e8b7b42f-1f23-431c-b739-9de0fba3dadf", onSuccess = {
-                    avatar = it.data.asset
-                    hideProgressDialog()
-                }, onError = {
-                    hideProgressDialog()
-                    showToast(requireContext(), it)
-                })
+                uploadExternalAsset(File(getPath(requireContext(), selectedImage!!)), "e8b7b42f-1f23-431c-b739-9de0fba3dadf")
                 binding.profilePicture.setImageURI(selectedImage)
             }
         }
+    }
+
+    fun uploadExternalAsset(file: File,externalColumId: String){
+        DashXClient.getInstance().uploadExternalAsset(file, externalColumId, onSuccess = {
+            avatar = it.data.asset
+            hideProgressDialog()
+            runOnUiThread {
+                binding.profilePictureTextView.visibility = View.GONE
+                binding.profilePicture.visibility = View.VISIBLE
+            }
+        }, onError = {
+            hideProgressDialog()
+            runOnUiThread {
+                showToast(requireContext(), it)
+            }
+        })
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
