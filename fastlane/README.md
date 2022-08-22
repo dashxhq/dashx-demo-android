@@ -23,6 +23,38 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 Deploy a beta version to the Google Play
 
+### android increment_version_code_in_project_gradle
+
+```sh
+[bundle exec] fastlane android increment_version_code_in_project_gradle
+```
+
+Responsible for fetching version code from play console and incrementing version code.
+
+### android IncrementBuildNumber
+
+```sh
+[bundle exec] fastlane android IncrementBuildNumber
+```
+
+
+
+### android gitpush
+
+```sh
+[bundle exec] fastlane android gitpush
+```
+
+
+
+### android production
+
+```sh
+[bundle exec] fastlane android production
+```
+
+Deploy a prod version to the Google Play
+
 ----
 
 This README.md is auto-generated and will be re-generated every time [_fastlane_](https://fastlane.tools) is run.

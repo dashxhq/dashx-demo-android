@@ -30,6 +30,49 @@ platform :android do
     upload_to_play_store(json_key: ENV["ANDROID_JSON_KEY_FILE"], track: 'beta')
   end
 
+  desc "Responsible for fetching version code from play console and incrementing version code."
+  lane :increment_version_code_in_project_gradle do
+    version_code_from_play_store_strings = google_play_track_version_codes(
+      package_name: "com.dashxdemo.app",   # PACKAGE_NAME is a global variable defined earlier
+      track: "production",          # this can be alpha, beta etc.
+      json_key: "/Users/ajaypuli/Documents/dashx-demo-store-secret.json",
+    )
+    version_code_from_play_store = version_code_from_play_store_strings[0].to_i
+    UPDATED_VERSION_CODE = version_code_from_play_store + 1
+    increment_version_name(
+    bump_type: "patch",
+          gradle_file_path: "/Users/ajaypuli/Documents/Github/dashx-demo-android/app/build.gradle",
+      version_number: UPDATED_VERSION_CODE.to_i
+    )
+  end
+
+  lane :IncrementBuildNumber do
+
+      path = '../app/build.gradle'
+      re = /versionCode\s+(\d+)/
+      s = File.read(path)
+      versionCode = s[re, 1].to_i
+      s[re, 1] = (versionCode + 1).to_s
+      f = File.new(path, 'w')
+      f.write(s)
+      f.close
+
+  end
+
+  lane :gitpush do
+
+          git_add
+          git_commit(path: "*", message: "Version")
+          push_to_git_remote
+
+
+  end
+
+
+  lane :beta_push do
+        IncrementBuildNumber
+        beta
+
   desc "Deploy a prod version to the Google Play"
   lane :production do
     gradle(task: "bundle", build_type: "release", print_command: false,

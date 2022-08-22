@@ -39,10 +39,3 @@ jobs:
                   KEYSTORE_KEY_ALIAS: ${{ secrets.KEYSTORE_KEY_ALIAS}}
                   KEYSTORE_KEY_PASSWORD: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
                   ANDROID_JSON_KEY_FILE: ${{ steps.service_account_json_file.outputs.filePath }}
-
-            - name: Upload build artifacts
-              uses: actions/upload-artifact@v2
-              with:
-                  name: assets
-                  path: |
-                      ${{ github.workspace }}/app/build/outputs/bundle/release
