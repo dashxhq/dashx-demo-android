@@ -27,7 +27,7 @@ platform :android do
         "android.injected.signing.key.password" => ENV["KEYSTORE_KEY_PASSWORD"]
 
     })
-    upload_to_play_store(json_key: ENV["ANDROID_JSON_KEY_FILE"], track: 'beta')
+    upload_to_play_store(json_key: ENV["ANDROID_JSON_KEY_FILE"], track: 'internal')
   end
 
   desc "Responsible for fetching version code from play console and incrementing version code."
