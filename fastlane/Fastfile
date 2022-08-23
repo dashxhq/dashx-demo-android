@@ -17,8 +17,8 @@ default_platform(:android)
 
 platform :android do
 
-  desc "Deploy a beta version to the Google Play"
-  lane :beta do
+  desc "Deploy a internal version to the Google Play"
+  lane :internal do
     gradle(task: "bundle", build_type: "StagingRelease", print_command: false,
     properties: {
         "android.injected.signing.store.file" => ENV["ANDROID_KEY_STORE"],
@@ -36,8 +36,8 @@ platform :android do
       path = '../app/build.gradle'
       re = /versionCode\s+(\d+)/
       version_code_from_play_store_strings = google_play_track_version_codes(
-            package_name: "com.dashxdemo.app",   # PACKAGE_NAME is a global variable defined earlier
-            track: "beta",          # this can be alpha, beta etc.
+            package_name: "com.dashxdemo.app",
+            track: "internal",
             json_key: ENV["ANDROID_JSON_KEY_FILE"],
           )
           version_code_from_play_store = version_code_from_play_store_strings[0].to_i
@@ -50,13 +50,13 @@ platform :android do
 
   end
 
-  desc "Deploy a beta version with auto increment of version code"
-  lane :beta_push do
+  desc "Deploy a internal version with auto increment of version code"
+  lane :internal_push do
         sh "fastlane increment_version_code"
-        sh "fastlane beta"
+        sh "fastlane internal"
   end
 
-  desc "Deploy a prod version to the Google Play"
+  desc "Deploy a production version to the Google Play"
   lane :production do
     gradle(task: "bundle", build_type: "release", print_command: false,
         properties: {
@@ -69,7 +69,7 @@ platform :android do
         upload_to_play_store(json_key: ENV["ANDROID_JSON_KEY_FILE"], track: 'production')
   end
 
-  desc "Deploy a beta version with auto increment of version code"
+  desc "Deploy a production version with auto increment of version code"
     lane :production_push do
           sh "fastlane increment_version_code"
           sh "fastlane production"
