@@ -52,7 +52,7 @@ platform :android do
 
   desc "Deploy a beta version with auto increment of version code"
   lane :beta_push do
-        sh "fastlane IncrementBuildNumber"
+        sh "fastlane increment_version_code"
         sh "fastlane beta"
   end
 
@@ -71,7 +71,7 @@ platform :android do
 
   desc "Deploy a beta version with auto increment of version code"
     lane :production_push do
-          sh "fastlane IncrementBuildNumber"
+          sh "fastlane increment_version_code"
           sh "fastlane production"
   end
 
