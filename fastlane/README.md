@@ -31,10 +31,10 @@ Deploy a internal version to the Google Play
 
 Responsible for fetching version code from play console and incrementing version code.
 
-### android internal_push
+### android internal_with_increment
 
 ```sh
-[bundle exec] fastlane android internal_push
+[bundle exec] fastlane android internal_with_increment
 ```
 
 Deploy a internal version with auto increment of version code
@@ -47,10 +47,10 @@ Deploy a internal version with auto increment of version code
 
 Deploy a production version to the Google Play
 
-### android production_push
+### android production_with_increment
 
 ```sh
-[bundle exec] fastlane android production_push
+[bundle exec] fastlane android production_with_increment
 ```
 
 Deploy a production version with auto increment of version code

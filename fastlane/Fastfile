@@ -51,9 +51,9 @@ platform :android do
   end
 
   desc "Deploy a internal version with auto increment of version code"
-  lane :internal_push do
-        sh "fastlane increment_version_code"
-        sh "fastlane internal"
+  lane :internal_with_increment do
+        increment_version_code
+        fastlane internal
   end
 
   desc "Deploy a production version to the Google Play"
@@ -70,7 +70,7 @@ platform :android do
   end
 
   desc "Deploy a production version with auto increment of version code"
-    lane :production_push do
+    lane :production_with_increment do
           sh "fastlane increment_version_code"
           sh "fastlane production"
   end
