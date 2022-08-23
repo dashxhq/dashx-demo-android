@@ -19,6 +19,7 @@ platform :android do
 
   desc "Deploy a internal version to the Google Play"
   lane :internal do
+    increment_version_code
     gradle(task: "bundle", build_type: "StagingRelease", print_command: false,
     properties: {
         "android.injected.signing.store.file" => ENV["ANDROID_KEY_STORE"],
