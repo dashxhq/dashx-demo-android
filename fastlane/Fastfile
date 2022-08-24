@@ -22,13 +22,24 @@ platform :android do
 
     path = '../app/build.gradle'
     re = /versionCode\s+(\d+)/
-    version_code_from_play_store_strings = google_play_track_version_codes(
+    version_code_from_internal_play_store_strings = google_play_track_version_codes(
            package_name: "com.dashxdemo.app",
            track: "internal",
            json_key: ENV["ANDROID_JSON_KEY_FILE"],
            )
-    version_code_from_play_store = version_code_from_play_store_strings[0].to_i
-    UPDATED_VERSION_CODE = version_code_from_play_store + 1
+    version_code_from_production_play_store_strings = google_play_track_version_codes(
+               package_name: "com.dashxdemo.app",
+               track: "internal",
+               json_key: ENV["ANDROID_JSON_KEY_FILE"],
+               )
+    version_code = '0'
+    if version_code_from_internal_play_store_strings[0] < version_code_from_production_play_store_strings[0]
+        version_code = version_code_from_production_play_store_strings[0]
+    else
+        version_code = version_code_from_internal_play_store_strings[0]
+    end
+    latest_version_code_from_play_store = version_code.to_i
+    UPDATED_VERSION_CODE = latest_version_code_from_play_store + 1
     s = File.read(path)
     s[re, 1] = (UPDATED_VERSION_CODE).to_s
     f = File.new(path, 'w')
