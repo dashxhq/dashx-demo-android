@@ -28,10 +28,10 @@ platform :android do
            json_key: ENV["ANDROID_JSON_KEY_FILE"],
            )
     version_code_from_production_play_store_strings = google_play_track_version_codes(
-               package_name: "com.dashxdemo.app",
-               track: "internal",
-               json_key: ENV["ANDROID_JSON_KEY_FILE"],
-               )
+           package_name: "com.dashxdemo.app",
+           track: "production",
+           json_key: ENV["ANDROID_JSON_KEY_FILE"],
+           )
     version_code = '0'
     if version_code_from_internal_play_store_strings[0] < version_code_from_production_play_store_strings[0]
         version_code = version_code_from_production_play_store_strings[0]
