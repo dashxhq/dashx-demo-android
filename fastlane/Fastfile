@@ -17,8 +17,39 @@ default_platform(:android)
 
 platform :android do
 
-  desc "Deploy a beta version to the Google Play"
-  lane :beta do
+  desc "Responsible for fetching version code from play console and incrementing version code."
+  lane :increment_version_code do
+
+    path = '../app/build.gradle'
+    re = /versionCode\s+(\d+)/
+    version_code_from_internal_play_store_strings = google_play_track_version_codes(
+           package_name: "com.dashxdemo.app",
+           track: "internal",
+           json_key: ENV["ANDROID_JSON_KEY_FILE"],
+           )
+    version_code_from_production_play_store_strings = google_play_track_version_codes(
+           package_name: "com.dashxdemo.app",
+           track: "production",
+           json_key: ENV["ANDROID_JSON_KEY_FILE"],
+           )
+    version_code = '0'
+    if version_code_from_internal_play_store_strings[0] < version_code_from_production_play_store_strings[0]
+        version_code = version_code_from_production_play_store_strings[0]
+    else
+        version_code = version_code_from_internal_play_store_strings[0]
+    end
+    latest_version_code_from_play_store = version_code.to_i
+    UPDATED_VERSION_CODE = latest_version_code_from_play_store + 1
+    s = File.read(path)
+    s[re, 1] = (UPDATED_VERSION_CODE).to_s
+    f = File.new(path, 'w')
+    f.write(s)
+    f.close
+  end
+
+  desc "Deploy a internal version to the Google Play"
+  lane :internal do
+    increment_version_code
     gradle(task: "bundle", build_type: "StagingRelease", print_command: false,
     properties: {
         "android.injected.signing.store.file" => ENV["ANDROID_KEY_STORE"],
@@ -27,11 +58,12 @@ platform :android do
         "android.injected.signing.key.password" => ENV["KEYSTORE_KEY_PASSWORD"]
 
     })
-    upload_to_play_store(json_key: ENV["ANDROID_JSON_KEY_FILE"], track: 'beta')
+    upload_to_play_store(json_key: ENV["ANDROID_JSON_KEY_FILE"], track: 'internal')
   end
 
-  desc "Deploy a prod version to the Google Play"
+  desc "Deploy a production version to the Google Play"
   lane :production do
+    increment_version_code
     gradle(task: "bundle", build_type: "release", print_command: false,
         properties: {
             "android.injected.signing.store.file" => ENV["ANDROID_KEY_STORE"],
@@ -40,7 +72,7 @@ platform :android do
             "android.injected.signing.key.password" => ENV["KEYSTORE_KEY_PASSWORD"]
 
         })
-        upload_to_play_store(json_key: ENV["ANDROID_JSON_KEY_FILE"], track: 'production')
+    upload_to_play_store(json_key: ENV["ANDROID_JSON_KEY_FILE"], track: 'production')
   end
 
 end

@@ -31,8 +31,8 @@ jobs:
                   fileName: "android_keystore.jks"
                   encodedString: ${{ secrets.ANDROID_KEY_STORE }}
 
-            - name: Build & deploy Android Beta release
-              run: bundle exec fastlane android beta
+            - name: Build & deploy Android Internal release
+              run: bundle exec fastlane android internal
               env:
                   ANDROID_KEY_STORE: ${{ steps.android_keystore.outputs.filePath }}
                   KEYSTORE_STORE_PASSWORD: ${{ secrets.KEYSTORE_STORE_PASSWORD }}

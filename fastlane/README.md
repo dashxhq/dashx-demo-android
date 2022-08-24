@@ -15,13 +15,45 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 ## Android
 
-### android beta
+### android internal
 
 ```sh
-[bundle exec] fastlane android beta
+[bundle exec] fastlane android internal
 ```
 
-Deploy a beta version to the Google Play
+Deploy a internal version to the Google Play
+
+### android increment_version_code
+
+```sh
+[bundle exec] fastlane android increment_version_code
+```
+
+Responsible for fetching version code from play console and incrementing version code.
+
+### android internal_with_increment
+
+```sh
+[bundle exec] fastlane android internal_with_increment
+```
+
+Deploy a internal version with auto increment of version code
+
+### android production
+
+```sh
+[bundle exec] fastlane android production
+```
+
+Deploy a production version to the Google Play
+
+### android production_with_increment
+
+```sh
+[bundle exec] fastlane android production_with_increment
+```
+
+Deploy a production version with auto increment of version code
 
 ----
 
