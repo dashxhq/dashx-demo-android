@@ -1,14 +1,21 @@
 package com.dashxdemo.app.utils
 
+import android.Manifest
+import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Context
+import android.content.Intent
 import android.database.Cursor
 import android.graphics.Bitmap
+import android.media.MediaMetadataRetriever
 import android.net.Uri
 import android.os.Handler
 import android.os.Looper
 import android.provider.MediaStore
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.FragmentActivity
 import com.dashxdemo.app.R
 import com.dashxdemo.app.api.responses.ErrorResponse
 import com.dashxdemo.app.pref.data.User
@@ -155,7 +162,7 @@ class Utils {
             } else if (day < 30) {
                 convertedTime = "$prefix ${day + 1} days $suffix"
             } else if (day > 30) {
-                convertedTime = prefix + ((day / 30) + 1).toString() + " months " + suffix
+                convertedTime = "$prefix ${((day / 30) + 1)} months $suffix"
             }
             return convertedTime
         }
@@ -176,6 +183,12 @@ class Utils {
             val path: String = MediaStore.Images.Media.insertImage(context.contentResolver, bitmap, "", null)
             val uri = Uri.parse(path)
             return File(getPath(context, uri)!!)
+        }
+
+        fun getVideoThumbnail(context: Context, uri: Uri?): Bitmap? {
+            val mMMR = MediaMetadataRetriever()
+            mMMR.setDataSource(context, uri)
+            return mMMR.frameAtTime
         }
 
         fun getInitials(name: String): String {

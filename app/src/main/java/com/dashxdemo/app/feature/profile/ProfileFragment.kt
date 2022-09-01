@@ -25,8 +25,8 @@ import com.dashxdemo.app.api.requests.UpdateProfileRequest
 import com.dashxdemo.app.api.responses.AssetData
 import com.dashxdemo.app.api.responses.ProfileResponse
 import com.dashxdemo.app.api.responses.UpdateProfileResponse
-import com.dashxdemo.app.databinding.DialogToSelectImageBinding
 import com.dashxdemo.app.databinding.FragmentProfileBinding
+import com.dashxdemo.app.databinding.ViewCreatePostDialogBinding
 import com.dashxdemo.app.utils.Constants.PERM_CAMERA
 import com.dashxdemo.app.utils.Constants.PERM_READ_EXT_STORAGE
 import com.dashxdemo.app.utils.Constants.PICK_GALLERY_IMAGE
@@ -49,7 +49,7 @@ class ProfileFragment : Fragment() {
 
     private lateinit var binding: FragmentProfileBinding
     private lateinit var progressDialog: ProgressDialog
-    private lateinit var dialogBinding: DialogToSelectImageBinding
+    private lateinit var dialogBinding: ViewPickerDialogBinding
 
     private var avatar: com.dashx.sdk.data.AssetData? = null
 
@@ -131,7 +131,7 @@ class ProfileFragment : Fragment() {
     }
 
     private fun showImagePickerDialog() {
-        dialogBinding = DialogToSelectImageBinding.inflate(layoutInflater)
+        dialogBinding = ViewPickerDialogBinding.inflate(layoutInflater)
         val dialogBoxBuilder = AlertDialog.Builder(activity).setView(dialogBinding.root)
         val dialogBoxInstance = dialogBoxBuilder.show()
 

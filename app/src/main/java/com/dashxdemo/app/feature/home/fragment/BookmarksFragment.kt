@@ -7,7 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.dashxdemo.app.R
+import com.dashxdemo.app.utils.data.VideoPlayerData
 import com.dashxdemo.app.adapters.PostsAdapter
 import com.dashxdemo.app.api.ApiClient
 import com.dashxdemo.app.api.responses.Post
@@ -55,11 +57,16 @@ class BookmarksFragment : Fragment() {
                             Toast.makeText(requireContext(), getString(R.string.no_bookmarks_found), Toast.LENGTH_LONG).show()
                         }
                         binding.bookmarkedPostsRecyclerView.setHasFixedSize(true)
-                        bookmarkedPostsAdapter = PostsAdapter(response.body()?.posts ?: mutableListOf(), requireContext()).apply {
+
+                        bookmarkedPostsAdapter = PostsAdapter(response.body()?.posts ?: mutableListOf(), requireContext(), layoutInflater).apply {
                             onBookmarkClick = { bookmarks, position ->
                                 toggleBookmark(bookmarks, position)
                                 removeElementAtPosition(position)
                                 notifyDataSetChanged()
+                            }
+
+                            onVideoPlayClick = { videoUrl ->
+                                navigateToVideoPlayer(videoUrl)
                             }
                         }
                         binding.bookmarkedPostsRecyclerView.adapter = bookmarkedPostsAdapter
@@ -77,6 +84,11 @@ class BookmarksFragment : Fragment() {
                     Toast.makeText(requireContext(), getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show()
                 }
             })
+    }
+
+    private fun navigateToVideoPlayer(videoUrl: VideoPlayerData) {
+        val action = BookmarksFragmentDirections.actionNavBookmarksToVideoPlayerFragment(videoUrl)
+        findNavController().navigate(action)
     }
 
     private fun toggleBookmark(bookmarks: Post, itemPosition: Int) {

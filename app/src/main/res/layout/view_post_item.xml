@@ -66,6 +66,44 @@
             android:layout_marginTop="6dp"
             android:textColor="@color/black"
             android:textSize="16sp" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/postImageView"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_below="@id/contentTextView"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="10dp"
+            android:scaleType="centerCrop"
+            android:visibility="gone" />
+
+        <FrameLayout
+            android:id="@+id/videoContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/contentTextView"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="50dp"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/videoThumbnail"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:scaleType="centerCrop" />
+
+            <ImageView
+                android:id="@+id/videoPreviewPlayButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:background="#DCDCDC"
+                android:padding="2dp"
+                android:src="@drawable/ic_play_filled" />
+
+        </FrameLayout>
+
     </RelativeLayout>
 
 </com.google.android.material.card.MaterialCardView>
