@@ -30,10 +30,7 @@ import com.dashxdemo.app.api.responses.PostsResponse
 import com.dashxdemo.app.api.responses.ToggleBookmarkResponse
 import com.dashxdemo.app.databinding.DialogCreatePostBinding
 import com.dashxdemo.app.pref.AppPref
-import com.dashxdemo.app.databinding.DialogToSelectImageBinding
 import com.dashxdemo.app.databinding.*
-import com.dashxdemo.app.databinding.ViewCreatePostDialogBinding
-import com.dashxdemo.app.databinding.ViewPickerDialogBinding
 import com.dashxdemo.app.utils.Constants.PERM_CAMERA
 import com.dashxdemo.app.utils.Constants.PERM_READ_EXT_STORAGE
 import com.dashxdemo.app.utils.Constants.PICK_GALLERY_IMAGE
