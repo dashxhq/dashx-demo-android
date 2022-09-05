@@ -12,6 +12,12 @@
 #   public *;
 #}
 
+-keep class com.dashxdemo.app.utils.data.VideoPlayerData {*; }
+-keep class com.dashxdemo.app.api.** {*;}
+-keep class com.dashxdemo.app.pref.data.** {*;}
+
+-keep class com.dashx.** {*;}
+
 # Uncomment this to preserve the line number information for
 # debugging stack traces.
 #-keepattributes SourceFile,LineNumberTable
