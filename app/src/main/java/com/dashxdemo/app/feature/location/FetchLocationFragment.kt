@@ -53,10 +53,10 @@ class FetchLocation : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setUpUi()
+        setupUI()
     }
 
-    private fun setUpUi() {
+    private fun setupUI() {
         binding.coarseLocationButton.setOnClickListener {
             coarseLocationRequestPermissionLauncher.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
         }

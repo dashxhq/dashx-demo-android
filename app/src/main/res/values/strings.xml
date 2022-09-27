@@ -33,9 +33,6 @@
     <string name="fetch_location">Fetch Location</string>
     <string name="update">Update</string>
 
-    <string name="get_coarse_location">Get coarse location</string>
-    <string name="get_fine_location">Get fine location</string>
-
     <string name="newPostNotification">When someone creates a post</string>
     <string name="newPostNotificationHint">This will send a notification when someone creates a post</string>
     <string name="newBookmarkNotification">When someone bookmarks a post</string>
@@ -70,6 +67,9 @@
     <string name="select_image">Select image:</string>
     <string name="choose_file">Choose file</string>
     <string name="select_video">Select video:</string>
+
+    <string name="get_coarse_location">Get Coarse location</string>
+    <string name="get_fine_location">Get Fine location</string>
     <string name="location_permission_denied">Location permission denied</string>
     <string name="latitude">"Latitude: "</string>
     <string name="longitude">"Longitude: "</string>
