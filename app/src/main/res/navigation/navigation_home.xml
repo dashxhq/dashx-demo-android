@@ -41,6 +41,10 @@
             android:id="@+id/action_nav_more_to_nav_settings"
             app:destination="@id/nav_settings" />
 
+        <action
+            android:id="@+id/action_nav_more_to_nav_fetch_location"
+            app:destination="@id/nav_fetch_location" />
+
     </fragment>
 
     <fragment
@@ -88,5 +92,11 @@
             app:destination="@id/nav_home" />
 
     </fragment>
+
+    <fragment
+        android:id="@+id/nav_fetch_location"
+        android:name="com.dashxdemo.app.feature.location.FetchLocation"
+        android:label="FetchLocationFragment"
+        tools:layout="@layout/fragment_fetch_location" />
 
 </navigation>

@@ -43,6 +43,10 @@ class MoreFragment : Fragment() {
             findNavController().navigate(R.id.action_nav_more_to_nav_profile)
         }
 
+        binding.navLocation.setOnClickListener {
+            findNavController().navigate(R.id.action_nav_more_to_nav_fetch_location)
+        }
+
         binding.navLogout.setOnClickListener {
             logout()
         }
