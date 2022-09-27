@@ -49,6 +49,20 @@
         android:textSize="18sp" />
 
     <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/navLocation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/background_button_outlined"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="10dp"
+        android:text="@string/fetch_location"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="18sp" />
+
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/navLogout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
