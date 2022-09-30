@@ -195,7 +195,7 @@ class Utils {
             if (name.isEmpty()) {
                 return name
             }
-            val nameSplit = name.split(" ")
+            val nameSplit = name.trim().split(" ")
             return if (nameSplit.size > 1) {
                 nameSplit[0][0].toString() + nameSplit[1][0].toString()
             } else {

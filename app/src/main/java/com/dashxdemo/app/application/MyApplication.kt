@@ -7,6 +7,6 @@ import com.dashxdemo.app.BuildConfig
 class MyApplication : Application() {
     override fun onCreate() {
         super.onCreate()
-        DashXClient.createInstance(this, BuildConfig.DASHX_PUBLIC_KEY, BuildConfig.DASHX_BASE_URI, BuildConfig.DASHX_TARGET_ENVIRONMENT)
+        DashXClient.configure(this, BuildConfig.DASHX_PUBLIC_KEY, BuildConfig.DASHX_BASE_URI, BuildConfig.DASHX_TARGET_ENVIRONMENT)
     }
 }

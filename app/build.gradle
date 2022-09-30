@@ -73,8 +73,11 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.13.2'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.13.2'
 
+    // Play services
+    implementation 'com.google.android.gms:play-services:4.2.42'
+
     // DashX
-    implementation 'com.dashx:dashx-android:1.0.3'
+    implementation 'com.dashx:dashx-android:1.0.6'
 
     // Network
     implementation 'com.squareup.retrofit2:retrofit:2.8.1'
