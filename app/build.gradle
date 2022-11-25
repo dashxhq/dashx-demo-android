@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-android-extensions'
     id 'androidx.navigation.safeargs.kotlin'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -31,17 +32,17 @@ android {
         }
     }
 
-    flavorDimensions 'default'
+    flavorDimensions 'environment'
     productFlavors {
         staging {
-            dimension 'default'
+            dimension 'environment'
             buildConfigField 'java.lang.String', 'DASHX_PUBLIC_KEY', '"TLy2w3kxf8ePXEyEjTepcPiq"'
             buildConfigField 'java.lang.String', 'DASHX_BASE_URI', '"https://api.dashx-staging.com/graphql"'
             buildConfigField 'java.lang.String', 'DASHX_TARGET_ENVIRONMENT', '"staging"'
         }
 
         production {
-            dimension 'default'
+            dimension 'environment'
             buildConfigField 'java.lang.String', 'DASHX_PUBLIC_KEY', '"TLy2w3kxf8ePXEyEjTepcPiq"'
             buildConfigField 'java.lang.String', 'DASHX_BASE_URI', '"https://api.dashx-staging.com/graphql"'
             buildConfigField 'java.lang.String', 'DASHX_TARGET_ENVIRONMENT', '"production"'
