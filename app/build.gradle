@@ -20,7 +20,6 @@ android {
     }
 
     buildTypes {
-
         debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -36,16 +35,16 @@ android {
     productFlavors {
         staging {
             dimension 'default'
-            buildConfigField 'java.lang.String', 'DASHX_PUBLIC_KEY', '\"TLy2w3kxf8ePXEyEjTepcPiq\"'
-            buildConfigField 'java.lang.String', 'DASHX_BASE_URI', '\"https://api.dashx-staging.com/graphql\"'
-            buildConfigField 'java.lang.String', 'DASHX_TARGET_ENVIRONMENT', '\"staging\"'
+            buildConfigField 'java.lang.String', 'DASHX_PUBLIC_KEY', '"TLy2w3kxf8ePXEyEjTepcPiq"'
+            buildConfigField 'java.lang.String', 'DASHX_BASE_URI', '"https://api.dashx-staging.com/graphql"'
+            buildConfigField 'java.lang.String', 'DASHX_TARGET_ENVIRONMENT', '"staging"'
         }
 
         production {
             dimension 'default'
-            buildConfigField 'java.lang.String', 'DASHX_PUBLIC_KEY', '\"TLy2w3kxf8ePXEyEjTepcPiq\"'
-            buildConfigField 'java.lang.String', 'DASHX_BASE_URI', '\"https://api.dashx-staging.com/graphql\"'
-            buildConfigField 'java.lang.String', 'DASHX_TARGET_ENVIRONMENT', '\"production\"'
+            buildConfigField 'java.lang.String', 'DASHX_PUBLIC_KEY', '"TLy2w3kxf8ePXEyEjTepcPiq"'
+            buildConfigField 'java.lang.String', 'DASHX_BASE_URI', '"https://api.dashx-staging.com/graphql"'
+            buildConfigField 'java.lang.String', 'DASHX_TARGET_ENVIRONMENT', '"production"'
         }
     }
 
@@ -73,11 +72,8 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.13.2'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.13.2'
 
-    // Play services
-    implementation 'com.google.android.gms:play-services:4.2.42'
-
     // DashX
-    implementation 'com.dashx:dashx-android:1.0.7'
+    implementation 'com.dashx:dashx-android:1.0.8'
 
     // Network
     implementation 'com.squareup.retrofit2:retrofit:2.8.1'

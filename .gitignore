@@ -9,6 +9,9 @@ secrets/
 local.properties
 keystore.properties
 
+# Local gradle settings
+local.settings.gradle
+
 # Log/OS Files
 *.log
 

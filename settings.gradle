@@ -17,3 +17,10 @@ dependencyResolutionManagement {
 rootProject.name = 'DashX Demo'
 
 include ':app'
+
+// For DashX SDK Developers only:
+// The following allows for easily testing local SDK changes
+def localSettings = file('local.settings.gradle')
+if (localSettings.exists()) {
+    apply(from: localSettings)
+}
