@@ -36,14 +36,14 @@ android {
     productFlavors {
         staging {
             dimension 'environment'
-            buildConfigField 'java.lang.String', 'DASHX_PUBLIC_KEY', '"TLy2w3kxf8ePXEyEjTepcPiq"'
+            buildConfigField 'java.lang.String', 'DASHX_PUBLIC_KEY', '"ft3tP2wJlQB5NSdYrjU8UylH"'
             buildConfigField 'java.lang.String', 'DASHX_BASE_URI', '"https://api.dashx-staging.com/graphql"'
             buildConfigField 'java.lang.String', 'DASHX_TARGET_ENVIRONMENT', '"staging"'
         }
 
         production {
             dimension 'environment'
-            buildConfigField 'java.lang.String', 'DASHX_PUBLIC_KEY', '"TLy2w3kxf8ePXEyEjTepcPiq"'
+            buildConfigField 'java.lang.String', 'DASHX_PUBLIC_KEY', '"1rGE0HWa6Su8F9kZVDpZICYb"'
             buildConfigField 'java.lang.String', 'DASHX_BASE_URI', '"https://api.dashx-staging.com/graphql"'
             buildConfigField 'java.lang.String', 'DASHX_TARGET_ENVIRONMENT', '"production"'
         }
