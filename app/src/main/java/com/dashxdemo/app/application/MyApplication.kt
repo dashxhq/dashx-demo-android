@@ -9,6 +9,11 @@ class MyApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         DashXLog.setLogLevel(DashXLog.LogLevel.DEBUG);
-        DashXClient.configure(this, BuildConfig.DASHX_PUBLIC_KEY, BuildConfig.DASHX_BASE_URI, BuildConfig.DASHX_TARGET_ENVIRONMENT)
+        DashXClient.configure(
+            context = this,
+            publicKey = BuildConfig.DASHX_PUBLIC_KEY,
+            baseURI = BuildConfig.DASHX_BASE_URI,
+            targetEnvironment = BuildConfig.DASHX_TARGET_ENVIRONMENT
+        )
     }
 }
