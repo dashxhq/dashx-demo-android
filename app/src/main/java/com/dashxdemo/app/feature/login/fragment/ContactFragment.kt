@@ -60,10 +60,12 @@ class ContactFragment : Fragment() {
         binding.submitButton.setOnClickListener {
             if (validateFields()) {
                 showDialog()
+
                 val formValues = hashMapOf<String, String>()
                 formValues["name"] = binding.nameEditText.text.toString()
                 formValues["email"] = binding.emailEditText.text.toString()
                 DashXClient.getInstance().identify(formValues)
+
                 sendFeedback()
             }
         }
