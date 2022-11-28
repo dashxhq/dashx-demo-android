@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "490126799134",
+    "project_id": "dashx-demo-staging",
+    "storage_bucket": "dashx-demo-staging.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:490126799134:android:ded659c62a7c218438d90f",
+        "android_client_info": {
+          "package_name": "com.dashxdemo.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "490126799134-0s0d2q1b6v8uv1spltdn445dvtbarkal.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDOkwo6SlpV0AOz5nAFHmvL3EQ21wI2IIU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "490126799134-0s0d2q1b6v8uv1spltdn445dvtbarkal.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "490126799134-66klbq0acllfnpt9fmtjg0776rtrj6im.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.dashxdemo.app"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:490126799134:android:ee6817567cce5b4038d90f",
+        "android_client_info": {
+          "package_name": "com.dashxdemo.rn"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "490126799134-0s0d2q1b6v8uv1spltdn445dvtbarkal.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDOkwo6SlpV0AOz5nAFHmvL3EQ21wI2IIU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "490126799134-0s0d2q1b6v8uv1spltdn445dvtbarkal.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "490126799134-66klbq0acllfnpt9fmtjg0776rtrj6im.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.dashxdemo.app"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

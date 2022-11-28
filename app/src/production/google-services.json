@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "48484596656",
+    "project_id": "dashx-demo-production",
+    "storage_bucket": "dashx-demo-production.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:48484596656:android:34cfbe23fb250f8ed17475",
+        "android_client_info": {
+          "package_name": "com.dashxdemo.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "48484596656-f226t04gk57vi7fgvqbvdk0n31es6450.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBa66BYo62l94fK2Q7PIfJTaJExuO1uTr0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "48484596656-f226t04gk57vi7fgvqbvdk0n31es6450.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

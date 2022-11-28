@@ -80,13 +80,17 @@ class LoginFragment : Fragment() {
                 if (response.isSuccessful) {
                     appPref.setUserToken(response.body()?.token)
                     appPref.setUserData(getUserDataFromToken(response.body()?.token))
+
                     val userData = appPref.getUserData().userData
                     DashXClient.getInstance().setIdentity(userData.id.toString(),null)
+                    DashXClient.getInstance().track("Login Succeeded")
+
                     val intent = Intent(requireContext(), HomeActivity::class.java)
                     startActivity(intent)
                     requireActivity().finish()
                 } else {
                     showToast(requireContext(), getErrorMessageFromJson(response.errorBody()?.string()))
+                    DashXClient.getInstance().track("Login Failed")
                 }
                 hideDialog()
             }
