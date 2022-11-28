@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.dashx.sdk.DashXClient
 import com.dashxdemo.app.R
 import com.dashxdemo.app.api.ApiClient
 import com.dashxdemo.app.api.requests.ContactRequest
@@ -59,6 +60,10 @@ class ContactFragment : Fragment() {
         binding.submitButton.setOnClickListener {
             if (validateFields()) {
                 showDialog()
+                val formValues = hashMapOf<String, String>()
+                formValues["name"] = binding.nameEditText.text.toString()
+                formValues["email"] = binding.emailEditText.text.toString()
+                DashXClient.getInstance().identify(formValues)
                 sendFeedback()
             }
         }
