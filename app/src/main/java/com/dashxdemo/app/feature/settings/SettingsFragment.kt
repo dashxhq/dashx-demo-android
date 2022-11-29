@@ -21,6 +21,8 @@ class SettingsFragment : Fragment() {
     private lateinit var preferenceData: StoredPreferences
     private lateinit var progressDialog: ProgressDialog
 
+    private val DashX = DashXClient.getInstance()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -41,7 +43,7 @@ class SettingsFragment : Fragment() {
     }
 
     private fun getStoredPreferences() {
-        DashXClient.getInstance().fetchStoredPreferences(onSuccess = {
+        DashX.fetchStoredPreferences(onSuccess = {
             hideProgressBar()
             val preferenceDataJson = Gson().fromJson(it, StoredPreferencesResponse::class.java).preferenceData
             preferenceData = Gson().fromJson(preferenceDataJson, StoredPreferences::class.java)
@@ -65,7 +67,7 @@ class SettingsFragment : Fragment() {
                 showProgressBar()
                 preferenceData.newBookmark.enabled = binding.bookmarkPostToggle.isChecked
                 preferenceData.newPost.enabled = binding.newPostToggle.isChecked
-                DashXClient.getInstance().saveStoredPreferences(Gson().toJson(preferenceData, StoredPreferences::class.java), onSuccess = {
+                DashX.saveStoredPreferences(Gson().toJson(preferenceData, StoredPreferences::class.java), onSuccess = {
                     runOnUiThread {
                         hideProgressBar()
                         showToast(requireContext(), getString(R.string.preferences_saved))

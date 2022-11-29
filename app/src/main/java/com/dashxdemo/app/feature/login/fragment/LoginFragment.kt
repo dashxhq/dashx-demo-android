@@ -32,6 +32,8 @@ class LoginFragment : Fragment() {
     private lateinit var binding: FragmentLoginBinding
     private lateinit var progressDialog: ProgressDialog
 
+    private val DashX = DashXClient.getInstance()
+
     private val appPref by lazy { AppPref(requireContext()) }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -82,16 +84,16 @@ class LoginFragment : Fragment() {
                     appPref.setUserData(getUserDataFromToken(response.body()?.token))
 
                     val userData = appPref.getUserData().userData
-                    DashXClient.getInstance().setIdentity(userData.id.toString(),null)
-                    DashXClient.getInstance().track("Login Succeeded")
-                    DashXClient.getInstance().subscribe()
+                    DashX.setIdentity(userData.id.toString(),null)
+                    DashX.track("Login Succeeded")
+                    DashX.subscribe()
 
                     val intent = Intent(requireContext(), HomeActivity::class.java)
                     startActivity(intent)
                     requireActivity().finish()
                 } else {
                     showToast(requireContext(), getErrorMessageFromJson(response.errorBody()?.string()))
-                    DashXClient.getInstance().track("Login Failed")
+                    DashX.track("Login Failed")
                 }
                 hideDialog()
             }

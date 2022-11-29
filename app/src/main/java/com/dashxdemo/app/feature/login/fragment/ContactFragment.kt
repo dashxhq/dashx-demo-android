@@ -25,6 +25,8 @@ class ContactFragment : Fragment() {
     private lateinit var binding: FragmentContactBinding
     private lateinit var progressDialog: ProgressDialog
 
+    private val DashX = DashXClient.getInstance()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -64,7 +66,7 @@ class ContactFragment : Fragment() {
                 val formValues = hashMapOf<String, String>()
                 formValues["name"] = binding.nameEditText.text.toString()
                 formValues["email"] = binding.emailEditText.text.toString()
-                DashXClient.getInstance().identify(formValues)
+                DashX.identify(formValues)
 
                 sendFeedback()
             }

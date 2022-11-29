@@ -68,6 +68,8 @@ class HomeFragment : Fragment() {
     private var videoAssetData: com.dashx.sdk.data.AssetData? = null
     private var shouldPickImage = false
 
+    private val DashX = DashXClient.getInstance()
+
     private val cameraRequestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
         if (isGranted) {
             if (shouldPickImage) {
@@ -121,7 +123,7 @@ class HomeFragment : Fragment() {
             PICK_GALLERY_VIDEO -> if (resultCode == Activity.RESULT_OK) {
                 val selectedVideo: Uri? = data?.data
                 showProgressDialog()
-                DashXClient.getInstance().uploadExternalAsset(File(getPath(requireContext(), selectedVideo!!)), "651144a7-e821-4af7-bb2b-abb2807cf2c9", onSuccess = {
+                DashX.uploadExternalAsset(File(getPath(requireContext(), selectedVideo!!)), "651144a7-e821-4af7-bb2b-abb2807cf2c9", onSuccess = {
                     hideProgressDialog()
                     videoAssetData = it.data.asset
                 }, onError = {
@@ -136,7 +138,7 @@ class HomeFragment : Fragment() {
                 val bitmap = getVideoThumbnail(requireContext(), selectedVideo)
                 val file = getFileFromBitmap(bitmap!!, requireContext())
                 showProgressDialog()
-                DashXClient.getInstance().uploadExternalAsset(file, "651144a7-e821-4af7-bb2b-abb2807cf2c9", onSuccess = {
+                DashX.uploadExternalAsset(file, "651144a7-e821-4af7-bb2b-abb2807cf2c9", onSuccess = {
                     hideProgressDialog()
                     videoAssetData = it.data.asset
                 }, onError = {
@@ -149,7 +151,7 @@ class HomeFragment : Fragment() {
             PICK_GALLERY_IMAGE -> if (resultCode == Activity.RESULT_OK) {
                 val selectedImage: Uri? = data?.data
                 showProgressDialog()
-                DashXClient.getInstance().uploadExternalAsset(File(getPath(requireContext(), selectedImage!!)), "f03b20a8-2375-4f8d-bfbe-ce35141abe98", onSuccess = {
+                DashX.uploadExternalAsset(File(getPath(requireContext(), selectedImage!!)), "f03b20a8-2375-4f8d-bfbe-ce35141abe98", onSuccess = {
                     hideProgressDialog()
                     imageAssetData = it.data.asset
                 }, onError = {
@@ -163,7 +165,7 @@ class HomeFragment : Fragment() {
                 val bitmap = data?.extras?.get("data") as Bitmap
                 val file = getFileFromBitmap(bitmap, requireContext())
                 showProgressDialog()
-                DashXClient.getInstance().uploadExternalAsset(file, "f03b20a8-2375-4f8d-bfbe-ce35141abe98", onSuccess = {
+                DashX.uploadExternalAsset(file, "f03b20a8-2375-4f8d-bfbe-ce35141abe98", onSuccess = {
                     hideProgressDialog()
                     imageAssetData = it.data.asset
                 }, onError = {

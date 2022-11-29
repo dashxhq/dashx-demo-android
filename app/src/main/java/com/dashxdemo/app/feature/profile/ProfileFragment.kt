@@ -53,6 +53,8 @@ class ProfileFragment : Fragment() {
 
     private var avatar: com.dashx.sdk.data.AssetData? = null
 
+    private val DashX = DashXClient.getInstance()
+
     private val cameraRequestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
         if (isGranted) {
             cameraIntent()
@@ -225,7 +227,7 @@ class ProfileFragment : Fragment() {
     }
 
     fun uploadExternalAsset(file: File,externalColumId: String){
-        DashXClient.getInstance().uploadExternalAsset(file, externalColumId, onSuccess = {
+        DashX.uploadExternalAsset(file, externalColumId, onSuccess = {
             avatar = it.data.asset
             hideProgressDialog()
             runOnUiThread {

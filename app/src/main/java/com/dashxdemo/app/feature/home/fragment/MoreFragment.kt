@@ -16,6 +16,8 @@ import com.dashxdemo.app.pref.AppPref
 class MoreFragment : Fragment() {
     private lateinit var binding: FragmentMoreBinding
 
+    private val DashX = DashXClient.getInstance()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -49,7 +51,7 @@ class MoreFragment : Fragment() {
         }
 
         binding.navLogout.setOnClickListener {
-            DashXClient.getInstance().reset()
+            DashX.reset()
             logout()
         }
     }
