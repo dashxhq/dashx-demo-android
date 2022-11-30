@@ -18,7 +18,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.dashx.sdk.DashXClient
+import com.dashx.sdk.DashX
 import com.dashxdemo.app.R
 import com.dashxdemo.app.utils.data.VideoPlayerData
 import com.dashxdemo.app.adapters.PostsAdapter
@@ -67,8 +67,6 @@ class HomeFragment : Fragment() {
     private var imageAssetData: com.dashx.sdk.data.AssetData? = null
     private var videoAssetData: com.dashx.sdk.data.AssetData? = null
     private var shouldPickImage = false
-
-    private val DashX = DashXClient.getInstance()
 
     private val cameraRequestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
         if (isGranted) {
