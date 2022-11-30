@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.dashx.sdk.DashXClient
+import com.dashx.sdk.DashX
 import com.dashxdemo.app.R
 import com.dashxdemo.app.api.responses.StoredPreferences
 import com.dashxdemo.app.api.responses.StoredPreferencesResponse
@@ -20,8 +20,6 @@ class SettingsFragment : Fragment() {
     private lateinit var binding: FragmentSettingsBinding
     private lateinit var preferenceData: StoredPreferences
     private lateinit var progressDialog: ProgressDialog
-
-    private val DashX = DashXClient.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater,

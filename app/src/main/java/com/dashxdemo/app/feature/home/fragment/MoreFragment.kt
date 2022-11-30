@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.dashx.sdk.DashXClient
+import com.dashx.sdk.DashX
 import com.dashxdemo.app.R
 import com.dashxdemo.app.databinding.FragmentMoreBinding
 import com.dashxdemo.app.feature.login.LoginActivity
@@ -15,8 +15,6 @@ import com.dashxdemo.app.pref.AppPref
 
 class MoreFragment : Fragment() {
     private lateinit var binding: FragmentMoreBinding
-
-    private val DashX = DashXClient.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater,
