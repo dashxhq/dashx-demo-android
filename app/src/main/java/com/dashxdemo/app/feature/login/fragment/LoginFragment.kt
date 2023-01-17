@@ -82,7 +82,7 @@ class LoginFragment : Fragment() {
                     appPref.setUserData(getUserDataFromToken(response.body()?.token))
 
                     val userData = appPref.getUserData().userData
-                    DashXClient.getInstance().setIdentity(userData.id.toString(),null)
+                    DashXClient.getInstance().setIdentity(userData.id.toString(), response.body()?.dashXToken)
                     DashXClient.getInstance().track("Login Succeeded")
                     DashXClient.getInstance().subscribe()
 
