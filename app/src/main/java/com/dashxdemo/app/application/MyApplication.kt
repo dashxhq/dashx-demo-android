@@ -8,7 +8,7 @@ import com.dashxdemo.app.BuildConfig
 class MyApplication : Application() {
     override fun onCreate() {
         super.onCreate()
-        DashXLog.setLogLevel(DashXLog.LogLevel.DEBUG);
+        DashXLog.setLogLevel(DashXLog.LogLevel.DEBUG)
         DashXClient.configure(
             context = this,
             publicKey = BuildConfig.DASHX_PUBLIC_KEY,
