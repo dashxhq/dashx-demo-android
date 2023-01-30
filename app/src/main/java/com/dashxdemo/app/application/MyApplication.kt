@@ -1,6 +1,7 @@
 package com.dashxdemo.app.application
 
 import android.app.Application
+import com.dashx.sdk.DashXActivityLifecycleCallbacks
 import com.dashx.sdk.DashXClient
 import com.dashx.sdk.DashXLog
 import com.dashxdemo.app.BuildConfig
@@ -15,5 +16,7 @@ class MyApplication : Application() {
             baseURI = BuildConfig.DASHX_BASE_URI,
             targetEnvironment = BuildConfig.DASHX_TARGET_ENVIRONMENT
         )
+
+        DashXActivityLifecycleCallbacks.enableActivityLifecycleTracking(this)
     }
 }

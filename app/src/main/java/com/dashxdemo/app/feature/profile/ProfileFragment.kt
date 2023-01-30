@@ -31,7 +31,6 @@ import com.dashxdemo.app.utils.Constants.PERM_CAMERA
 import com.dashxdemo.app.utils.Constants.PERM_READ_EXT_STORAGE
 import com.dashxdemo.app.utils.Constants.PICK_GALLERY_IMAGE
 import com.dashxdemo.app.utils.Constants.TAKE_CAMERA_IMAGE
-import com.dashxdemo.app.utils.Utils
 import com.dashxdemo.app.utils.Utils.Companion.getErrorMessageFromJson
 import com.dashxdemo.app.utils.Utils.Companion.getFileFromBitmap
 import com.dashxdemo.app.utils.Utils.Companion.getInitials
@@ -226,12 +225,7 @@ class ProfileFragment : Fragment() {
     }
 
     fun uploadAsset(file: File, externalColumId: String) {
-        val uri = Uri.fromFile(file)
-        val fileName = Utils.getFileName(activity!!, uri)!!
-        val mimeType = Utils.getMimeType(activity!!, uri)!!
-        val fileSize = Utils.getFileSize(activity!!, uri).toInt()
-
-        DashXClient.getInstance().uploadAsset(file, externalColumId, externalColumId, fileName, mimeType, fileSize, onSuccess = {
+        DashXClient.getInstance().uploadAsset(file, externalColumId, externalColumId, onSuccess = {
             avatar = it.data.asset
             hideProgressDialog()
             runOnUiThread {

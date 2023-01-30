@@ -29,7 +29,6 @@ import com.dashxdemo.app.api.responses.CreatePostResponse
 import com.dashxdemo.app.api.responses.PostsResponse
 import com.dashxdemo.app.api.responses.ToggleBookmarkResponse
 import com.dashxdemo.app.databinding.DialogCreatePostBinding
-import com.dashxdemo.app.pref.AppPref
 import com.dashxdemo.app.databinding.*
 import com.dashxdemo.app.utils.Constants.PERM_CAMERA
 import com.dashxdemo.app.utils.Constants.PERM_READ_EXT_STORAGE
@@ -39,9 +38,6 @@ import com.dashxdemo.app.utils.Constants.TAKE_CAMERA_IMAGE
 import com.dashxdemo.app.utils.Constants.TAKE_CAMERA_VIDEO
 import com.dashxdemo.app.utils.Utils.Companion.getErrorMessageFromJson
 import com.dashxdemo.app.utils.Utils.Companion.getFileFromBitmap
-import com.dashxdemo.app.utils.Utils.Companion.getFileName
-import com.dashxdemo.app.utils.Utils.Companion.getMimeType
-import com.dashxdemo.app.utils.Utils.Companion.getFileSize
 import com.dashxdemo.app.utils.Utils.Companion.getPath
 import com.dashxdemo.app.utils.Utils.Companion.getVideoThumbnail
 import com.dashxdemo.app.utils.Utils.Companion.initProgressDialog
@@ -123,13 +119,10 @@ class HomeFragment : Fragment() {
         when (requestCode) {
             PICK_GALLERY_VIDEO -> if (resultCode == Activity.RESULT_OK) {
                 val selectedVideo: Uri? = data?.data
-                val fileName = getFileName(activity!!, selectedVideo!!)!!
-                val mimeType = getMimeType(activity!!, selectedVideo!!)!!
-                val fileSize = getFileSize(activity!!, selectedVideo!!).toInt()
 
                 showProgressDialog()
 
-                DashXClient.getInstance().uploadAsset(File(getPath(requireContext(), selectedVideo!!)), "651144a7-e821-4af7-bb2b-abb2807cf2c9", "651144a7-e821-4af7-bb2b-abb2807cf2c9", fileName, mimeType, fileSize, onSuccess = {
+                DashXClient.getInstance().uploadAsset(File(getPath(requireContext(), selectedVideo!!)), "651144a7-e821-4af7-bb2b-abb2807cf2c9", "651144a7-e821-4af7-bb2b-abb2807cf2c9", onSuccess = {
                     hideProgressDialog()
                     videoAssetData = it.data.asset
                 }, onError = {
@@ -143,14 +136,10 @@ class HomeFragment : Fragment() {
                 val selectedVideo = data?.data
                 val bitmap = getVideoThumbnail(requireContext(), selectedVideo)
                 val file = getFileFromBitmap(bitmap!!, requireContext())
-                val uri = Uri.fromFile(file)
-                val fileName = getFileName(activity!!, uri)!!
-                val mimeType = getMimeType(activity!!, uri)!!
-                val fileSize = getFileSize(activity!!, uri).toInt()
 
                 showProgressDialog()
 
-                DashXClient.getInstance().uploadAsset(file, "651144a7-e821-4af7-bb2b-abb2807cf2c9", "651144a7-e821-4af7-bb2b-abb2807cf2c9", fileName, mimeType, fileSize, onSuccess = {
+                DashXClient.getInstance().uploadAsset(file, "651144a7-e821-4af7-bb2b-abb2807cf2c9", "651144a7-e821-4af7-bb2b-abb2807cf2c9", onSuccess = {
                     hideProgressDialog()
                     videoAssetData = it.data.asset
                 }, onError = {
@@ -162,13 +151,10 @@ class HomeFragment : Fragment() {
 
             PICK_GALLERY_IMAGE -> if (resultCode == Activity.RESULT_OK) {
                 val selectedImage: Uri? = data?.data
-                val fileName = getFileName(activity!!, selectedImage!!)!!
-                val mimeType = getMimeType(activity!!, selectedImage!!)!!
-                val fileSize = getFileSize(activity!!, selectedImage!!).toInt()
 
                 showProgressDialog()
 
-                DashXClient.getInstance().uploadAsset(File(getPath(requireContext(), selectedImage!!)), "f03b20a8-2375-4f8d-bfbe-ce35141abe98", "f03b20a8-2375-4f8d-bfbe-ce35141abe98", fileName, mimeType, fileSize, onSuccess = {
+                DashXClient.getInstance().uploadAsset(File(getPath(requireContext(), selectedImage!!)), "f03b20a8-2375-4f8d-bfbe-ce35141abe98", "f03b20a8-2375-4f8d-bfbe-ce35141abe98", onSuccess = {
                     hideProgressDialog()
                     imageAssetData = it.data.asset
                 }, onError = {
@@ -181,14 +167,10 @@ class HomeFragment : Fragment() {
             TAKE_CAMERA_IMAGE -> if (resultCode == Activity.RESULT_OK) {
                 val bitmap = data?.extras?.get("data") as Bitmap
                 val file = getFileFromBitmap(bitmap, requireContext())
-                val uri = Uri.fromFile(file)
-                val fileName = getFileName(activity!!, uri)!!
-                val mimeType = getMimeType(activity!!, uri)!!
-                val fileSize = getFileSize(activity!!, uri).toInt()
 
                 showProgressDialog()
 
-                DashXClient.getInstance().uploadAsset(file, "f03b20a8-2375-4f8d-bfbe-ce35141abe98", "f03b20a8-2375-4f8d-bfbe-ce35141abe98", fileName, mimeType, fileSize, onSuccess = {
+                DashXClient.getInstance().uploadAsset(file, "f03b20a8-2375-4f8d-bfbe-ce35141abe98", "f03b20a8-2375-4f8d-bfbe-ce35141abe98", onSuccess = {
                     hideProgressDialog()
                     imageAssetData = it.data.asset
                 }, onError = {

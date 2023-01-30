@@ -5,9 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class UserData(
     @SerializedName("user")
-    val userData: User,
-    @SerializedName("dashx_token")
-    val token: String
+    val userData: User
 )
 
 data class User(

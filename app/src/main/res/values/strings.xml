@@ -37,6 +37,8 @@
     <string name="newPostNotificationHint">This will send a notification when someone creates a post</string>
     <string name="newBookmarkNotification">When someone bookmarks a post</string>
     <string name="newBookmarkNotificationHint">This will send a notification when someone bookmarks a post</string>
+    <string name="locationSetting">Location Settings</string>
+    <string name="locationSettingHint">Allow this app to access this device\'s current location.</string>
     <string name="save">Save</string>
 
     <string name="posts">Posts</string>
