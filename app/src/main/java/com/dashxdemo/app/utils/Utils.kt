@@ -3,8 +3,10 @@ package com.dashxdemo.app.utils
 import android.Manifest
 import android.app.Activity
 import android.app.ProgressDialog
+import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
+import android.content.res.AssetFileDescriptor
 import android.database.Cursor
 import android.graphics.Bitmap
 import android.media.MediaMetadataRetriever
@@ -12,6 +14,7 @@ import android.net.Uri
 import android.os.Handler
 import android.os.Looper
 import android.provider.MediaStore
+import android.provider.OpenableColumns
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -201,6 +204,29 @@ class Utils {
             } else {
                 nameSplit[0][0].toString()
             }
+        }
+
+        fun getFileName(context: Context, uri: Uri): String? {
+            return when(uri.scheme) {
+                ContentResolver.SCHEME_CONTENT -> getContentFileName(context, uri)
+                else -> uri.path?.let(::File)?.name
+            }
+        }
+
+        private fun getContentFileName(context: Context, uri: Uri): String? = runCatching {
+            context.contentResolver.query(uri, null, null, null, null)?.use { cursor ->
+                cursor.moveToFirst()
+                return@use cursor.getColumnIndexOrThrow(OpenableColumns.DISPLAY_NAME).let(cursor::getString)
+            }
+        }.getOrNull()
+
+        fun getMimeType(context: Context, uri: Uri): String? {
+            return context.contentResolver.getType(uri)
+        }
+
+        fun getFileSize(context: Context, uri: Uri): Long {
+            val assetFileDescriptor = context.contentResolver.openAssetFileDescriptor(uri, "r")
+            return assetFileDescriptor!!.length
         }
     }
 }
