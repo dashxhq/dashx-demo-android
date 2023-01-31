@@ -39,7 +39,6 @@ class SettingsFragment : Fragment() {
         initProgressDialog(progressDialog, requireContext())
 
         setUpUi()
-
     }
 
     override fun onResume() {
