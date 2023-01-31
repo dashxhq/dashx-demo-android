@@ -211,21 +211,21 @@ class ProfileFragment : Fragment() {
                 val bitmap = data?.extras?.get("data") as Bitmap
                 val file = getFileFromBitmap(bitmap, requireContext())
                 showProgressDialog()
-                uploadAsset(file, "e8b7b42f-1f23-431c-b739-9de0fba3dadf")
+                uploadAsset(file)
                 binding.profilePicture.setImageBitmap(bitmap)
             }
 
             PICK_GALLERY_IMAGE -> if (resultCode == RESULT_OK) {
                 val selectedImage: Uri? = data?.data
                 showProgressDialog()
-                uploadAsset(File(getPath(requireContext(), selectedImage!!)), "e8b7b42f-1f23-431c-b739-9de0fba3dadf")
+                uploadAsset(File(getPath(requireContext(), selectedImage!!)))
                 binding.profilePicture.setImageURI(selectedImage)
             }
         }
     }
 
-    fun uploadAsset(file: File, externalColumId: String) {
-        DashXClient.getInstance().uploadAsset(file, externalColumId, externalColumId, onSuccess = {
+    private fun uploadAsset(file: File) {
+        DashXClient.getInstance().uploadAsset(file, "user", "avatar", onSuccess = {
             avatar = it.data.asset
             hideProgressDialog()
             runOnUiThread {

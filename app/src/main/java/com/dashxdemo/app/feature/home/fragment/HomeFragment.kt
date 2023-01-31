@@ -122,7 +122,7 @@ class HomeFragment : Fragment() {
 
                 showProgressDialog()
 
-                DashXClient.getInstance().uploadAsset(File(getPath(requireContext(), selectedVideo!!)), "651144a7-e821-4af7-bb2b-abb2807cf2c9", "651144a7-e821-4af7-bb2b-abb2807cf2c9", onSuccess = {
+                DashXClient.getInstance().uploadAsset(File(getPath(requireContext(), selectedVideo!!)), "post", "video", onSuccess = {
                     hideProgressDialog()
                     videoAssetData = it.data.asset
                 }, onError = {
@@ -139,7 +139,7 @@ class HomeFragment : Fragment() {
 
                 showProgressDialog()
 
-                DashXClient.getInstance().uploadAsset(file, "651144a7-e821-4af7-bb2b-abb2807cf2c9", "651144a7-e821-4af7-bb2b-abb2807cf2c9", onSuccess = {
+                DashXClient.getInstance().uploadAsset(file, "post", "video", onSuccess = {
                     hideProgressDialog()
                     videoAssetData = it.data.asset
                 }, onError = {
@@ -154,7 +154,7 @@ class HomeFragment : Fragment() {
 
                 showProgressDialog()
 
-                DashXClient.getInstance().uploadAsset(File(getPath(requireContext(), selectedImage!!)), "f03b20a8-2375-4f8d-bfbe-ce35141abe98", "f03b20a8-2375-4f8d-bfbe-ce35141abe98", onSuccess = {
+                DashXClient.getInstance().uploadAsset(File(getPath(requireContext(), selectedImage!!)), "post", "image", onSuccess = {
                     hideProgressDialog()
                     imageAssetData = it.data.asset
                 }, onError = {
@@ -170,7 +170,7 @@ class HomeFragment : Fragment() {
 
                 showProgressDialog()
 
-                DashXClient.getInstance().uploadAsset(file, "f03b20a8-2375-4f8d-bfbe-ce35141abe98", "f03b20a8-2375-4f8d-bfbe-ce35141abe98", onSuccess = {
+                DashXClient.getInstance().uploadAsset(file, "post", "image", onSuccess = {
                     hideProgressDialog()
                     imageAssetData = it.data.asset
                 }, onError = {

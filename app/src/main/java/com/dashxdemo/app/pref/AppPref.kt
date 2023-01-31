@@ -37,15 +37,16 @@ class AppPref(context: Context) {
         val userDataString = preference.getString(USER_DATA, null)
         return Gson().fromJson(userDataString, UserData::class.java)
     }
+
     fun setUserData(userData: UserData) {
         preference.edit().putString(USER_DATA, Gson().toJson(userData)).apply()
     }
 
-    fun setDashXToken(token: String) {
-        preference.edit().putString(DASH_X_TOKEN, token).apply()
-    }
-
     fun getDashXToken(): String? {
         return preference.getString(DASH_X_TOKEN, null)
+    }
+
+    fun setDashXToken(token: String) {
+        preference.edit().putString(DASH_X_TOKEN, token).apply()
     }
 }
