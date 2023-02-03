@@ -114,7 +114,7 @@ class SettingsFragment : Fragment() {
 
                     showToast(activity!!, "Permission will be revoked on closing the app.")
                 } else {
-                    showToast(activity!!, "Before Android 13, runtime permission can only be revoked from settings.")
+                    showToast(activity!!, "Before Android 13, runtime permissions can only be revoked from settings.")
                 }
             }
         }
