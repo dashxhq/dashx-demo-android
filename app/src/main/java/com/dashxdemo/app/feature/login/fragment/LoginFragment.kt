@@ -10,6 +10,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.dashx.sdk.DashXClient
+import com.dashx.sdk.DashXLog
 import com.dashxdemo.app.R
 import com.dashxdemo.app.api.ApiClient
 import com.dashxdemo.app.api.requests.LoginRequest
@@ -79,10 +80,13 @@ class LoginFragment : Fragment() {
             ) {
                 if (response.isSuccessful) {
                     appPref.setUserToken(response.body()?.token)
+                    appPref.setDashXToken(response.body()?.dashXToken!!)
                     appPref.setUserData(getUserDataFromToken(response.body()?.token))
 
                     val userData = appPref.getUserData().userData
-                    DashXClient.getInstance().setIdentity(userData.id.toString(), response.body()?.dashXToken)
+                    val dashXToken = appPref.getDashXToken()
+
+                    DashXClient.getInstance().setIdentity(userData.id.toString(), dashXToken)
                     DashXClient.getInstance().track("Login Succeeded")
                     DashXClient.getInstance().subscribe()
 

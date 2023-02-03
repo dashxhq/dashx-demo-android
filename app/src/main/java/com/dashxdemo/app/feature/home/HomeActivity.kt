@@ -1,5 +1,6 @@
 package com.dashxdemo.app.feature.home
 
+import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -7,12 +8,18 @@ import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.dashx.sdk.DashXClient
+import com.dashx.sdk.DashXLog
+import com.dashx.sdk.utils.PermissionUtils
 import com.dashxdemo.app.R
 import com.dashxdemo.app.databinding.ActivityHomeBinding
+import com.dashxdemo.app.feature.settings.SettingsFragment
 
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHomeBinding
+
+    private val locationRequestCode = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,6 +27,25 @@ class HomeActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setupUi()
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if (requestCode == locationRequestCode) {
+            if (grantResults.isNotEmpty() && grantResults.first() == PackageManager.PERMISSION_GRANTED) {
+                DashXClient.getInstance().track("Location Permission Changed")
+
+                val settingsFragment =
+                    supportFragmentManager.findFragmentById(R.id.fragmentSettings) as SettingsFragment?
+
+                settingsFragment?.binding?.locationToggle?.isChecked = true
+            }
+        }
+    }
+
+    fun askForLocationPermission() {
+        PermissionUtils.requestPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION, locationRequestCode)
     }
 
     private fun setupUi() {

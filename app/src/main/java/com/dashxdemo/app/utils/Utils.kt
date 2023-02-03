@@ -1,10 +1,7 @@
 package com.dashxdemo.app.utils
 
-import android.Manifest
-import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Context
-import android.content.Intent
 import android.database.Cursor
 import android.graphics.Bitmap
 import android.media.MediaMetadataRetriever
@@ -13,9 +10,6 @@ import android.os.Handler
 import android.os.Looper
 import android.provider.MediaStore
 import android.widget.Toast
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.fragment.app.FragmentActivity
 import com.dashxdemo.app.R
 import com.dashxdemo.app.api.responses.ErrorResponse
 import com.dashxdemo.app.pref.data.User
@@ -121,8 +115,7 @@ class Utils {
         fun getUserDataFromToken(token: String?): UserData {
             val decodedToken = decodeToken(token)
             val user = JSONObject(decodedToken).getJSONObject(USER).toString()
-            val dashXToken = JSONObject(decodedToken).getString(DASHX_TOKEN)
-            return UserData(Gson().fromJson(user, User::class.java), dashXToken)
+            return UserData(Gson().fromJson(user, User::class.java))
         }
 
         fun showToast(context: Context, string: String) {
