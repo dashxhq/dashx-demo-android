@@ -2,6 +2,7 @@ package com.dashxdemo.app.feature.home
 
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.navigation.NavController
@@ -20,6 +21,7 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
 
     private val locationRequestCode = 1
+    private val notificationRequestCode = 2
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,13 +41,26 @@ class HomeActivity : AppCompatActivity() {
                 val settingsFragment =
                     supportFragmentManager.findFragmentById(R.id.fragmentSettings) as SettingsFragment?
 
-                settingsFragment?.binding?.locationToggle?.isChecked = true
+                settingsFragment?.setUpUi()
+            }
+        } else if (requestCode == notificationRequestCode) {
+            if (grantResults.isNotEmpty() && grantResults.first() == PackageManager.PERMISSION_GRANTED) {
+                DashXClient.getInstance().subscribe()
+
+                val settingsFragment =
+                    supportFragmentManager.findFragmentById(R.id.fragmentSettings) as SettingsFragment?
+
+                settingsFragment?.setUpUi()
             }
         }
     }
 
     fun askForLocationPermission() {
         PermissionUtils.requestPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION, locationRequestCode)
+    }
+
+    fun askForNotificationPermission() {
+        PermissionUtils.requestPermission(this, android.Manifest.permission.POST_NOTIFICATIONS, notificationRequestCode)
     }
 
     private fun setupUi() {

@@ -88,7 +88,6 @@ class LoginFragment : Fragment() {
 
                     DashXClient.getInstance().setIdentity(userData.id.toString(), dashXToken)
                     DashXClient.getInstance().track("Login Succeeded")
-                    DashXClient.getInstance().subscribe()
 
                     val intent = Intent(requireContext(), HomeActivity::class.java)
                     startActivity(intent)
