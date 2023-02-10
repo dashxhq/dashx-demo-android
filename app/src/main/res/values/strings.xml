@@ -41,7 +41,7 @@
     <string name="locationSetting">Location Settings</string>
     <string name="locationSettingHint">Allow this app to access this device\'s current location.</string>
     <string name="notificationsSetting">Notifications Settings</string>
-    <string name="notificationsSettingHint">Allow Push Notifications</string>
+    <string name="notificationsSettingHint">Allow push notifications</string>
     <string name="save">Save</string>
 
     <string name="posts">Posts</string>
