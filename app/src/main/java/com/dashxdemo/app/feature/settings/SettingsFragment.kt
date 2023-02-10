@@ -140,7 +140,7 @@ class SettingsFragment : Fragment() {
             }
         }
 
-        binding.locationToggle.setOnCheckedChangeListener {_, isChecked ->
+        binding.locationToggle.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 (activity!! as HomeActivity).askForLocationPermission()
             } else {
@@ -154,7 +154,7 @@ class SettingsFragment : Fragment() {
             }
         }
 
-        binding.notificationToggle.setOnCheckedChangeListener {_, isChecked ->
+        binding.notificationToggle.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     (activity!! as HomeActivity).askForNotificationPermission()
