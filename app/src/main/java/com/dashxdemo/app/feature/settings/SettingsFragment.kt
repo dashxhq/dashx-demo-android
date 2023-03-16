@@ -52,8 +52,8 @@ class SettingsFragment : Fragment() {
     private fun getStoredPreferences() {
         DashXClient.getInstance().fetchStoredPreferences(onSuccess = {
             hideProgressBar()
-            val preferenceDataJson = Gson().fromJson(it, StoredPreferencesResponse::class.java).preferenceData
-            preferenceData = Gson().fromJson(preferenceDataJson, StoredPreferences::class.java)
+            val preferenceDataJson = Gson().fromJson(it.toString(), StoredPreferencesResponse::class.java).preferenceData
+            preferenceData = Gson().fromJson(preferenceDataJson.toString(), StoredPreferences::class.java)
             runOnUiThread {
                 binding.saveButton.isEnabled = true
                 if (::preferenceData.isInitialized && (preferenceData.newPost.enabled != binding.newPostToggle.isChecked || preferenceData.newBookmark.enabled != binding.bookmarkPostToggle.isChecked)) {
@@ -119,7 +119,7 @@ class SettingsFragment : Fragment() {
                     showProgressBar()
                     preferenceData.newBookmark.enabled = binding.bookmarkPostToggle.isChecked
                     preferenceData.newPost.enabled = binding.newPostToggle.isChecked
-                    DashXClient.getInstance().saveStoredPreferences(Gson().toJson(preferenceData, StoredPreferences::class.java), onSuccess = {
+                    DashXClient.getInstance().saveStoredPreferences(Gson().toJsonTree(preferenceData).asJsonObject, onSuccess = {
                         runOnUiThread {
                             hideProgressBar()
                             showToast(requireContext(), getString(R.string.preferences_saved))

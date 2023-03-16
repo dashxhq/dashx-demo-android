@@ -75,6 +75,7 @@ dependencies {
 
     // DashX
     implementation 'com.dashx:dashx-android:1.0.9'
+    implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1'
 
     // Network
     implementation 'com.squareup.retrofit2:retrofit:2.8.1'
