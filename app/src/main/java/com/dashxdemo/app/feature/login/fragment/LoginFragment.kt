@@ -2,6 +2,7 @@ package com.dashxdemo.app.feature.login.fragment
 
 import android.app.ProgressDialog
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.dashx.sdk.DashXClient
 import com.dashx.sdk.DashXLog
+import com.dashx.sdk.utils.PermissionUtils
 import com.dashxdemo.app.R
 import com.dashxdemo.app.api.ApiClient
 import com.dashxdemo.app.api.requests.LoginRequest
@@ -88,7 +90,10 @@ class LoginFragment : Fragment() {
 
                     DashXClient.getInstance().setIdentity(userData.id.toString(), dashXToken)
                     DashXClient.getInstance().track("Login Succeeded")
-                    DashXClient.getInstance().subscribe()
+
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU || PermissionUtils.hasPermissions(activity!!, android.Manifest.permission.POST_NOTIFICATIONS)) {
+                        DashXClient.getInstance().subscribe()
+                    }
 
                     val intent = Intent(requireContext(), HomeActivity::class.java)
                     startActivity(intent)

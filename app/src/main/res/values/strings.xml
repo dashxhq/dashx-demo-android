@@ -30,6 +30,7 @@
     <string name="billing">Billing</string>
     <string name="profile">Profile</string>
     <string name="settings">Settings</string>
+    <string name="notificationPreferences">Notification Preferences</string>
     <string name="fetch_location">Fetch Location</string>
     <string name="update">Update</string>
 
@@ -39,6 +40,8 @@
     <string name="newBookmarkNotificationHint">This will send a notification when someone bookmarks a post</string>
     <string name="locationSetting">Location Settings</string>
     <string name="locationSettingHint">Allow this app to access this device\'s current location.</string>
+    <string name="notificationsSetting">Notifications Settings</string>
+    <string name="notificationsSettingHint">Allow push notifications</string>
     <string name="save">Save</string>
 
     <string name="posts">Posts</string>

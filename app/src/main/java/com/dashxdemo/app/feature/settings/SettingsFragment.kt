@@ -6,8 +6,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.dashx.sdk.DashXClient
+import com.dashx.sdk.DashXLog
 import com.dashx.sdk.utils.PermissionUtils
 import com.dashxdemo.app.R
 import com.dashxdemo.app.api.responses.StoredPreferences
@@ -59,6 +61,8 @@ class SettingsFragment : Fragment() {
                 }
             }
         }, onError = {
+            DashXLog.e("DashXClient", it)
+
             runOnUiThread {
                 hideProgressBar()
                 showToast(requireContext(), getString(R.string.something_went_wrong))
@@ -67,56 +71,103 @@ class SettingsFragment : Fragment() {
     }
 
     private fun checkLocationPermission(): Boolean {
-        val hasLocationPermission = PermissionUtils.hasPermissions(activity!!, android.Manifest.permission.ACCESS_FINE_LOCATION) ||
+        return PermissionUtils.hasPermissions(activity!!, android.Manifest.permission.ACCESS_FINE_LOCATION) ||
             PermissionUtils.hasPermissions(activity!!, android.Manifest.permission.ACCESS_COARSE_LOCATION)
-
-        binding.locationToggle.isChecked = hasLocationPermission
-
-        return hasLocationPermission
     }
 
-    private fun setUpUi() {
+    private fun checkNotificationPermission(): Boolean {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            return true
+        }
+
+        return PermissionUtils.hasPermissions(activity!!, android.Manifest.permission.POST_NOTIFICATIONS)
+    }
+
+    fun setUpUi() {
         showProgressBar()
         getStoredPreferences()
-        checkLocationPermission()
 
-        binding.saveButton.setOnClickListener {
-            if (::preferenceData.isInitialized && (preferenceData.newPost.enabled != binding.newPostToggle.isChecked || preferenceData.newBookmark.enabled != binding.bookmarkPostToggle.isChecked)) {
-                showProgressBar()
-                preferenceData.newBookmark.enabled = binding.bookmarkPostToggle.isChecked
-                preferenceData.newPost.enabled = binding.newPostToggle.isChecked
-                DashXClient.getInstance().saveStoredPreferences(Gson().toJson(preferenceData, StoredPreferences::class.java), onSuccess = {
-                    runOnUiThread {
-                        hideProgressBar()
-                        showToast(requireContext(), getString(R.string.preferences_saved))
-                    }
-                }, onError = {
-                    runOnUiThread {
-                        hideProgressBar()
-                        showToast(requireContext(), getString(R.string.something_went_wrong))
-                    }
-                })
+        val hasLocationPermission = checkLocationPermission()
+        binding.locationToggle.isChecked = hasLocationPermission
+
+        val hasNotificationPermission = checkNotificationPermission()
+        binding.notificationToggle.isChecked = hasNotificationPermission
+
+        if (!hasNotificationPermission) {
+            binding.notificationPreferencesTextView.isVisible = false
+            binding.bookmarksPostSettingDescription.isVisible = false
+            binding.bookmarkPostToggle.isVisible = false
+            binding.bookmarksPostSettingTitle.isVisible = false
+            binding.newPostToggle.isVisible = false
+            binding.newPostSettingDescription.isVisible = false
+            binding.newPostSettingTitle.isVisible = false
+            binding.saveButton.isVisible = false
+            binding.cancelButton.isVisible = false
+        } else {
+            binding.notificationPreferencesTextView.isVisible = true
+            binding.bookmarksPostSettingDescription.isVisible = true
+            binding.bookmarkPostToggle.isVisible = true
+            binding.bookmarksPostSettingTitle.isVisible = true
+            binding.newPostToggle.isVisible = true
+            binding.newPostSettingDescription.isVisible = true
+            binding.newPostSettingTitle.isVisible = true
+            binding.saveButton.isVisible = true
+            binding.cancelButton.isVisible = true
+
+            binding.saveButton.setOnClickListener {
+                if (::preferenceData.isInitialized && (preferenceData.newPost.enabled != binding.newPostToggle.isChecked || preferenceData.newBookmark.enabled != binding.bookmarkPostToggle.isChecked)) {
+                    showProgressBar()
+                    preferenceData.newBookmark.enabled = binding.bookmarkPostToggle.isChecked
+                    preferenceData.newPost.enabled = binding.newPostToggle.isChecked
+                    DashXClient.getInstance().saveStoredPreferences(Gson().toJson(preferenceData, StoredPreferences::class.java), onSuccess = {
+                        runOnUiThread {
+                            hideProgressBar()
+                            showToast(requireContext(), getString(R.string.preferences_saved))
+                        }
+                    }, onError = {
+                        runOnUiThread {
+                            hideProgressBar()
+                            showToast(requireContext(), getString(R.string.something_went_wrong))
+                        }
+                    })
+                }
+            }
+
+            binding.cancelButton.setOnClickListener {
+                if (::preferenceData.isInitialized && (preferenceData.newPost.enabled != binding.newPostToggle.isChecked || preferenceData.newBookmark.enabled != binding.bookmarkPostToggle.isChecked)) {
+                    setToggles(preferenceData.newBookmark.enabled, preferenceData.newPost.enabled)
+                }
             }
         }
 
-        binding.cancelButton.setOnClickListener {
-            if (::preferenceData.isInitialized && (preferenceData.newPost.enabled != binding.newPostToggle.isChecked || preferenceData.newBookmark.enabled != binding.bookmarkPostToggle.isChecked)) {
-                setToggles(preferenceData.newBookmark.enabled, preferenceData.newPost.enabled)
-            }
-        }
-
-        binding.locationToggle.setOnCheckedChangeListener {_, isChecked ->
+        binding.locationToggle.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 (activity!! as HomeActivity).askForLocationPermission()
             } else {
                 if (checkLocationPermission() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     activity!!.revokeSelfPermissionsOnKill(listOf<String>(android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION))
 
-                    showToast(activity!!, "Permission will be revoked on closing the app.")
+                    showToast(activity!!, "Permission will be revoked when the app is killed.")
                 } else {
                     showToast(activity!!, "Before Android 13, runtime permissions can only be revoked from settings.")
                 }
             }
+        }
+
+        binding.notificationToggle.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    (activity!! as HomeActivity).askForNotificationPermission()
+                }
+            } else {
+                if (checkNotificationPermission() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    activity!!.revokeSelfPermissionOnKill(android.Manifest.permission.POST_NOTIFICATIONS)
+
+                    showToast(activity!!, "Permission will be revoked when the app is killed.")
+                }
+            }
+
+            setUpUi()
         }
     }
 
