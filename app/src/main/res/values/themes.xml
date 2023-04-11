@@ -37,7 +37,7 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
     </style>
-    
+
     <style name="BorderlessButtonStyle" parent="">
         <item name="android:foreground">?attr/selectableItemBackgroundBorderless</item>
         <item name="android:textColor">#6c5ff5</item>
