@@ -19,7 +19,6 @@ import com.dashxdemo.app.utils.Utils.Companion.initProgressDialog
 import com.dashxdemo.app.utils.Utils.Companion.runOnUiThread
 import com.dashxdemo.app.utils.Utils.Companion.showToast
 import com.google.gson.Gson
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromJsonElement
 
