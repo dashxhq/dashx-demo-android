@@ -13,13 +13,14 @@ import com.dashx.sdk.DashXLog
 import com.dashx.sdk.utils.PermissionUtils
 import com.dashxdemo.app.R
 import com.dashxdemo.app.api.responses.StoredPreferences
-import com.dashxdemo.app.api.responses.StoredPreferencesResponse
 import com.dashxdemo.app.databinding.FragmentSettingsBinding
 import com.dashxdemo.app.feature.home.HomeActivity
 import com.dashxdemo.app.utils.Utils.Companion.initProgressDialog
 import com.dashxdemo.app.utils.Utils.Companion.runOnUiThread
 import com.dashxdemo.app.utils.Utils.Companion.showToast
 import com.google.gson.Gson
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.decodeFromJsonElement
 
 class SettingsFragment : Fragment() {
     lateinit var binding: FragmentSettingsBinding
@@ -52,8 +53,8 @@ class SettingsFragment : Fragment() {
     private fun getStoredPreferences() {
         DashXClient.getInstance().fetchStoredPreferences(onSuccess = {
             hideProgressBar()
-            val preferenceDataJson = Gson().fromJson(it.toString(), StoredPreferencesResponse::class.java).preferenceData
-            preferenceData = Gson().fromJson(preferenceDataJson.toString(), StoredPreferences::class.java)
+            val preferenceDataJson = it.preferenceData
+            preferenceData = Json.decodeFromJsonElement<StoredPreferences>(preferenceDataJson)
             runOnUiThread {
                 binding.saveButton.isEnabled = true
                 if (::preferenceData.isInitialized && (preferenceData.newPost.enabled != binding.newPostToggle.isChecked || preferenceData.newBookmark.enabled != binding.bookmarkPostToggle.isChecked)) {

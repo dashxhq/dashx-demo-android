@@ -2,15 +2,13 @@ package com.dashxdemo.app.api.responses
 
 import kotlinx.serialization.json.JsonObject
 import com.dashx.sdk.data.Preference
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
 
-data class StoredPreferencesResponse(
-    @SerializedName("preferenceData")
-    val preferenceData: JsonObject
-)
+@Serializable
 data class StoredPreferences(
-    @SerializedName("new-bookmark")
+    @SerialName("new-bookmark")
     val newBookmark: Preference,
-    @SerializedName("new-post")
+    @SerialName("new-post")
     val newPost: Preference
 )
