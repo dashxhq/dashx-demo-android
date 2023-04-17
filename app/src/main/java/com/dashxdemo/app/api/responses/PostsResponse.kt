@@ -1,32 +1,35 @@
 package com.dashxdemo.app.api.responses
 
 import com.dashxdemo.app.pref.data.User
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class PostsResponse(
-    @SerializedName("message")
-    val message: String,
-    @SerializedName("posts")
+    @SerialName("message")
+    val message: String? = null,
+    @SerialName("posts")
     val posts: MutableList<Post>
 )
 
+@Serializable
 data class Post(
-    @SerializedName("id")
+    @SerialName("id")
     val id: Int,
-    @SerializedName("user_id")
+    @SerialName("user_id")
     val userId: Int,
-    @SerializedName("text")
+    @SerialName("text")
     val text: String,
-    @SerializedName("image")
-    val image: AssetData?,
-    @SerializedName("video")
+    @SerialName("image")
+    val image: AssetData? = null,
+    @SerialName("video")
     val video: AssetData?,
-    @SerializedName("created_at")
+    @SerialName("created_at")
     val createdAt: String,
-    @SerializedName("updated_at")
+    @SerialName("updated_at")
     val updatedAt: String,
-    @SerializedName("bookmarked_at")
-    val bookmarkedAt: String?,
-    @SerializedName("user")
-    val user: User
+    @SerialName("bookmarked_at")
+    val bookmarkedAt: String? = null,
+    @SerialName("user")
+    val user: User? = null
 )

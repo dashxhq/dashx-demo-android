@@ -1,8 +1,12 @@
 package com.dashxdemo.app.pref
 
 import android.content.Context
+import com.dashx.sdk.DashXLog
 import com.dashxdemo.app.pref.data.UserData
-import com.google.gson.Gson
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import org.json.JSONObject
 
 class AppPref(context: Context) {
 
@@ -33,13 +37,17 @@ class AppPref(context: Context) {
         return preference.getString(USER_TOKEN, null)
     }
 
-    fun getUserData(): UserData {
+    fun getUserData(): UserData? {
         val userDataString = preference.getString(USER_DATA, null)
-        return Gson().fromJson(userDataString, UserData::class.java)
+        userDataString?.let {
+            return Json { ignoreUnknownKeys = true }.decodeFromString<UserData>(it)
+        }
+
+        return null
     }
 
     fun setUserData(userData: UserData) {
-        preference.edit().putString(USER_DATA, Gson().toJson(userData)).apply()
+        preference.edit().putString(USER_DATA, Json.encodeToString(userData)).apply()
     }
 
     fun getDashXToken(): String? {

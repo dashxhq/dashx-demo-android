@@ -92,7 +92,7 @@ class BookmarksFragment : Fragment() {
     }
 
     private fun toggleBookmark(bookmarks: Post, itemPosition: Int) {
-        ApiClient.getInstance(requireContext()).toggleBookmark(bookmarks.id, object : Callback<ToggleBookmarkResponse> {
+        ApiClient.getInstance(requireContext()).toggleBookmark(bookmarks.id.toInt(), object : Callback<ToggleBookmarkResponse> {
                 override fun onResponse(
                     call: Call<ToggleBookmarkResponse>,
                     response: Response<ToggleBookmarkResponse>,
@@ -100,6 +100,7 @@ class BookmarksFragment : Fragment() {
                 }
 
                 override fun onFailure(call: Call<ToggleBookmarkResponse>, t: Throwable) {
+                    t.printStackTrace()
                     Toast.makeText(requireContext(), getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show()
                     bookmarkedPostsAdapter.addElementAtPosition(itemPosition, bookmarks)
                     bookmarkedPostsAdapter.notifyItemInserted(itemPosition)

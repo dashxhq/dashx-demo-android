@@ -1,6 +1,5 @@
 package com.dashxdemo.app.api.responses
 
-import kotlinx.serialization.json.JsonObject
 import com.dashx.sdk.data.Preference
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerialName

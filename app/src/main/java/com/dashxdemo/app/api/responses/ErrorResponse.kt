@@ -1,8 +1,10 @@
 package com.dashxdemo.app.api.responses
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class ErrorResponse(
-    @SerializedName("message")
+    @SerialName("message")
     val message: String?
 )

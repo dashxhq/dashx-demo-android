@@ -310,6 +310,7 @@ class HomeFragment : Fragment() {
             }
 
             override fun onFailure(call: Call<ToggleBookmarkResponse>, t: Throwable) {
+                t.printStackTrace()
                 Toast.makeText(requireContext(), getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show()
                 postsAdapter.notifyItemChanged(itemPosition)
             }
@@ -338,6 +339,7 @@ class HomeFragment : Fragment() {
             }
 
             override fun onFailure(call: Call<CreatePostResponse>, t: Throwable) {
+                t.printStackTrace()
                 createPostDialog?.dismiss()
                 Toast.makeText(requireContext(), getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show()
             }

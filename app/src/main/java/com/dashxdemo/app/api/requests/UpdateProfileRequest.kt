@@ -1,15 +1,17 @@
 package com.dashxdemo.app.api.requests
 
 import com.dashxdemo.app.api.responses.AssetData
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class UpdateProfileRequest(
-    @SerializedName("first_name")
+    @SerialName("first_name")
     val firstName: String,
-    @SerializedName("last_name")
+    @SerialName("last_name")
     val lastName: String,
-    @SerializedName("email")
+    @SerialName("email")
     val email: String,
-    @SerializedName("avatar")
+    @SerialName("avatar")
     val avatar: AssetData? = null,
 )
