@@ -92,7 +92,7 @@ class BookmarksFragment : Fragment() {
     }
 
     private fun toggleBookmark(bookmarks: Post, itemPosition: Int) {
-        ApiClient.getInstance(requireContext()).toggleBookmark(bookmarks.id.toInt(), object : Callback<ToggleBookmarkResponse> {
+        ApiClient.getInstance(requireContext()).toggleBookmark(bookmarks.id, object : Callback<ToggleBookmarkResponse> {
                 override fun onResponse(
                     call: Call<ToggleBookmarkResponse>,
                     response: Response<ToggleBookmarkResponse>,
