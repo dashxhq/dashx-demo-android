@@ -99,6 +99,7 @@ class RegisterFragment : Fragment() {
                 }
 
                 override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
+                    t.printStackTrace()
                     hideDialog()
                     Toast.makeText(
                         requireContext(),

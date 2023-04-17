@@ -1,22 +1,25 @@
 package com.dashxdemo.app.pref.data
 
 import com.dashxdemo.app.api.responses.AssetData
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class UserData(
-    @SerializedName("user")
-    val userData: User
+    @SerialName("user")
+    val userData: User? = null
 )
 
+@Serializable
 data class User(
-    @SerializedName("id")
+    @SerialName("id")
     val id: Int,
-    @SerializedName("first_name")
+    @SerialName("first_name")
     val firstName: String,
-    @SerializedName("last_name")
+    @SerialName("last_name")
     val lastName: String,
-    @SerializedName("email")
+    @SerialName("email")
     val email: String,
-    @SerializedName("avatar")
-    val avatar: AssetData?
+    @SerialName("avatar")
+    val avatar: AssetData? = null
 )

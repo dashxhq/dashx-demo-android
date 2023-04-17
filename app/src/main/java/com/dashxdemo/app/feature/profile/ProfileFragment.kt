@@ -163,6 +163,7 @@ class ProfileFragment : Fragment() {
             }
 
             override fun onFailure(call: Call<ProfileResponse>, t: Throwable) {
+                t.printStackTrace()
                 hideProgressDialog()
                 showToast(requireContext(), getString(R.string.something_went_wrong))
             }
@@ -189,6 +190,7 @@ class ProfileFragment : Fragment() {
             }
 
             override fun onFailure(call: Call<UpdateProfileResponse>, t: Throwable) {
+                t.printStackTrace()
                 hideProgressDialog()
                 showToast(requireContext(), getString(R.string.something_went_wrong))
             }

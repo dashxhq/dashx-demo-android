@@ -85,10 +85,10 @@ class LoginFragment : Fragment() {
                     appPref.setDashXToken(response.body()?.dashXToken!!)
                     appPref.setUserData(getUserDataFromToken(response.body()?.token))
 
-                    val userData = appPref.getUserData().userData
+                    val userData = appPref.getUserData()?.userData
                     val dashXToken = appPref.getDashXToken()
 
-                    DashXClient.getInstance().setIdentity(userData.id.toString(), dashXToken)
+                    DashXClient.getInstance().setIdentity(userData?.id.toString(), dashXToken)
                     DashXClient.getInstance().track("Login Succeeded")
 
                     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU || PermissionUtils.hasPermissions(activity!!, android.Manifest.permission.POST_NOTIFICATIONS)) {
@@ -106,6 +106,7 @@ class LoginFragment : Fragment() {
             }
 
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                t.printStackTrace()
                 hideDialog()
                 showToast(requireContext(), getString(R.string.something_went_wrong))
             }

@@ -1,8 +1,10 @@
 package com.dashxdemo.app.api.requests
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class ForgotPasswordRequest(
-    @SerializedName("email")
+    @SerialName("email")
     val email: String
 )

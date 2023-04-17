@@ -1,10 +1,12 @@
 package com.dashxdemo.app.api.responses
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class AssetData(
-    @SerializedName("status")
-    val status: String?,
-    @SerializedName("url")
-    val url: String?
+    @SerialName("status")
+    val status: String? = null,
+    @SerialName("url")
+    val url: String? = null
 )

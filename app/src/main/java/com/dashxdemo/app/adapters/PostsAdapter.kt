@@ -32,7 +32,7 @@ class PostsAdapter(private val posts: MutableList<Post>, private val context: Co
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val item = posts[position]
 
-        holder.binding.nameTextView.text = "${item.user.firstName} ${item.user.lastName}"
+        holder.binding.nameTextView.text = "${item.user?.firstName} ${item.user?.lastName}"
         holder.binding.contentTextView.text = item.text
         holder.binding.historyTextView.text = timeAgo(item.createdAt)
 
@@ -41,12 +41,12 @@ class PostsAdapter(private val posts: MutableList<Post>, private val context: Co
             Glide.with(context).load(item.image?.url).into(holder.binding.postImageView)
         }
 
-        if (item.user.avatar?.url.isNullOrEmpty()) {
+        if (item.user?.avatar?.url.isNullOrEmpty()) {
             holder.binding.imageView.visibility = View.GONE
-            holder.binding.imageTextView.text = getInitials("${item.user.firstName} ${item.user.lastName}")
+            holder.binding.imageTextView.text = getInitials("${item.user?.firstName} ${item.user?.lastName}")
         } else {
             holder.binding.imageTextView.visibility = View.GONE
-            Glide.with(context).load(item.user.avatar?.url).into(holder.binding.imageView)
+            Glide.with(context).load(item.user?.avatar?.url).into(holder.binding.imageView)
         }
 
         holder.binding.videoContainer.isVisible = !item.video?.url.isNullOrEmpty()

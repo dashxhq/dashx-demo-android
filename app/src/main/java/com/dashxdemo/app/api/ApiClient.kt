@@ -4,11 +4,13 @@ import android.content.Context
 import com.dashxdemo.app.api.requests.*
 import com.dashxdemo.app.api.responses.*
 import com.dashxdemo.app.pref.AppPref
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import kotlinx.serialization.json.Json
 import okhttp3.Interceptor
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import retrofit2.Callback
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 
 class ApiClient private constructor(private val applicationContext: Context) {
@@ -39,7 +41,8 @@ class ApiClient private constructor(private val applicationContext: Context) {
             })
         }.build()
 
-        val retrofit = Retrofit.Builder().baseUrl(BASE_URL).client(okHttpClient).addConverterFactory(GsonConverterFactory.create()).build()
+        val contentType = "application/json".toMediaType()
+        val retrofit = Retrofit.Builder().baseUrl(BASE_URL).client(okHttpClient).addConverterFactory(Json { ignoreUnknownKeys = true }.asConverterFactory(contentType)).build()
 
         service = retrofit.create(ApiService::class.java)
 

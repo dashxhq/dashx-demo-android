@@ -18,9 +18,10 @@ import com.dashxdemo.app.feature.home.HomeActivity
 import com.dashxdemo.app.utils.Utils.Companion.initProgressDialog
 import com.dashxdemo.app.utils.Utils.Companion.runOnUiThread
 import com.dashxdemo.app.utils.Utils.Companion.showToast
-import com.google.gson.Gson
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromJsonElement
+import kotlinx.serialization.json.jsonObject
 
 class SettingsFragment : Fragment() {
     lateinit var binding: FragmentSettingsBinding
@@ -54,7 +55,7 @@ class SettingsFragment : Fragment() {
         DashXClient.getInstance().fetchStoredPreferences(onSuccess = {
             hideProgressBar()
             val preferenceDataJson = it.preferenceData
-            preferenceData = Json.decodeFromJsonElement<StoredPreferences>(preferenceDataJson)
+            preferenceData =  Json { ignoreUnknownKeys = true }.decodeFromJsonElement<StoredPreferences>(preferenceDataJson)
             runOnUiThread {
                 binding.saveButton.isEnabled = true
                 if (::preferenceData.isInitialized && (preferenceData.newPost.enabled != binding.newPostToggle.isChecked || preferenceData.newBookmark.enabled != binding.bookmarkPostToggle.isChecked)) {
@@ -120,7 +121,7 @@ class SettingsFragment : Fragment() {
                     showProgressBar()
                     preferenceData.newBookmark.enabled = binding.bookmarkPostToggle.isChecked
                     preferenceData.newPost.enabled = binding.newPostToggle.isChecked
-                    DashXClient.getInstance().saveStoredPreferences(Gson().toJsonTree(preferenceData).asJsonObject, onSuccess = {
+                    DashXClient.getInstance().saveStoredPreferences(Json.parseToJsonElement(Json.encodeToString(preferenceData)).jsonObject, onSuccess = {
                         runOnUiThread {
                             hideProgressBar()
                             showToast(requireContext(), getString(R.string.preferences_saved))

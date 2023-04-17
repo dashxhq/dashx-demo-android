@@ -91,6 +91,7 @@ class ForgotPasswordFragment : Fragment() {
                 }
 
                 override fun onFailure(call: Call<ForgotPasswordResponse>, t: Throwable) {
+                    t.printStackTrace()
                     hideDialog()
                     Toast.makeText(
                         requireContext(),
