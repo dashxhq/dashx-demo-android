@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.navigation.fragment.findNavController
 import com.dashx.sdk.DashXClient
 import com.dashx.sdk.DashXLog
 import com.dashx.sdk.utils.PermissionUtils
@@ -136,9 +138,7 @@ class SettingsFragment : Fragment() {
             }
 
             binding.cancelButton.setOnClickListener {
-                if (::preferenceData.isInitialized && (preferenceData.newPost.enabled != binding.newPostToggle.isChecked || preferenceData.newBookmark.enabled != binding.bookmarkPostToggle.isChecked)) {
-                    setToggles(preferenceData.newBookmark.enabled, preferenceData.newPost.enabled)
-                }
+                findNavController().popBackStack()
             }
         }
 
