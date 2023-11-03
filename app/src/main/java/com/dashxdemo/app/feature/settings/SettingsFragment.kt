@@ -10,7 +10,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.fragment.findNavController
-import com.dashx.sdk.DashXClient
+import com.dashx.sdk.DashX
 import com.dashx.sdk.DashXLog
 import com.dashx.sdk.utils.PermissionUtils
 import com.dashxdemo.app.R
@@ -54,7 +54,7 @@ class SettingsFragment : Fragment() {
 
 
     private fun getStoredPreferences() {
-        DashXClient.getInstance().fetchStoredPreferences(onSuccess = {
+        DashX.fetchStoredPreferences(onSuccess = {
             hideProgressBar()
             val preferenceDataJson = it.preferenceData
             preferenceData =  Json { ignoreUnknownKeys = true }.decodeFromJsonElement<StoredPreferences>(preferenceDataJson)
@@ -65,7 +65,7 @@ class SettingsFragment : Fragment() {
                 }
             }
         }, onError = {
-            DashXLog.e("DashXClient", it)
+            DashXLog.e("Error while running 'DashX.fetchStoredPreferences':", it)
 
             runOnUiThread {
                 hideProgressBar()
@@ -75,8 +75,8 @@ class SettingsFragment : Fragment() {
     }
 
     private fun checkLocationPermission(): Boolean {
-        return PermissionUtils.hasPermissions(activity!!, android.Manifest.permission.ACCESS_FINE_LOCATION) ||
-            PermissionUtils.hasPermissions(activity!!, android.Manifest.permission.ACCESS_COARSE_LOCATION)
+        return PermissionUtils.hasPermissions(requireActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) ||
+            PermissionUtils.hasPermissions(requireActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION)
     }
 
     private fun checkNotificationPermission(): Boolean {
@@ -84,7 +84,7 @@ class SettingsFragment : Fragment() {
             return true
         }
 
-        return PermissionUtils.hasPermissions(activity!!, android.Manifest.permission.POST_NOTIFICATIONS)
+        return PermissionUtils.hasPermissions(requireActivity(), android.Manifest.permission.POST_NOTIFICATIONS)
     }
 
     fun setUpUi() {
@@ -123,7 +123,7 @@ class SettingsFragment : Fragment() {
                     showProgressBar()
                     preferenceData.newBookmark.enabled = binding.bookmarkPostToggle.isChecked
                     preferenceData.newPost.enabled = binding.newPostToggle.isChecked
-                    DashXClient.getInstance().saveStoredPreferences(Json.parseToJsonElement(Json.encodeToString(preferenceData)).jsonObject, onSuccess = {
+                    DashX.saveStoredPreferences(Json.parseToJsonElement(Json.encodeToString(preferenceData)).jsonObject, onSuccess = {
                         runOnUiThread {
                             hideProgressBar()
                             showToast(requireContext(), getString(R.string.preferences_saved))
@@ -144,14 +144,14 @@ class SettingsFragment : Fragment() {
 
         binding.locationToggle.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                (activity!! as HomeActivity).askForLocationPermission()
+                (requireActivity() as HomeActivity).askForLocationPermission()
             } else {
                 if (checkLocationPermission() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    activity!!.revokeSelfPermissionsOnKill(listOf<String>(android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION))
+                    requireActivity().revokeSelfPermissionsOnKill(listOf<String>(android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION))
 
-                    showToast(activity!!, "Permission will be revoked when the app is killed.")
+                    showToast(requireActivity(), "Permission will be revoked when the app is killed.")
                 } else {
-                    showToast(activity!!, "Before Android 13, runtime permissions can only be revoked from settings.")
+                    showToast(requireActivity(), "Before Android 13, runtime permissions can only be revoked from settings.")
                 }
             }
         }
@@ -159,13 +159,13 @@ class SettingsFragment : Fragment() {
         binding.notificationToggle.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    (activity!! as HomeActivity).askForNotificationPermission()
+                    (requireActivity() as HomeActivity).askForNotificationPermission()
                 }
             } else {
                 if (checkNotificationPermission() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    activity!!.revokeSelfPermissionOnKill(android.Manifest.permission.POST_NOTIFICATIONS)
+                    requireActivity().revokeSelfPermissionOnKill(android.Manifest.permission.POST_NOTIFICATIONS)
 
-                    showToast(activity!!, "Permission will be revoked when the app is killed.")
+                    showToast(requireActivity(), "Permission will be revoked when the app is killed.")
                 }
             }
 

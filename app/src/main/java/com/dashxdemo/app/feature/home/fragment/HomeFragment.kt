@@ -18,7 +18,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.dashx.sdk.DashXClient
+import com.dashx.sdk.DashX
 import com.dashxdemo.app.R
 import com.dashxdemo.app.utils.data.VideoPlayerData
 import com.dashxdemo.app.adapters.PostsAdapter
@@ -122,7 +122,7 @@ class HomeFragment : Fragment() {
 
                 showProgressDialog()
 
-                DashXClient.getInstance().uploadAsset(File(getPath(requireContext(), selectedVideo!!)), "post", "video", onSuccess = {
+                DashX.uploadAsset(File(getPath(requireContext(), selectedVideo!!)), "post", "video", onSuccess = {
                     hideProgressDialog()
                     videoAssetData = it.data.asset
                 }, onError = {
@@ -139,7 +139,7 @@ class HomeFragment : Fragment() {
 
                 showProgressDialog()
 
-                DashXClient.getInstance().uploadAsset(file, "post", "video", onSuccess = {
+                DashX.uploadAsset(file, "post", "video", onSuccess = {
                     hideProgressDialog()
                     videoAssetData = it.data.asset
                 }, onError = {
@@ -154,7 +154,7 @@ class HomeFragment : Fragment() {
 
                 showProgressDialog()
 
-                DashXClient.getInstance().uploadAsset(File(getPath(requireContext(), selectedImage!!)), "post", "image", onSuccess = {
+                DashX.uploadAsset(File(getPath(requireContext(), selectedImage!!)), "post", "image", onSuccess = {
                     hideProgressDialog()
                     imageAssetData = it.data.asset
                 }, onError = {
@@ -170,7 +170,7 @@ class HomeFragment : Fragment() {
 
                 showProgressDialog()
 
-                DashXClient.getInstance().uploadAsset(file, "post", "image", onSuccess = {
+                DashX.uploadAsset(file, "post", "image", onSuccess = {
                     hideProgressDialog()
                     imageAssetData = it.data.asset
                 }, onError = {

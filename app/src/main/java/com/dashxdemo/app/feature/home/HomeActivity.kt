@@ -8,7 +8,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import com.dashx.sdk.DashXClient
+import com.dashx.sdk.DashX
 import com.dashx.sdk.utils.PermissionUtils
 import com.dashxdemo.app.R
 import com.dashxdemo.app.databinding.ActivityHomeBinding
@@ -34,7 +34,7 @@ class HomeActivity : AppCompatActivity() {
 
         if (requestCode == locationRequestCode) {
             if (grantResults.isNotEmpty() && grantResults.first() == PackageManager.PERMISSION_GRANTED) {
-                DashXClient.getInstance().track("Location Permission Changed")
+                DashX.track("Location Permission Changed")
 
                 val settingsFragment =
                     supportFragmentManager.findFragmentById(R.id.fragmentSettings) as SettingsFragment?
@@ -43,7 +43,7 @@ class HomeActivity : AppCompatActivity() {
             }
         } else if (requestCode == notificationRequestCode) {
             if (grantResults.isNotEmpty() && grantResults.first() == PackageManager.PERMISSION_GRANTED) {
-                DashXClient.getInstance().subscribe()
+                DashX.subscribe()
 
                 val settingsFragment =
                     supportFragmentManager.findFragmentById(R.id.fragmentSettings) as SettingsFragment?

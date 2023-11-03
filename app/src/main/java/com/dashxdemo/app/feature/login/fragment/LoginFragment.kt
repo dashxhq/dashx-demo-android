@@ -10,16 +10,16 @@ import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.dashx.sdk.DashXClient
+import com.dashx.sdk.DashX
 import com.dashx.sdk.DashXLog
 import com.dashx.sdk.utils.PermissionUtils
-import com.dashxdemo.app.R
 import com.dashxdemo.app.api.ApiClient
 import com.dashxdemo.app.api.requests.LoginRequest
 import com.dashxdemo.app.api.responses.LoginResponse
 import com.dashxdemo.app.databinding.FragmentLoginBinding
 import com.dashxdemo.app.feature.home.HomeActivity
 import com.dashxdemo.app.pref.AppPref
+import com.dashxdemo.app.R
 import com.dashxdemo.app.utils.Utils.Companion.getErrorMessageFromJson
 import com.dashxdemo.app.utils.Utils.Companion.getUserDataFromToken
 import com.dashxdemo.app.utils.Utils.Companion.initProgressDialog
@@ -88,11 +88,11 @@ class LoginFragment : Fragment() {
                     val userData = appPref.getUserData()?.userData
                     val dashXToken = appPref.getDashXToken()
 
-                    DashXClient.getInstance().setIdentity(userData?.id.toString(), dashXToken)
-                    DashXClient.getInstance().track("Login Succeeded")
+                    DashX.setIdentity(userData?.id.toString(), dashXToken)
+                    DashX.track("Login Succeeded")
 
                     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU || PermissionUtils.hasPermissions(activity!!, android.Manifest.permission.POST_NOTIFICATIONS)) {
-                        DashXClient.getInstance().subscribe()
+                        DashX.subscribe()
                     }
 
                     val intent = Intent(requireContext(), HomeActivity::class.java)
@@ -100,7 +100,7 @@ class LoginFragment : Fragment() {
                     requireActivity().finish()
                 } else {
                     showToast(requireContext(), getErrorMessageFromJson(response.errorBody()?.string()))
-                    DashXClient.getInstance().track("Login Failed")
+                    DashX.track("Login Failed")
                 }
                 hideDialog()
             }

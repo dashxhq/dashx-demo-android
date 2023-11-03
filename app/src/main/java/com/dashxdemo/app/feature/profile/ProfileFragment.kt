@@ -18,7 +18,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.dashx.sdk.DashXClient
+import com.dashx.sdk.DashX
 import com.dashxdemo.app.R
 import com.dashxdemo.app.api.ApiClient
 import com.dashxdemo.app.api.requests.UpdateProfileRequest
@@ -227,7 +227,7 @@ class ProfileFragment : Fragment() {
     }
 
     private fun uploadAsset(file: File) {
-        DashXClient.getInstance().uploadAsset(file, "user", "avatar", onSuccess = {
+        DashX.uploadAsset(file, "user", "avatar", onSuccess = {
             avatar = it.data.asset
             hideProgressDialog()
             runOnUiThread {
