@@ -1,10 +1,7 @@
 package com.dashxdemo.app.utils
 
-import android.Manifest
-import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Context
-import android.content.Intent
 import android.database.Cursor
 import android.graphics.Bitmap
 import android.media.MediaMetadataRetriever
@@ -13,15 +10,14 @@ import android.os.Handler
 import android.os.Looper
 import android.provider.MediaStore
 import android.widget.Toast
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.fragment.app.FragmentActivity
+import com.dashx.sdk.DashXLog
 import com.dashxdemo.app.R
 import com.dashxdemo.app.api.responses.ErrorResponse
 import com.dashxdemo.app.pref.data.User
 import com.dashxdemo.app.pref.data.UserData
 import com.google.android.material.textfield.TextInputLayout
-import com.google.gson.Gson
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -40,8 +36,8 @@ class Utils {
         }
 
         fun getErrorMessageFromJson(json: String?): String {
-            val errorObject = Gson().fromJson(json, ErrorResponse::class.java)
-            return errorObject.message ?: ""
+            val errorObject = json?.let {  Json { ignoreUnknownKeys = true }.decodeFromString<ErrorResponse>(it) }
+            return errorObject?.message ?: ""
         }
 
         fun validateEmail(emailId: String, textInput: TextInputLayout, context: Context): Boolean {
@@ -120,9 +116,7 @@ class Utils {
 
         fun getUserDataFromToken(token: String?): UserData {
             val decodedToken = decodeToken(token)
-            val user = JSONObject(decodedToken).getJSONObject(USER).toString()
-            val dashXToken = JSONObject(decodedToken).getString(DASHX_TOKEN)
-            return UserData(Gson().fromJson(user, User::class.java), dashXToken)
+            return  Json { ignoreUnknownKeys = true }.decodeFromString(decodedToken)
         }
 
         fun showToast(context: Context, string: String) {

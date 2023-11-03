@@ -1,10 +1,12 @@
 package com.dashxdemo.app.api.responses
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 class CreatePostResponse(
-    @SerializedName("message")
+    @SerialName("message")
     val message: String,
-    @SerializedName("post")
+    @SerialName("post")
     val post: Post
 )

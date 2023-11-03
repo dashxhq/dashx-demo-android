@@ -1,14 +1,16 @@
 package com.dashxdemo.app.api.requests
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class RegisterRequest(
-    @SerializedName("email")
+    @SerialName("email")
     val email: String,
-    @SerializedName("password")
+    @SerialName("password")
     val password: String,
-    @SerializedName("first_name")
+    @SerialName("first_name")
     val firstName: String,
-    @SerializedName("last_name")
+    @SerialName("last_name")
     val lastName: String
 )

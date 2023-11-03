@@ -102,6 +102,7 @@ class ContactFragment : Fragment() {
                 }
 
                 override fun onFailure(call: Call<ContactResponse>, t: Throwable) {
+                    t.printStackTrace()
                     hideDialog()
                     Toast.makeText(requireContext(), getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show()
                 }

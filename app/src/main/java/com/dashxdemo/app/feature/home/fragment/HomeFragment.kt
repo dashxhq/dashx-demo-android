@@ -29,7 +29,6 @@ import com.dashxdemo.app.api.responses.CreatePostResponse
 import com.dashxdemo.app.api.responses.PostsResponse
 import com.dashxdemo.app.api.responses.ToggleBookmarkResponse
 import com.dashxdemo.app.databinding.DialogCreatePostBinding
-import com.dashxdemo.app.pref.AppPref
 import com.dashxdemo.app.databinding.*
 import com.dashxdemo.app.utils.Constants.PERM_CAMERA
 import com.dashxdemo.app.utils.Constants.PERM_READ_EXT_STORAGE
@@ -64,8 +63,8 @@ class HomeFragment : Fragment() {
     private lateinit var progressDialog: ProgressDialog
     private lateinit var postsAdapter: PostsAdapter
 
-    private var imageAssetData: com.dashx.sdk.data.AssetData? = null
-    private var videoAssetData: com.dashx.sdk.data.AssetData? = null
+    private var imageAssetData: com.dashx.sdk.data.UploadData? = null
+    private var videoAssetData: com.dashx.sdk.data.UploadData? = null
     private var shouldPickImage = false
 
     private val cameraRequestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
@@ -120,8 +119,10 @@ class HomeFragment : Fragment() {
         when (requestCode) {
             PICK_GALLERY_VIDEO -> if (resultCode == Activity.RESULT_OK) {
                 val selectedVideo: Uri? = data?.data
+
                 showProgressDialog()
-                DashX.uploadExternalAsset(File(getPath(requireContext(), selectedVideo!!)), "651144a7-e821-4af7-bb2b-abb2807cf2c9", onSuccess = {
+
+                DashX.uploadAsset(File(getPath(requireContext(), selectedVideo!!)), "post", "video", onSuccess = {
                     hideProgressDialog()
                     videoAssetData = it.data.asset
                 }, onError = {
@@ -135,8 +136,10 @@ class HomeFragment : Fragment() {
                 val selectedVideo = data?.data
                 val bitmap = getVideoThumbnail(requireContext(), selectedVideo)
                 val file = getFileFromBitmap(bitmap!!, requireContext())
+
                 showProgressDialog()
-                DashX.uploadExternalAsset(file, "651144a7-e821-4af7-bb2b-abb2807cf2c9", onSuccess = {
+
+                DashX.uploadAsset(file, "post", "video", onSuccess = {
                     hideProgressDialog()
                     videoAssetData = it.data.asset
                 }, onError = {
@@ -148,8 +151,10 @@ class HomeFragment : Fragment() {
 
             PICK_GALLERY_IMAGE -> if (resultCode == Activity.RESULT_OK) {
                 val selectedImage: Uri? = data?.data
+
                 showProgressDialog()
-                DashX.uploadExternalAsset(File(getPath(requireContext(), selectedImage!!)), "f03b20a8-2375-4f8d-bfbe-ce35141abe98", onSuccess = {
+
+                DashX.uploadAsset(File(getPath(requireContext(), selectedImage!!)), "post", "image", onSuccess = {
                     hideProgressDialog()
                     imageAssetData = it.data.asset
                 }, onError = {
@@ -162,8 +167,10 @@ class HomeFragment : Fragment() {
             TAKE_CAMERA_IMAGE -> if (resultCode == Activity.RESULT_OK) {
                 val bitmap = data?.extras?.get("data") as Bitmap
                 val file = getFileFromBitmap(bitmap, requireContext())
+
                 showProgressDialog()
-                DashX.uploadExternalAsset(file, "f03b20a8-2375-4f8d-bfbe-ce35141abe98", onSuccess = {
+
+                DashX.uploadAsset(file, "post", "image", onSuccess = {
                     hideProgressDialog()
                     imageAssetData = it.data.asset
                 }, onError = {
@@ -303,6 +310,7 @@ class HomeFragment : Fragment() {
             }
 
             override fun onFailure(call: Call<ToggleBookmarkResponse>, t: Throwable) {
+                t.printStackTrace()
                 Toast.makeText(requireContext(), getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show()
                 postsAdapter.notifyItemChanged(itemPosition)
             }
@@ -331,6 +339,7 @@ class HomeFragment : Fragment() {
             }
 
             override fun onFailure(call: Call<CreatePostResponse>, t: Throwable) {
+                t.printStackTrace()
                 createPostDialog?.dismiss()
                 Toast.makeText(requireContext(), getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show()
             }

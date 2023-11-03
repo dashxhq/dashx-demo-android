@@ -1,20 +1,20 @@
 package com.dashxdemo.app.feature.location
 
-import android.Manifest
 import android.content.Context.LOCATION_SERVICE
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
+import android.Manifest
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import com.dashxdemo.app.R
 import com.dashxdemo.app.databinding.FragmentFetchLocationBinding
+import com.dashxdemo.app.R
 import com.dashxdemo.app.utils.Utils.Companion.showToast
-
 
 class FetchLocation : Fragment() {
 
@@ -91,14 +91,15 @@ class FetchLocation : Fragment() {
     }
 
     private fun getLocation(): Location? {
+        if (ContextCompat.checkSelfPermission(requireActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+            ContextCompat.checkSelfPermission(requireActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+        ) {
+            return null
+        }
+
         val locationManager = requireActivity().getSystemService(LOCATION_SERVICE) as LocationManager?
         var location: Location? = null
 
-        try {
-            location = locationManager!!.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        return location
+        return locationManager!!.getLastKnownLocation(LocationManager.GPS_PROVIDER)
     }
 }

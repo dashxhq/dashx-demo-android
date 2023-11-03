@@ -1,13 +1,15 @@
 package com.dashxdemo.app.api.requests
 
 import com.dashxdemo.app.api.responses.AssetData
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 class CreatePostRequest(
-    @SerializedName("text")
+    @SerialName("text")
     val text: String,
-    @SerializedName("image")
+    @SerialName("image")
     val image: AssetData? = null,
-    @SerializedName("video")
+    @SerialName("video")
     val video: AssetData? = null,
 )

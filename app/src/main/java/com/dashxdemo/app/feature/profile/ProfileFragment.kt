@@ -51,7 +51,7 @@ class ProfileFragment : Fragment() {
     private lateinit var progressDialog: ProgressDialog
     private lateinit var dialogBinding: DialogViewPickerBinding
 
-    private var avatar: com.dashx.sdk.data.AssetData? = null
+    private var avatar: com.dashx.sdk.data.UploadData? = null
 
     private val cameraRequestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
         if (isGranted) {
@@ -163,6 +163,7 @@ class ProfileFragment : Fragment() {
             }
 
             override fun onFailure(call: Call<ProfileResponse>, t: Throwable) {
+                t.printStackTrace()
                 hideProgressDialog()
                 showToast(requireContext(), getString(R.string.something_went_wrong))
             }
@@ -189,6 +190,7 @@ class ProfileFragment : Fragment() {
             }
 
             override fun onFailure(call: Call<UpdateProfileResponse>, t: Throwable) {
+                t.printStackTrace()
                 hideProgressDialog()
                 showToast(requireContext(), getString(R.string.something_went_wrong))
             }
@@ -211,21 +213,21 @@ class ProfileFragment : Fragment() {
                 val bitmap = data?.extras?.get("data") as Bitmap
                 val file = getFileFromBitmap(bitmap, requireContext())
                 showProgressDialog()
-                uploadExternalAsset(file, "e8b7b42f-1f23-431c-b739-9de0fba3dadf")
+                uploadAsset(file)
                 binding.profilePicture.setImageBitmap(bitmap)
             }
 
             PICK_GALLERY_IMAGE -> if (resultCode == RESULT_OK) {
                 val selectedImage: Uri? = data?.data
                 showProgressDialog()
-                uploadExternalAsset(File(getPath(requireContext(), selectedImage!!)), "e8b7b42f-1f23-431c-b739-9de0fba3dadf")
+                uploadAsset(File(getPath(requireContext(), selectedImage!!)))
                 binding.profilePicture.setImageURI(selectedImage)
             }
         }
     }
 
-    fun uploadExternalAsset(file: File,externalColumId: String){
-        DashX.uploadExternalAsset(file, externalColumId, onSuccess = {
+    private fun uploadAsset(file: File) {
+        DashX.uploadAsset(file, "user", "avatar", onSuccess = {
             avatar = it.data.asset
             hideProgressDialog()
             runOnUiThread {

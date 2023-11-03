@@ -2,6 +2,7 @@ package com.dashxdemo.app.feature.login.fragment
 
 import android.app.ProgressDialog
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,13 +11,15 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.dashx.sdk.DashX
-import com.dashxdemo.app.R
+import com.dashx.sdk.DashXLog
+import com.dashx.sdk.utils.PermissionUtils
 import com.dashxdemo.app.api.ApiClient
 import com.dashxdemo.app.api.requests.LoginRequest
 import com.dashxdemo.app.api.responses.LoginResponse
 import com.dashxdemo.app.databinding.FragmentLoginBinding
 import com.dashxdemo.app.feature.home.HomeActivity
 import com.dashxdemo.app.pref.AppPref
+import com.dashxdemo.app.R
 import com.dashxdemo.app.utils.Utils.Companion.getErrorMessageFromJson
 import com.dashxdemo.app.utils.Utils.Companion.getUserDataFromToken
 import com.dashxdemo.app.utils.Utils.Companion.initProgressDialog
@@ -79,12 +82,18 @@ class LoginFragment : Fragment() {
             ) {
                 if (response.isSuccessful) {
                     appPref.setUserToken(response.body()?.token)
+                    appPref.setDashXToken(response.body()?.dashXToken!!)
                     appPref.setUserData(getUserDataFromToken(response.body()?.token))
 
-                    val userData = appPref.getUserData().userData
-                    DashX.setIdentity(userData.id.toString(),null)
+                    val userData = appPref.getUserData()?.userData
+                    val dashXToken = appPref.getDashXToken()
+
+                    DashX.setIdentity(userData?.id.toString(), dashXToken)
                     DashX.track("Login Succeeded")
-                    DashX.subscribe()
+
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU || PermissionUtils.hasPermissions(activity!!, android.Manifest.permission.POST_NOTIFICATIONS)) {
+                        DashX.subscribe()
+                    }
 
                     val intent = Intent(requireContext(), HomeActivity::class.java)
                     startActivity(intent)
@@ -97,6 +106,7 @@ class LoginFragment : Fragment() {
             }
 
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                t.printStackTrace()
                 hideDialog()
                 showToast(requireContext(), getString(R.string.something_went_wrong))
             }

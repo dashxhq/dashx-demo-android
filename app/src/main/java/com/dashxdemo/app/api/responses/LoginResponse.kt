@@ -1,10 +1,14 @@
 package com.dashxdemo.app.api.responses
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class LoginResponse(
-    @SerializedName("message")
+    @SerialName("message")
     val message: String,
-    @SerializedName("token")
-    val token: String
+    @SerialName("token")
+    val token: String,
+    @SerialName("dashx_token")
+    val dashXToken: String
 )

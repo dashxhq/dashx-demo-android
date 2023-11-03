@@ -1,11 +1,13 @@
 package com.dashxdemo.app.api.responses
 
 import com.dashxdemo.app.pref.data.User
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 class ProfileResponse(
-    @SerializedName("message")
+    @SerialName("message")
     val message: String,
-    @SerializedName("user")
+    @SerialName("user")
     val user: User
 )

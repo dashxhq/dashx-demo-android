@@ -1,12 +1,14 @@
 package com.dashxdemo.app.api.requests
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class ContactRequest(
-    @SerializedName("name")
+    @SerialName("name")
     val name: String,
-    @SerializedName("email")
+    @SerialName("email")
     val email: String,
-    @SerializedName("feedback")
+    @SerialName("feedback")
     val feedback: String
 )
