@@ -15,6 +15,8 @@ import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.dashx.sdk.DashX
+import com.dashx.sdk.DashXLog
 import com.dashx.sdk.utils.PermissionUtils
 import com.dashxdemo.app.api.ApiClient
 import com.dashxdemo.app.api.requests.LoginRequest
@@ -77,7 +79,6 @@ class LoginFragment : Fragment() {
         }
 
         val ss = SpannableString(binding.privacyPolicyText.text)
-
 
         val termsOfUse: ClickableSpan = object : ClickableSpan() {
             override fun onClick(textView: View) {
