@@ -2,16 +2,19 @@ package com.dashxdemo.app.feature.login.fragment
 
 import android.app.ProgressDialog
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.dashx.sdk.DashX
-import com.dashx.sdk.DashXLog
 import com.dashx.sdk.utils.PermissionUtils
 import com.dashxdemo.app.api.ApiClient
 import com.dashxdemo.app.api.requests.LoginRequest
@@ -72,6 +75,28 @@ class LoginFragment : Fragment() {
         binding.emailEditText.addTextChangedListener {
             binding.emailTextInput.isErrorEnabled = false
         }
+
+        val ss = SpannableString(binding.privacyPolicyText.text)
+
+
+        val termsOfUse: ClickableSpan = object : ClickableSpan() {
+            override fun onClick(textView: View) {
+                val url = Uri.parse("https://dashx.com/terms-of-use")
+                startActivity(Intent(Intent.ACTION_VIEW, url))
+            }
+        }
+        ss.setSpan(termsOfUse, 32, 44, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+        val privacyPolicy: ClickableSpan = object : ClickableSpan() {
+            override fun onClick(textView: View) {
+                val url = Uri.parse("https://dashx.com/privacy-policy")
+                startActivity(Intent(Intent.ACTION_VIEW, url))
+            }
+        }
+        ss.setSpan(privacyPolicy, 47, 61, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+        binding.privacyPolicyText.text = ss
+        binding.privacyPolicyText.movementMethod = LinkMovementMethod.getInstance()
     }
 
     private fun loginUser() {
