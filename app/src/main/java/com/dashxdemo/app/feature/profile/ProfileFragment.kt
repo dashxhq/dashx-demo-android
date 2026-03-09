@@ -18,7 +18,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.dashx.sdk.DashX
+import com.dashx.android.DashX
 import com.dashxdemo.app.R
 import com.dashxdemo.app.api.ApiClient
 import com.dashxdemo.app.api.requests.UpdateProfileRequest
@@ -51,7 +51,7 @@ class ProfileFragment : Fragment() {
     private lateinit var progressDialog: ProgressDialog
     private lateinit var dialogBinding: DialogViewPickerBinding
 
-    private var avatar: com.dashx.sdk.data.UploadData? = null
+    private var avatar: com.dashx.android.data.UploadData? = null
 
     private val cameraRequestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
         if (isGranted) {
@@ -237,7 +237,7 @@ class ProfileFragment : Fragment() {
         }, onError = {
             hideProgressDialog()
             runOnUiThread {
-                showToast(requireContext(), it)
+                showToast(requireContext(), it.toString())
             }
         })
     }

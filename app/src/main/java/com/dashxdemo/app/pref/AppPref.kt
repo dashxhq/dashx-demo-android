@@ -1,7 +1,7 @@
 package com.dashxdemo.app.pref
 
 import android.content.Context
-import com.dashx.sdk.DashXLog
+import com.dashx.android.DashXLog
 import com.dashxdemo.app.pref.data.UserData
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString

@@ -10,9 +10,9 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.fragment.findNavController
-import com.dashx.sdk.DashX
-import com.dashx.sdk.DashXLog
-import com.dashx.sdk.utils.PermissionUtils
+import com.dashx.android.DashX
+import com.dashx.android.DashXLog
+import com.dashx.android.utils.PermissionUtils
 import com.dashxdemo.app.R
 import com.dashxdemo.app.api.responses.StoredPreferences
 import com.dashxdemo.app.databinding.FragmentSettingsBinding
@@ -65,7 +65,7 @@ class SettingsFragment : Fragment() {
                 }
             }
         }, onError = {
-            DashXLog.e("Error while running 'DashX.fetchStoredPreferences':", it)
+            DashXLog.e("Error while running 'DashX.fetchStoredPreferences':", it.toString())
 
             runOnUiThread {
                 hideProgressBar()

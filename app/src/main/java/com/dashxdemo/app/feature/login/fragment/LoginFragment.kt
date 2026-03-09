@@ -10,9 +10,9 @@ import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.dashx.sdk.DashX
-import com.dashx.sdk.DashXLog
-import com.dashx.sdk.utils.PermissionUtils
+import com.dashx.android.DashX
+import com.dashx.android.DashXLog
+import com.dashx.android.utils.PermissionUtils
 import com.dashxdemo.app.api.ApiClient
 import com.dashxdemo.app.api.requests.LoginRequest
 import com.dashxdemo.app.api.responses.LoginResponse

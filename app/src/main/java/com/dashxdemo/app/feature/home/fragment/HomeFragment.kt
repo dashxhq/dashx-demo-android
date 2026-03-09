@@ -18,7 +18,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.dashx.sdk.DashX
+import com.dashx.android.DashX
 import com.dashxdemo.app.R
 import com.dashxdemo.app.utils.data.VideoPlayerData
 import com.dashxdemo.app.adapters.PostsAdapter
@@ -63,8 +63,8 @@ class HomeFragment : Fragment() {
     private lateinit var progressDialog: ProgressDialog
     private lateinit var postsAdapter: PostsAdapter
 
-    private var imageAssetData: com.dashx.sdk.data.UploadData? = null
-    private var videoAssetData: com.dashx.sdk.data.UploadData? = null
+    private var imageAssetData: com.dashx.android.data.UploadData? = null
+    private var videoAssetData: com.dashx.android.data.UploadData? = null
     private var shouldPickImage = false
 
     private val cameraRequestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
@@ -127,7 +127,7 @@ class HomeFragment : Fragment() {
                     videoAssetData = it.data.asset
                 }, onError = {
                     hideProgressDialog()
-                    runOnUiThread { showToast(requireContext(), it) }
+                    runOnUiThread { showToast(requireContext(), it.toString()) }
                 })
                 createPostBinding.videoPathTextView.text = getPath(requireContext(), selectedVideo).toString()
             }
@@ -144,7 +144,7 @@ class HomeFragment : Fragment() {
                     videoAssetData = it.data.asset
                 }, onError = {
                     hideProgressDialog()
-                    runOnUiThread { showToast(requireContext(), it) }
+                    runOnUiThread { showToast(requireContext(), it.toString()) }
                 })
                 createPostBinding.videoPathTextView.text = file.path
             }
@@ -159,7 +159,7 @@ class HomeFragment : Fragment() {
                     imageAssetData = it.data.asset
                 }, onError = {
                     hideProgressDialog()
-                    runOnUiThread { showToast(requireContext(), it) }
+                    runOnUiThread { showToast(requireContext(), it.toString()) }
                 })
                 createPostBinding.imagePathTextView.text = getPath(requireContext(), selectedImage).toString()
             }
@@ -175,7 +175,7 @@ class HomeFragment : Fragment() {
                     imageAssetData = it.data.asset
                 }, onError = {
                     hideProgressDialog()
-                    runOnUiThread { showToast(requireContext(), it) }
+                    runOnUiThread { showToast(requireContext(), it.toString()) }
                 })
                 createPostBinding.imagePathTextView.text = file.path
             }

@@ -8,8 +8,8 @@ import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import com.dashx.sdk.DashX
-import com.dashx.sdk.utils.PermissionUtils
+import com.dashx.android.DashX
+import com.dashx.android.utils.PermissionUtils
 import com.dashxdemo.app.R
 import com.dashxdemo.app.databinding.ActivityHomeBinding
 import com.dashxdemo.app.feature.settings.SettingsFragment

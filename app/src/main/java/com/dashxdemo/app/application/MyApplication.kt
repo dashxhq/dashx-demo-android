@@ -1,9 +1,9 @@
 package com.dashxdemo.app.application
 
 import android.app.Application
-import com.dashx.sdk.DashX
-import com.dashx.sdk.DashXActivityLifecycleCallbacks
-import com.dashx.sdk.DashXLog
+import com.dashx.android.DashX
+import com.dashx.android.DashXActivityLifecycleCallbacks
+import com.dashx.android.DashXLog
 import com.dashxdemo.app.BuildConfig
 
 class MyApplication : Application() {

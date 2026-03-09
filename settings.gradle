@@ -23,6 +23,4 @@ include ':app'
 def localSettings = file('local.settings.gradle')
 if (localSettings.exists()) {
     apply(from: localSettings)
-    include ':dashx-android'
-    project(':dashx-android').projectDir = new File(settingsDir, '../dashx-android')
 }
