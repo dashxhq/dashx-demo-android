@@ -19,8 +19,10 @@ rootProject.name = 'DashX Demo'
 include ':app'
 
 // For DashX SDK Developers only:
-// The following allows for easily testing local SDK changes
+// The following allows for easily testing local SDK changes (create local.settings.gradle to enable)
 def localSettings = file('local.settings.gradle')
 if (localSettings.exists()) {
     apply(from: localSettings)
+    include ':dashx-android'
+    project(':dashx-android').projectDir = new File(settingsDir, '../dashx-android')
 }
