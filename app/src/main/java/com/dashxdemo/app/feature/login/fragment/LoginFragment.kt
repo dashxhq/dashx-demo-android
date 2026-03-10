@@ -1,5 +1,6 @@
 package com.dashxdemo.app.feature.login.fragment
 
+import android.Manifest
 import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Build
@@ -81,6 +82,8 @@ class LoginFragment : Fragment() {
                 response: Response<LoginResponse>,
             ) {
                 if (response.isSuccessful) {
+                    DashXLog.d("LoginResponse", "Login response: ${response.body()}")
+
                     appPref.setUserToken(response.body()?.token)
                     appPref.setDashXToken(response.body()?.dashXToken!!)
                     appPref.setUserData(getUserDataFromToken(response.body()?.token))
@@ -91,7 +94,7 @@ class LoginFragment : Fragment() {
                     DashX.setIdentity(userData?.id.toString(), dashXToken)
                     DashX.track("Login Succeeded")
 
-                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU || PermissionUtils.hasPermissions(activity!!, android.Manifest.permission.POST_NOTIFICATIONS)) {
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU || PermissionUtils.hasPermissions(activity!!, Manifest.permission.POST_NOTIFICATIONS)) {
                         DashX.subscribe()
                     }
 

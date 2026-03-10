@@ -1,6 +1,7 @@
 package com.dashxdemo.app.api
 
 import android.content.Context
+import com.dashxdemo.app.BuildConfig
 import com.dashxdemo.app.api.requests.*
 import com.dashxdemo.app.api.responses.*
 import com.dashxdemo.app.pref.AppPref
@@ -17,8 +18,6 @@ class ApiClient private constructor(private val applicationContext: Context) {
     private val service: ApiService
 
     companion object {
-        const val BASE_URL = "https://node.dashxdemo.com/"
-
         private var INSTANCE: ApiClient? = null
 
         fun getInstance(applicationContext: Context): ApiClient {
@@ -42,7 +41,7 @@ class ApiClient private constructor(private val applicationContext: Context) {
         }.build()
 
         val contentType = "application/json".toMediaType()
-        val retrofit = Retrofit.Builder().baseUrl(BASE_URL).client(okHttpClient).addConverterFactory(Json { ignoreUnknownKeys = true }.asConverterFactory(contentType)).build()
+        val retrofit = Retrofit.Builder().baseUrl(BuildConfig.BASE_URL).client(okHttpClient).addConverterFactory(Json { ignoreUnknownKeys = true }.asConverterFactory(contentType)).build()
 
         service = retrofit.create(ApiService::class.java)
 

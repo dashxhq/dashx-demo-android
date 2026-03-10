@@ -40,14 +40,22 @@ class AppPref(context: Context) {
     fun getUserData(): UserData? {
         val userDataString = preference.getString(USER_DATA, null)
         userDataString?.let {
-            return Json { ignoreUnknownKeys = true }.decodeFromString<UserData>(it)
+            return try {
+                Json { ignoreUnknownKeys = true }.decodeFromString<UserData>(it)
+            } catch (e: Exception) {
+                null
+            }
         }
 
         return null
     }
 
-    fun setUserData(userData: UserData) {
-        preference.edit().putString(USER_DATA, Json.encodeToString(userData)).apply()
+    fun setUserData(userData: UserData?) {
+        if (userData == null) {
+            preference.edit().remove(USER_DATA).apply()
+        } else {
+            preference.edit().putString(USER_DATA, Json.encodeToString(userData)).apply()
+        }
     }
 
     fun getDashXToken(): String? {

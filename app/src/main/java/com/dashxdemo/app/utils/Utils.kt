@@ -35,9 +35,15 @@ class Utils {
             return android.util.Patterns.EMAIL_ADDRESS.matcher(emailString).matches()
         }
 
+        private val jsonObj = Json { ignoreUnknownKeys = true }
+
         fun getErrorMessageFromJson(json: String?): String {
-            val errorObject = json?.let {  Json { ignoreUnknownKeys = true }.decodeFromString<ErrorResponse>(it) }
-            return errorObject?.message ?: ""
+            return try {
+                val errorObject = json?.let { jsonObj.decodeFromString<ErrorResponse>(it) }
+                errorObject?.message ?: ""
+            } catch (e: Exception) {
+                json ?: ""
+            }
         }
 
         fun validateEmail(emailId: String, textInput: TextInputLayout, context: Context): Boolean {
@@ -80,7 +86,7 @@ class Utils {
         }
 
         fun validateFeedbackEditFields(nameTextInput: TextInputLayout, feedbackTextInput: TextInputLayout, emailTextInput: TextInputLayout, context: Context): Boolean {
-            if (nameTextInput.editText?.text.toString().trim().isNullOrEmpty()) {
+            if (nameTextInput.editText?.text.toString().trim().isEmpty()) {
                 nameTextInput.isErrorEnabled = true
                 nameTextInput.error = context.getString(R.string.name_required)
                 return false
@@ -88,7 +94,7 @@ class Utils {
 
             validateEmail(emailTextInput.editText?.text.toString(), emailTextInput, context)
 
-            if (feedbackTextInput.editText?.text.toString().trim().isNullOrEmpty()) {
+            if (feedbackTextInput.editText?.text.toString().trim().isEmpty()) {
                 feedbackTextInput.isErrorEnabled = true
                 feedbackTextInput.error = context.getString(R.string.feedback_required)
                 return false
@@ -103,20 +109,28 @@ class Utils {
             return progressDialog
         }
 
-        private fun decodeToken(token: String?): String {
+        private fun decodeToken(token: String?): String? {
             val parts = token?.split(TOKEN_DELIMITER)
+            if (parts == null || parts.size < 2) {
+                return null
+            }
             return try {
                 val charset = charset("UTF-8")
-                val payload = String(Base64.getUrlDecoder().decode(parts?.get(1)?.toByteArray(charset)), charset)
+                val payload = String(Base64.getUrlDecoder().decode(parts[1].toByteArray(charset)), charset)
                 payload
             } catch (e: Exception) {
-                "Error parsing JWT: $e"
+                null
             }
         }
 
-        fun getUserDataFromToken(token: String?): UserData {
-            val decodedToken = decodeToken(token)
-            return  Json { ignoreUnknownKeys = true }.decodeFromString(decodedToken)
+        fun getUserDataFromToken(token: String?): UserData? {
+            val decodedToken = decodeToken(token) ?: return null
+            return try {
+                jsonObj.decodeFromString<UserData>(decodedToken)
+            } catch (e: Exception) {
+                DashXLog.e("Error getting user data from token", e.toString())
+                null
+            }
         }
 
         fun showToast(context: Context, string: String) {

@@ -42,6 +42,7 @@ android {
             buildConfigField 'java.lang.String', 'DASHX_PUBLIC_KEY', '"ft3tP2wJlQB5NSdYrjU8UylH"'
             buildConfigField 'java.lang.String', 'DASHX_BASE_URI', '"https://api.dashx-staging.com/graphql"'
             buildConfigField 'java.lang.String', 'DASHX_TARGET_ENVIRONMENT', '"staging"'
+            buildConfigField 'java.lang.String', 'BASE_URL', '"https://dashxdemo.com/"'
         }
 
         production {
@@ -49,6 +50,15 @@ android {
             buildConfigField 'java.lang.String', 'DASHX_PUBLIC_KEY', '"1rGE0HWa6Su8F9kZVDpZICYb"'
             buildConfigField 'java.lang.String', 'DASHX_BASE_URI', '"https://api.dashx-staging.com/graphql"'
             buildConfigField 'java.lang.String', 'DASHX_TARGET_ENVIRONMENT', '"production"'
+            buildConfigField 'java.lang.String', 'BASE_URL', '"https://dashxdemo.com/"'
+        }
+
+        mock {
+            dimension 'environment'
+            buildConfigField 'java.lang.String', 'DASHX_PUBLIC_KEY', '"0nvA5vBRv2MiD1wJPT6y4Dw1"'
+            buildConfigField 'java.lang.String', 'DASHX_BASE_URI', '"https://api.dashx-staging.com/graphql"'
+            buildConfigField 'java.lang.String', 'DASHX_TARGET_ENVIRONMENT', '"staging"'
+            buildConfigField 'java.lang.String', 'BASE_URL', '"http://10.0.2.2:8080/"'
         }
     }
 
