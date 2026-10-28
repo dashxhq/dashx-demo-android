@@ -18,5 +18,6 @@ class MyApplication : Application() {
         )
 
         DashXActivityLifecycleCallbacks.enableActivityLifecycleTracking(this)
+        DashXActivityLifecycleCallbacks.enableScreenTracking(this)
     }
 }
